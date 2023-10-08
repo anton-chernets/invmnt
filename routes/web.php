@@ -20,3 +20,7 @@ Route::get('/', function () {
 Route::get('/profile', function () {
     // Only authenticated users may access this route...
 })->middleware('auth.basic');
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
