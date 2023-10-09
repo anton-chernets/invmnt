@@ -9,6 +9,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "infyomlabs/laravel-ui-adminlte": "^5.2",
         "laravel/framework": "^10.10",
+        "laravel/horizon": "^5.21",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
         "laravelcollective/html": "^6.4",
