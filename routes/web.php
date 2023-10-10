@@ -14,12 +14,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes();
+
 Route::get('/', function () {
     return view('welcome');
+})->name('main');
+
+Route::get('/welcome', function () {
+    return view('welcome');
+})->name('welcome');
+
+Route::middleware(['auth.basic','auth'])->group(function () {
+    Route::prefix('user')->group(function () {
+        Route::get('/rates', function () {
+            return view('rates');
+        })->name('user.rates');
+    });
+
+    Route::get('/home', function () {
+        return view('home');
+    })->name('home');
 });
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
-    ->middleware('auth.basic','auth')
-    ->name('home');
-
-Auth::routes();

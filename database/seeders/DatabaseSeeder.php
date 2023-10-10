@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
+    protected const NAME_MAIN = 'Anton';
+    protected const EMAIL_MAIN = 'anton.fullstack@gmail.com';
+
     /**
      * Seed the application's database.
      */
@@ -15,9 +18,9 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-         \App\Models\User::factory()->create([
-             'name' => 'Anton',
-             'email' => 'anton.fullstack@gmail.com',
+         \App\Models\User::firstOrNew([
+             'name' => self::NAME_MAIN,
+             'email' => self::EMAIL_MAIN,
              'password' => Hash::make('password'),
          ]);
     }
