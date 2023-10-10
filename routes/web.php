@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Models\Currency;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +28,11 @@ Route::get('/welcome', function () {
 Route::middleware(['auth.basic','auth'])->group(function () {
     Route::prefix('user')->group(function () {
         Route::get('/rates', function () {
-            return view('rates');
+            $rates = Currency::firstWhere('slug', 'UAH')
+                ->join('currency_currency', 'currencies.id', '=', 'currency_currency.base_currency_id')
+                ->pluck('currency_currency.rate_value')
+                ->all();
+            return view('rates', compact('rates'));
         })->name('user.rates');
     });
 
