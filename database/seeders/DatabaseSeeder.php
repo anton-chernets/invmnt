@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 class DatabaseSeeder extends Seeder
 {
     protected const NAME_MAIN = 'Anton';
-    protected const EMAIL_MAIN = 'anton.fullstack@gmail.com';
+    protected const EMAIL_MAIN = 'admin.admin@gmail.com';
 
     /**
      * Seed the application's database.
