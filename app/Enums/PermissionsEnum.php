@@ -4,10 +4,9 @@ namespace App\Enums;
 
 use App\Enums\Helpers\BackedEnumToArray;
 
-enum CurrencyTypeEnum: string
+enum PermissionsEnum: string
 {
     use BackedEnumToArray;
 
-    case FIAT = 'fiat';
-    case CRYPTO = 'crypto';
+    case HORIZON_DASHBOARD = 'horizon';
 }
