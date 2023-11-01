@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
+
 /**
  * App\Models\Coin
  *
@@ -15,10 +16,20 @@ use Illuminate\Support\Carbon;
  * @property string $name
  * @property string $slug
  * @property int|null $count
- * @property Carbon $created_at
- * @property Carbon $updated_at
- *
- * @property Currency $currency
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read \App\Models\Currency $currency
+ * @method static \Illuminate\Database\Eloquent\Builder|Coin newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Coin newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Coin query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Coin whereCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coin whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coin whereCurrencyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coin whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coin whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coin whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coin whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Coin extends Model
 {
