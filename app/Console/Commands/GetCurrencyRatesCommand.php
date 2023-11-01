@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\CurrencyHelper;
 use App\Jobs\GetCurrencyRatesJob;
 use App\Services\Currency\CurrencyService;
 use Illuminate\Console\Command;
@@ -28,7 +29,9 @@ class GetCurrencyRatesCommand extends Command
     public function handle(): void
     {
         GetCurrencyRatesJob::dispatch(
-            CurrencyService::updateOrCreateCurrency('UAH')
+            CurrencyService::updateOrCreateCurrency(
+                CurrencyHelper::MAIN_CURRENCY_SLUG
+            )
         );
     }
 }

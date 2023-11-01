@@ -28,7 +28,7 @@ Route::get('/welcome', function () {
 Route::middleware(['auth.basic','auth'])->group(function () {
     Route::prefix('user')->group(function () {
         Route::get('/rates', function () {
-            $rates = Currency::firstWhere('slug', 'UAH')
+            $rates = Currency::firstWhere('slug', \App\Helpers\CurrencyHelper::MAIN_CURRENCY_SLUG)
                 ->join('currency_currency', 'currencies.id', '=', 'currency_currency.base_currency_id')
                 ->pluck('currency_currency.rate_value')
                 ->all();
