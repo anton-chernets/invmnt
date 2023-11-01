@@ -27,6 +27,6 @@ class ParseCoinsBankGovUaJob implements ShouldQueue
     {
         /** @var ParseCoinsBankGovUaService $parser */
         $parser = app(ParseCoinsBankGovUaService::class);
-        $parser->parseCoinsData(endPage: 2);
+        $parser->parseCoinsData();
     }
 }

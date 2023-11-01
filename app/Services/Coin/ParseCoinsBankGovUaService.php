@@ -10,12 +10,42 @@ use Illuminate\Support\Str;
 
 class ParseCoinsBankGovUaService extends ParseBaseService
 {
-    public function parseCoinsData($startPage = 1, $endPage = 1): void
+    private string $coinPageUrl = "https://coins.bank.gov.ua/pam-atni-moneti/c-422.html";
+
+    public function parseCoinsData($startPage = 1): void
     {
-        for ($page = $startPage; $page <= $endPage; $page++) {
-            $html = file_get_contents("https://coins.bank.gov.ua/pam-atni-moneti/c-422.html?page={$page}");
+        $lastPage = $this->getLastPageNumber();
+
+        if ($lastPage === null) {
+            return; // // If the last page cannot be determined, stop parsing.
+        }
+
+        for ($page = $startPage; $page <= $lastPage; $page++) {
+            $pageUrl = "{$this->coinPageUrl}?page={$page}";
+            $html = file_get_contents($pageUrl);
             $this->processCoinData($html);
         }
+    }
+
+    private function getLastPageNumber(): ?int
+    {
+        $html = file_get_contents($this->coinPageUrl);
+        $dom = HtmlDomParser::str_get_html($html);
+        $paginationElement = $dom->find('nav ul.pagination');
+
+        if (count($paginationElement) > 0) {
+            $pageLinks = $paginationElement[0]->find('li a');
+            $lastPageLink = end($pageLinks);
+
+            if ($lastPageLink !== false) {
+                $lastPageHref = $lastPageLink->href;
+                preg_match('/page=(\d+)$/', $lastPageHref, $matches);
+
+                return (int)($matches[1] ?? null);
+            }
+        }
+
+        return null;
     }
 
     private function processCoinData($html): void
