@@ -13,6 +13,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
          $schedule->command('app:get-currency-exchanges')->hourly();
+         $schedule->command('parse:coins_bank_gov_ua')->hourly();
     }
 
     /**
