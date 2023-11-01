@@ -2,10 +2,12 @@
 
 namespace App\Services\Coin;
 
+use App\Events\CoinCreated;
 use App\Models\Coin;
 use App\Services\ParseBaseService;
 use Drnxloc\LaravelHtmlDom\HtmlDomParser;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
 
 class ParseCoinsBankGovUaService extends ParseBaseService
@@ -79,5 +81,7 @@ class ParseCoinsBankGovUaService extends ParseBaseService
                 'count' => null,
             ]);
         });
+
+        Event::dispatch(new CoinCreated($coinName));
     }
 }
