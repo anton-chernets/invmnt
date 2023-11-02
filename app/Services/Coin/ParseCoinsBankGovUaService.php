@@ -2,8 +2,10 @@
 
 namespace App\Services\Coin;
 
+use App\Enums\CurrencySlugEnum;
 use App\Events\CoinCreated;
 use App\Models\Coin;
+use App\Models\Currency;
 use App\Services\ParseBaseService;
 use Drnxloc\LaravelHtmlDom\HtmlDomParser;
 use Illuminate\Support\Facades\DB;
@@ -75,7 +77,7 @@ class ParseCoinsBankGovUaService extends ParseBaseService
     {
         DB::transaction(function () use ($coinName, $coinSlug) {
             Coin::query()->create([
-                'currency_id' => 1,
+                'currency_id' => Currency::firstWhere('slug', CurrencySlugEnum::UAH)->id,
                 'name' => $coinName,
                 'slug' => $coinSlug,
                 'count' => null,

@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Enums\CurrencySlugEnum;
 use App\Enums\CurrencyTypeEnum;
-use App\Helpers\CurrencyHelper;
+use App\Models\Currency;
 use Illuminate\Database\Seeder;
 
 class CurrencySeeder extends Seeder
@@ -15,11 +16,12 @@ class CurrencySeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        \App\Models\Currency::firstOrCreate([
-            'id' => 1,
-        ], [
-            'slug' => CurrencyHelper::MAIN_CURRENCY_SLUG,
-            'type' => CurrencyTypeEnum::FIAT,
-        ]);
+        foreach ([CurrencySlugEnum::UAH, CurrencySlugEnum::USD] as $slug) {
+            Currency::firstOrCreate([
+                'slug' => $slug,
+            ], [
+                'type' => CurrencyTypeEnum::FIAT,
+            ]);
+        }
     }
 }

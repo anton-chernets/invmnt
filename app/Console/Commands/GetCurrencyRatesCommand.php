@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Helpers\CurrencyHelper;
+use App\Enums\CurrencySlugEnum;
 use App\Jobs\GetCurrencyRatesJob;
 use App\Services\Currency\CurrencyService;
 use Illuminate\Console\Command;
@@ -30,7 +30,7 @@ class GetCurrencyRatesCommand extends Command
     {
         GetCurrencyRatesJob::dispatch(
             CurrencyService::updateOrCreateCurrency(
-                CurrencyHelper::MAIN_CURRENCY_SLUG
+                CurrencySlugEnum::UAH->value
             )
         );
     }

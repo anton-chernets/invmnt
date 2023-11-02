@@ -41,7 +41,7 @@ class GetCurrencyRatesJob implements ShouldQueue
         if (isset($result['base']) && isset($result['rates'])) {//TODO method service
             foreach ($result['rates'] as $key => $rate) {
                 $currency = CurrencyService::updateOrCreateCurrency($key);
-                $this->currency->rates()->attach($currency->id, ['rate_value' => $rate]);
+                $this->currency->rates()->attach($currency->id, ['rate_value' => 1 / $rate]);
             }
         }
     }

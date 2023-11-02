@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\CurrencySlugEnum;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Models\Currency;
@@ -28,11 +29,15 @@ Route::get('/welcome', function () {
 Route::middleware(['auth.basic','auth'])->group(function () {
     Route::prefix('user')->group(function () {
         Route::get('/rates', function () {
-            $rates = Currency::firstWhere('slug', \App\Helpers\CurrencyHelper::MAIN_CURRENCY_SLUG)
+            $builder = Currency::firstWhere(['slug' => CurrencySlugEnum::UAH])
                 ->join('currency_currency', 'currencies.id', '=', 'currency_currency.base_currency_id')
-                ->pluck('currency_currency.rate_value')
-                ->all();
-            return view('rates', compact('rates'));
+                ->where('currency_currency.rate_currency_id',  '=', Currency::firstWhere('slug', CurrencySlugEnum::USD)->id);
+
+            $timeFrames = $builder->pluck('currency_currency.created_at');
+
+            $rates = $builder->pluck('currency_currency.rate_value');
+
+            return view('rates', compact('rates','timeFrames'));
         })->name('user.rates');
     });
 

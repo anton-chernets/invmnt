@@ -12,12 +12,12 @@
     <script>
         var ctx = document.getElementById('myChart').getContext('2d');
         var myChart = new Chart(ctx, {
-            type: 'line',  // или любой другой тип графика, например, 'bar', 'pie' и т. д.
+            type: 'line',
             data: {
-                labels: ['1', '2', '3', '4'],
+                labels: @json($timeFrames),
                 datasets: [{
                     label: '# rate',
-                    data: @json($rates),  // Здесь данные для графика
+                    data: @json($rates),
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
