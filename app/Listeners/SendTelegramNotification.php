@@ -5,38 +5,36 @@ namespace App\Listeners;
 use App\Events\CoinCreated;
 use App\Events\CoinUpdated;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 class SendTelegramNotification
 {
     /**
      * Create the event listener.
      */
-    public function __construct(protected Client $httpClient)
-    {
-    }
+    public function __construct(protected Client $httpClient) {}
 
     /**
      * Handle the event.
+     * @throws \Exception
+     * @throws GuzzleException
      */
     public function handle($event): void
     {
         if ($event instanceof CoinCreated) {
-            $coinName = $event->coinName;
-            $message = "Added new coin: $coinName";
-            logs()->debug('$message', ['$message' => $message]);
+            $message = "Added new coin: $event->coinName";
         } elseif ($event instanceof CoinUpdated) {
-            $coinName = $event->coinName;
-            $newCount = $event->newCount;
-            $message = "Coin $coinName count 0 changed to $newCount";
-            logs()->debug('$message', ['$message' => $message]);
+            $message = "Coin $event->coinName count $event->oldCount changed to $event->newCount";
+        } else {
+            throw new \Exception('unknown event type');
         }
 
         $telegramBotToken = config('telegram.bot_token');
-        $chatId = config('telegram.chat_id');
+        $userId = config('telegram.chat_id');
 
         $this->httpClient->post("https://api.telegram.org/bot$telegramBotToken/sendMessage", [
             'form_params' => [
-                'chat_id' => $chatId,
+                'chat_id' => $userId,
                 'text' => $message,
             ],
         ]);

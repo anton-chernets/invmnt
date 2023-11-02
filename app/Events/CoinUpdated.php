@@ -16,9 +16,9 @@ class CoinUpdated
      */
     public function __construct(
         public string $coinName,
-        public string $newCount
-    ) {
-    }
+        public ?int $newCount,
+        public ?int $oldCount,
+    ) {}
 
     /**
      * Get the channels the event should broadcast on.

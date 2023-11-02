@@ -3,19 +3,16 @@
 namespace App\Services\Coin;
 
 use App\Enums\CurrencySlugEnum;
-use App\Events\CoinCreated;
-use App\Events\CoinUpdated;
 use App\Models\Coin;
 use App\Models\Currency;
 use App\Services\ParseBaseService;
 use Drnxloc\LaravelHtmlDom\HtmlDomParser;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
 
 class ParseCoinsBankGovUaService extends ParseBaseService
 {
-    private string $coinPageUrl = "https://coins.bank.gov.ua/pam-atni-moneti/c-422.html";
+    private string $coinPageUrl = 'https://coins.bank.gov.ua/pam-atni-moneti/c-422.html';
 
     public function parseCoinsData($startPage = 1): void
     {
@@ -63,17 +60,16 @@ class ParseCoinsBankGovUaService extends ParseBaseService
 
             $coinSlug = Str::slug($coinName, '_');
 
-            $existingCoin = Coin::where('name', $coinName)->first();
+            $existingCoin = Coin::where('name', $coinName)->first();//TODO move to repository
 
             $baseURL = 'https://coins.bank.gov.ua';
             $coinPageURL = $baseURL . $coinLink->href;
             $coinCount = $this->getCoinCountFromPage($coinPageURL);
 
-            if (!$existingCoin) {
+            if ($existingCoin) {
+                $this->updateCoinRecord($existingCoin, $coinCount);
+            } else {
                 $this->createCoinRecord($coinName, $coinSlug, $coinCount);
-            } elseif ($coinCount !== null && $coinCount !== $existingCoin->count) {
-                Coin::where('name', $coinName)->update(['count' => $coinCount]);
-                Event::dispatch(new CoinUpdated($coinName, $coinCount));
             }
         }
 
@@ -85,14 +81,17 @@ class ParseCoinsBankGovUaService extends ParseBaseService
     {
         DB::transaction(function () use ($coinName, $coinSlug, $coinCount) {
             Coin::query()->create([
-                'currency_id' => Currency::firstWhere('slug', CurrencySlugEnum::UAH)->id,
+                'currency_id' => Currency::firstWhere('slug', CurrencySlugEnum::UAH)->id,//TODO move to repository
                 'name' => $coinName,
                 'slug' => $coinSlug,
                 'count' => $coinCount,
             ]);
         });
+    }
 
-        Event::dispatch(new CoinCreated($coinName));
+    private function updateCoinRecord($existingCoin, $coinCount): void//TODO move to repository
+    {
+        $existingCoin->update(['count' => $coinCount]);
     }
 
     private function getCoinCountFromPage($url): ?int

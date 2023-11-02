@@ -23,7 +23,7 @@ class CurrencyService extends BaseService
             throw new \Exception('unknown error');
         }
     }
-    public static function updateOrCreateCurrency(string $slug): Currency//TODO to repo
+    public static function updateOrCreateCurrency(string $slug): Currency//TODO move to repository
     {
         return Currency::updateOrCreate(['slug' => $slug]);
     }
