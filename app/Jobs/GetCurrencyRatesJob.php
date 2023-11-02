@@ -26,6 +26,7 @@ class GetCurrencyRatesJob implements ShouldQueue
     /**
      * Execute the job.
      * @throws GuzzleException
+     * @throws \Exception
      */
     public function handle(Client $httpClient): void
     {
@@ -39,11 +40,6 @@ class GetCurrencyRatesJob implements ShouldQueue
 
         $result = json_decode($json, true);
 
-        if (isset($result['base']) && isset($result['rates'])) {//TODO method service
-            foreach ($result['rates'] as $key => $rate) {
-                $currency = CurrencyService::updateOrCreateCurrency($key);
-                $this->currency->rates()->attach($currency->id, ['rate_value' => 1 / $rate]);
-            }
-        }
+        CurrencyService::handleRatesResponse($result);
     }
 }
