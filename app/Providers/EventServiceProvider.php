@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 use App\Events\CoinCreated;
+use App\Events\CoinUpdated;
 use App\Listeners\SendTelegramNotification;
+use App\Models\Coin;
+use App\Observers\CoinObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -22,6 +25,9 @@ class EventServiceProvider extends ServiceProvider
         CoinCreated::class => [
             SendTelegramNotification::class,
         ],
+        CoinUpdated::class => [
+            SendTelegramNotification::class,
+        ],
     ];
 
     /**
@@ -29,7 +35,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Coin::observe(CoinObserver::class);
     }
 
     /**

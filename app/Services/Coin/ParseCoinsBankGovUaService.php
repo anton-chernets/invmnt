@@ -4,6 +4,7 @@ namespace App\Services\Coin;
 
 use App\Enums\CurrencySlugEnum;
 use App\Events\CoinCreated;
+use App\Events\CoinUpdated;
 use App\Models\Coin;
 use App\Models\Currency;
 use App\Services\ParseBaseService;
@@ -64,8 +65,15 @@ class ParseCoinsBankGovUaService extends ParseBaseService
 
             $existingCoin = Coin::where('name', $coinName)->first();
 
+            $baseURL = 'https://coins.bank.gov.ua';
+            $coinPageURL = $baseURL . $coinLink->href;
+            $coinCount = $this->getCoinCountFromPage($coinPageURL);
+
             if (!$existingCoin) {
-                $this->createCoinRecord($coinName, $coinSlug);
+                $this->createCoinRecord($coinName, $coinSlug, $coinCount);
+            } elseif ($coinCount !== null && $coinCount !== $existingCoin->count) {
+                Coin::where('name', $coinName)->update(['count' => $coinCount]);
+                Event::dispatch(new CoinUpdated($coinName, $coinCount));
             }
         }
 
@@ -73,17 +81,30 @@ class ParseCoinsBankGovUaService extends ParseBaseService
         unset($dom);
     }
 
-    private function createCoinRecord($coinName, $coinSlug): void
+    private function createCoinRecord($coinName, $coinSlug, $coinCount): void
     {
-        DB::transaction(function () use ($coinName, $coinSlug) {
+        DB::transaction(function () use ($coinName, $coinSlug, $coinCount) {
             Coin::query()->create([
                 'currency_id' => Currency::firstWhere('slug', CurrencySlugEnum::UAH)->id,
                 'name' => $coinName,
                 'slug' => $coinSlug,
-                'count' => null,
+                'count' => $coinCount,
             ]);
         });
 
         Event::dispatch(new CoinCreated($coinName));
+    }
+
+    private function getCoinCountFromPage($url): ?int
+    {
+        $html = file_get_contents($url);
+        $dom = HtmlDomParser::str_get_html($html);
+        $coinCountElement = $dom->find('span.pd_qty', 0);
+
+        if ($coinCountElement) {
+            return (int)trim($coinCountElement->plaintext);
+        }
+
+        return null;
     }
 }
