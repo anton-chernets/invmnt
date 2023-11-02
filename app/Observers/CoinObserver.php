@@ -17,7 +17,7 @@ class CoinObserver
     {
         if ($coin->isDirty('count')) {
             $oldCount = $coin->getOriginal('count');
-            if ((is_null($oldCount) || $oldCount === 0) && $coin->count > 0) {
+            if ((is_null($oldCount) || $oldCount === 0) && $coin->count > 1) {
                 event(new CoinUpdated($coin->name, $coin->count, $oldCount));
             }
         }
