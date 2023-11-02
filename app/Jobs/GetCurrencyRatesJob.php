@@ -29,7 +29,7 @@ class GetCurrencyRatesJob implements ShouldQueue
      */
     public function handle(Client $httpClient): void
     {
-        $currencyExchangeApiKey = env('CURRENCY_EXCHANGE_API_KEY');
+        $currencyExchangeApiKey = env('CURRENCY_EXCHANGE_API_KEY', '19f9b5894c0764aef905c785b328b94e');
         $json = $httpClient->request(
             'GET',
             "https://api.forexrateapi.com/v1/latest?api_key=$currencyExchangeApiKey&base=" . $this->currency->slug
