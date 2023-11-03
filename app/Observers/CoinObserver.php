@@ -11,7 +11,7 @@ class CoinObserver
 {
     public function created(Coin $coin): void
     {
-        Event::dispatch(new CoinCreated($coin->name));
+        Event::dispatch(new CoinCreated($coin->name, $coin->count));
     }
     public function updated(Coin $coin): void
     {
