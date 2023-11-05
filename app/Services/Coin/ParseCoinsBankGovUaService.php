@@ -16,10 +16,10 @@ class ParseCoinsBankGovUaService extends ParseBaseService
 
     public function parseCoinsData($startPage = 1): void
     {
-        $lastPage = $this->getLastPageNumber();
+        $lastPage = $this->getLastPageNumber($this->coinPageUrl);
 
         if ($lastPage === null) {
-            return; // // If the last page cannot be determined, stop parsing.
+            return; // If the last page cannot be determined, stop parsing.
         }
 
         for ($page = $startPage; $page <= $lastPage; $page++) {
@@ -27,27 +27,6 @@ class ParseCoinsBankGovUaService extends ParseBaseService
             $html = file_get_contents($pageUrl);
             $this->processCoinData($html);
         }
-    }
-
-    private function getLastPageNumber(): ?int
-    {
-        $html = file_get_contents($this->coinPageUrl);
-        $dom = HtmlDomParser::str_get_html($html);
-        $paginationElement = $dom->find('nav ul.pagination');
-
-        if (count($paginationElement) > 0) {
-            $pageLinks = $paginationElement[0]->find('li a');
-            $lastPageLink = end($pageLinks);
-
-            if ($lastPageLink !== false) {
-                $lastPageHref = $lastPageLink->href;
-                preg_match('/page=(\d+)$/', $lastPageHref, $matches);
-
-                return (int)($matches[1] ?? null);
-            }
-        }
-
-        return null;
     }
 
     private function processCoinData($html): void
@@ -64,7 +43,7 @@ class ParseCoinsBankGovUaService extends ParseBaseService
 
             $baseURL = 'https://coins.bank.gov.ua';
             $coinPageURL = $baseURL . $coinLink->href;
-            $coinCount = $this->getCoinCountFromPage($coinPageURL);
+            $coinCount = $this->getCountElementFromPage($coinPageURL);
 
             if ($existingCoin) {
                 $this->updateCoinRecord($existingCoin, $coinCount);
@@ -92,18 +71,5 @@ class ParseCoinsBankGovUaService extends ParseBaseService
     private function updateCoinRecord($existingCoin, $coinCount): void//TODO move to repository
     {
         $existingCoin->update(['count' => $coinCount]);
-    }
-
-    private function getCoinCountFromPage($url): ?int
-    {
-        $html = file_get_contents($url);
-        $dom = HtmlDomParser::str_get_html($html);
-        $coinCountElement = $dom->find('span.pd_qty', 0);
-
-        if ($coinCountElement) {
-            return (int)trim($coinCountElement->plaintext);
-        }
-
-        return null;
     }
 }

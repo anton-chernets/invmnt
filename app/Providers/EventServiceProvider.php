@@ -2,10 +2,14 @@
 
 namespace App\Providers;
 
+use App\Events\BanknoteCreated;
+use App\Events\BanknoteUpdated;
 use App\Events\CoinCreated;
 use App\Events\CoinUpdated;
 use App\Listeners\SendTelegramNotification;
+use App\Models\Banknote;
 use App\Models\Coin;
+use App\Observers\BanknoteObserver;
 use App\Observers\CoinObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -28,6 +32,12 @@ class EventServiceProvider extends ServiceProvider
         CoinUpdated::class => [
             SendTelegramNotification::class,
         ],
+        BanknoteCreated::class => [
+            SendTelegramNotification::class,
+        ],
+        BanknoteUpdated::class => [
+            SendTelegramNotification::class,
+        ],
     ];
 
     /**
@@ -36,6 +46,7 @@ class EventServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Coin::observe(CoinObserver::class);
+        Banknote::observe(BanknoteObserver::class);
     }
 
     /**

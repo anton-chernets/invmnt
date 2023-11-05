@@ -2,6 +2,8 @@
 
 namespace App\Listeners;
 
+use App\Events\BanknoteCreated;
+use App\Events\BanknoteUpdated;
 use App\Events\CoinCreated;
 use App\Events\CoinUpdated;
 use GuzzleHttp\Client;
@@ -12,7 +14,9 @@ class SendTelegramNotification
     /**
      * Create the event listener.
      */
-    public function __construct(protected Client $httpClient) {}
+    public function __construct(protected Client $httpClient)
+    {
+    }
 
     /**
      * Handle the event.
@@ -23,8 +27,12 @@ class SendTelegramNotification
     {
         if ($event instanceof CoinCreated) {
             $message = "Added new coin: $event->coinName";
+        } elseif ($event instanceof BanknoteCreated) {
+            $message = "Added new banknote: $event->banknoteName";
         } elseif ($event instanceof CoinUpdated) {
             $message = "Coin $event->coinName count $event->oldCount changed to $event->newCount";
+        } elseif ($event instanceof BanknoteUpdated) {
+            $message = "Banknote $event->banknoteName count $event->oldCount changed to $event->newCount";
         } else {
             throw new \Exception('unknown event type');
         }
