@@ -17,6 +17,7 @@ class BanknoteCreated
     public function __construct(
         public string $banknoteName,
         public ?int $count,
+        public ?string $banknotePageUrl,
     ) {}
 
     /**

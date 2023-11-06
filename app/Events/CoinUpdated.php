@@ -18,6 +18,7 @@ class CoinUpdated
         public string $coinName,
         public ?int $newCount,
         public ?int $oldCount,
+        public string $coinPageUrl,
     ) {}
 
     /**

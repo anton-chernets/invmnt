@@ -18,6 +18,7 @@ class BanknoteUpdated
         public string $banknoteName,
         public ?int $newCount,
         public ?int $oldCount,
+        public ?string $banknotePageUrl,
     ) {}
 
     /**
