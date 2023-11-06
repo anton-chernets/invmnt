@@ -7,6 +7,7 @@ use App\Models\Banknote;
 use App\Models\Currency;
 use App\Services\ParseBaseService;
 use Drnxloc\LaravelHtmlDom\HtmlDomParser;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -47,8 +48,10 @@ class ParseBanknotesBankGovUaService extends ParseBaseService
 
             if ($existingBanknote) {
                 $this->updateBanknoteRecord($existingBanknote, $banknoteCount);
+                Cache::put("banknote_page_url_{$banknoteName}", $banknotePageURL, now()->addHours(1));
             } else {
                 $this->createBanknoteRecord($banknoteName, $banknoteSlug, $banknoteCount);
+                Cache::put("banknote_page_url_{$banknoteName}", $banknotePageURL, now()->addHours(1));
             }
         }
 

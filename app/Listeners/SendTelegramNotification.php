@@ -26,13 +26,13 @@ class SendTelegramNotification
     public function handle($event): void
     {
         if ($event instanceof CoinCreated) {
-            $message = "Added new coin: $event->coinName";
+            $message = "Added new coin: '$event->coinName' \n $event->coinPageUrl";
         } elseif ($event instanceof BanknoteCreated) {
-            $message = "Added new banknote: $event->banknoteName";
+            $message = "Added new banknote: '$event->banknoteName' \n $event->banknotePageUrl";
         } elseif ($event instanceof CoinUpdated) {
-            $message = "Coin $event->coinName count $event->oldCount changed to $event->newCount";
+            $message = "Coin '$event->coinName' count $event->oldCount changed to $event->newCount \n $event->coinPageUrl";
         } elseif ($event instanceof BanknoteUpdated) {
-            $message = "Banknote $event->banknoteName count $event->oldCount changed to $event->newCount";
+            $message = "Banknote '$event->banknoteName' count $event->oldCount changed to $event->newCount \n $event->banknotePageUrl";
         } else {
             throw new \Exception('unknown event type');
         }

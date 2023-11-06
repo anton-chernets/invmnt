@@ -7,6 +7,7 @@ use App\Models\Coin;
 use App\Models\Currency;
 use App\Services\ParseBaseService;
 use Drnxloc\LaravelHtmlDom\HtmlDomParser;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -47,8 +48,10 @@ class ParseCoinsBankGovUaService extends ParseBaseService
 
             if ($existingCoin) {
                 $this->updateCoinRecord($existingCoin, $coinCount);
+                Cache::put("coin_page_url_{$coinName}", $coinPageURL, now()->addHours(1));
             } else {
                 $this->createCoinRecord($coinName, $coinSlug, $coinCount);
+                Cache::put("coin_page_url_{$coinName}", $coinPageURL, now()->addHours(1));
             }
         }
 

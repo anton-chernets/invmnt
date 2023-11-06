@@ -17,6 +17,7 @@ class CoinCreated
     public function __construct(
         public string $coinName,
         public ?int $count,
+        public ?string $coinPageUrl,
     ) {}
 
     /**
