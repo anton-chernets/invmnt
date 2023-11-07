@@ -2,11 +2,15 @@
 
 namespace App\Services\Currency;
 
-use App\Models\Currency;
+use App\Repositories\CurrencyRepository;
 use App\Services\BaseService;
 
 class CurrencyService extends BaseService
 {
+    public function __construct(protected CurrencyRepository $currencyRepository)
+    {
+    }
+
     /**
      * @throws \Exception
      */
@@ -14,7 +18,7 @@ class CurrencyService extends BaseService
     {
         if ($response['success']) {
             foreach ($response['rates'] as $key => $rate) {
-                $currency = CurrencyService::updateOrCreateCurrency($key);
+                $currency = CurrencyRepository::updateOrCreate($key);
                 $currency->rates()->attach($currency->id, ['rate_value' => 1 / $rate]);
             }
         } else if (isset($response['error'])) {
@@ -22,9 +26,5 @@ class CurrencyService extends BaseService
         } else {
             throw new \Exception('unknown error');
         }
-    }
-    public static function updateOrCreateCurrency(string $slug): Currency//TODO move to repository
-    {
-        return Currency::updateOrCreate(['slug' => $slug]);
     }
 }
