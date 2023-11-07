@@ -23,6 +23,7 @@ class UserSeeder extends Seeder
          ], [
              'name' => self::NAME_MAIN,
              'password' => Hash::make('password'),
+             'telegram_id' => config('telegram.chat_admin_id'),
          ]);
     }
 }
