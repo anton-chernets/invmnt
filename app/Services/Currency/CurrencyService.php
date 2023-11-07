@@ -14,11 +14,11 @@ class CurrencyService extends BaseService
     /**
      * @throws \Exception
      */
-    public static function handleRatesResponse(array $response): void
+    public function handleRatesResponse(array $response): void
     {
         if ($response['success']) {
             foreach ($response['rates'] as $key => $rate) {
-                $currency = CurrencyRepository::updateOrCreate($key);
+                $currency = $this->currencyRepository->updateOrCreateBySlug($key);
                 $currency->rates()->attach($currency->id, ['rate_value' => 1 / $rate]);
             }
         } else if (isset($response['error'])) {

@@ -21,6 +21,7 @@ class GetCurrencyRatesJob implements ShouldQueue
      */
     public function __construct(
         public Currency $currency,
+        public CurrencyService $currencyService
     ) {}
 
     /**
@@ -40,6 +41,6 @@ class GetCurrencyRatesJob implements ShouldQueue
 
         $result = json_decode($json, true);
 
-        CurrencyService::handleRatesResponse($result);
+        $this->currencyService->handleRatesResponse($result);
     }
 }
