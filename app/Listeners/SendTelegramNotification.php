@@ -6,7 +6,7 @@ use App\Events\BanknoteCreated;
 use App\Events\BanknoteUpdated;
 use App\Events\CoinCreated;
 use App\Events\CoinUpdated;
-use App\Models\User;
+use App\Repositories\UserRepository;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
@@ -15,8 +15,10 @@ class SendTelegramNotification
     /**
      * Create the event listener.
      */
-    public function __construct(protected Client $httpClient)
-    {
+    public function __construct(
+        protected Client $httpClient,
+        protected UserRepository $userRepository,
+    ) {
     }
 
     /**
@@ -41,14 +43,23 @@ class SendTelegramNotification
         $telegramBotToken = config('telegram.bot_token');
         $userId = config('telegram.chat_admin_id');
 
-        $userTelegramIds = User::whereNotNull('telegram_id')->pluck('telegram_id')->toArray();//TODO move to repository
+        $userTelegramIds = $this->userRepository->getUserTelegramIds();
         foreach (array_merge($userTelegramIds, [$userId]) as $userTelegramId) {
-            $this->httpClient->post("https://api.telegram.org/bot$telegramBotToken/sendMessage", [
+            $bodyRequest = [
                 'form_params' => [
                     'chat_id' => $userTelegramId,
                     'text' => $message,
                 ],
-            ]);
+            ];
+
+            try {
+                $this->httpClient->post(
+                    "https://api.telegram.org/bot$telegramBotToken/sendMessage",
+                    $bodyRequest
+                );
+            } catch (\Exception $e) {
+                logs()->error($e->getMessage(), $bodyRequest);
+            }
         }
     }
 }

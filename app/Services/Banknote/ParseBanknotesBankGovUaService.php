@@ -2,17 +2,19 @@
 
 namespace App\Services\Banknote;
 
-use App\Enums\CurrencySlugEnum;
-use App\Models\Banknote;
-use App\Models\Currency;
+use App\Repositories\BanknoteRepository;
 use App\Services\ParseBaseService;
 use Drnxloc\LaravelHtmlDom\HtmlDomParser;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class ParseBanknotesBankGovUaService extends ParseBaseService
 {
+    public function __construct(
+        protected BanknoteRepository $banknoteRepository
+    ) {
+    }
+
     private string $banknotePageUrl = 'https://coins.bank.gov.ua/banknoti/c-440.html';
 
     public function parseBanknotesData($startPage = 1): void
@@ -40,39 +42,22 @@ class ParseBanknotesBankGovUaService extends ParseBaseService
 
             $banknoteSlug = Str::slug($banknoteName, '_');
 
-            $existingBanknote = Banknote::where('name', $banknoteName)->first();//TODO move to repository
+            $existingBanknote = $this->banknoteRepository->getByName($banknoteName);
 
             $baseURL = 'https://coins.bank.gov.ua';
             $banknotePageURL = $baseURL . $banknoteLink->href;
             $banknoteCount = $this->getCountElementFromPage($banknotePageURL);
 
             if ($existingBanknote) {
-                $this->updateBanknoteRecord($existingBanknote, $banknoteCount);
+                $this->banknoteRepository->update($existingBanknote, $banknoteCount);
                 Cache::put("banknote_page_url_{$banknoteName}", $banknotePageURL, now()->addHours(1));
             } else {
-                $this->createBanknoteRecord($banknoteName, $banknoteSlug, $banknoteCount);
+                $this->banknoteRepository->create($banknoteName, $banknoteSlug, $banknoteCount);
                 Cache::put("banknote_page_url_{$banknoteName}", $banknotePageURL, now()->addHours(1));
             }
         }
 
         $dom->clear();
         unset($dom);
-    }
-
-    private function createBanknoteRecord($banknoteName, $banknoteSlug, $banknoteCount): void
-    {
-        DB::transaction(function () use ($banknoteName, $banknoteSlug, $banknoteCount) {
-            Banknote::query()->create([
-                'currency_id' => Currency::firstWhere('slug', CurrencySlugEnum::UAH)->id,//TODO move to repository
-                'name' => $banknoteName,
-                'slug' => $banknoteSlug,
-                'count' => $banknoteCount,
-            ]);
-        });
-    }
-
-    private function updateBanknoteRecord($existingBanknote, $banknoteCount): void//TODO move to repository
-    {
-        $existingBanknote->update(['count' => $banknoteCount]);
     }
 }

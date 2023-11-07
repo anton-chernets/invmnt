@@ -2,17 +2,19 @@
 
 namespace App\Services\Coin;
 
-use App\Enums\CurrencySlugEnum;
-use App\Models\Coin;
-use App\Models\Currency;
+use App\Repositories\CoinRepository;
 use App\Services\ParseBaseService;
 use Drnxloc\LaravelHtmlDom\HtmlDomParser;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class ParseCoinsBankGovUaService extends ParseBaseService
 {
+    public function __construct(
+        protected CoinRepository $coinRepository
+    ) {
+    }
+
     private string $coinPageUrl = 'https://coins.bank.gov.ua/pam-atni-moneti/c-422.html';
 
     public function parseCoinsData($startPage = 1): void
@@ -40,39 +42,22 @@ class ParseCoinsBankGovUaService extends ParseBaseService
 
             $coinSlug = Str::slug($coinName, '_');
 
-            $existingCoin = Coin::where('name', $coinName)->first();//TODO move to repository
+            $existingCoin = $this->coinRepository->getByName($coinName);
 
             $baseURL = 'https://coins.bank.gov.ua';
             $coinPageURL = $baseURL . $coinLink->href;
             $coinCount = $this->getCountElementFromPage($coinPageURL);
 
             if ($existingCoin) {
-                $this->updateCoinRecord($existingCoin, $coinCount);
+                $this->coinRepository->update($existingCoin, $coinCount);
                 Cache::put("coin_page_url_{$coinName}", $coinPageURL, now()->addHours(1));
             } else {
-                $this->createCoinRecord($coinName, $coinSlug, $coinCount);
+                $this->coinRepository->create($coinName, $coinSlug, $coinCount);
                 Cache::put("coin_page_url_{$coinName}", $coinPageURL, now()->addHours(1));
             }
         }
 
         $dom->clear();
         unset($dom);
-    }
-
-    private function createCoinRecord($coinName, $coinSlug, $coinCount): void
-    {
-        DB::transaction(function () use ($coinName, $coinSlug, $coinCount) {
-            Coin::query()->create([
-                'currency_id' => Currency::firstWhere('slug', CurrencySlugEnum::UAH)->id,//TODO move to repository
-                'name' => $coinName,
-                'slug' => $coinSlug,
-                'count' => $coinCount,
-            ]);
-        });
-    }
-
-    private function updateCoinRecord($existingCoin, $coinCount): void//TODO move to repository
-    {
-        $existingCoin->update(['count' => $coinCount]);
     }
 }
