@@ -3,10 +3,16 @@
 php artisan migrate
 php artisan db:seed
 
-npn run dev
+npm run dev
 
 php artisan schedule:work
+
+````````
+
+````````
 php artisan horizon
-або
+````````
+## або
+````````
 php artisan queue:listen
 ````````
