@@ -6,7 +6,7 @@ use App\Models\Currency;
 
 class CurrencyRepository
 {
-    public static function updateOrCreate(string $slug): Currency
+    public function updateOrCreateBySlug(string $slug): Currency
     {
         return Currency::updateOrCreate(['slug' => $slug]);
     }
