@@ -10,6 +10,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "infyomlabs/laravel-ui-adminlte": "^5.2",
         "laravel-workflow/laravel-workflow": "^1.0",
+        "laravel-workflow/waterline": "^1.0",
         "laravel/framework": "^10.10",
         "laravel/horizon": "^5.21",
         "laravel/sanctum": "^3.2",
