@@ -14,6 +14,12 @@
 
 @can('horizon')
     <li class="nav-item">
+        <a href="{{ route('waterline.index') }}" class="nav-link">
+            <p>Workflow dashboard</p>
+        </a>
+    </li>
+
+    <li class="nav-item">
         <a href="{{ route('horizon.index') }}" class="nav-link">
             <p>Horizon dashboard</p>
         </a>
