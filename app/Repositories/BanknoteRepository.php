@@ -14,12 +14,13 @@ class BanknoteRepository
         return Banknote::where('name', $banknoteName)->first();
     }
 
-    public function create($banknoteName, $banknoteSlug, $banknoteCount): void
+    public function create($banknoteName, $banknoteSlug, $banknoteCount, $banknotePageUrl): void
     {
-        DB::transaction(function () use ($banknoteName, $banknoteSlug, $banknoteCount) {
+        DB::transaction(function () use ($banknoteName, $banknoteSlug, $banknoteCount, $banknotePageUrl) {
             Banknote::query()->create([
                 'currency_id' => Currency::firstWhere('slug', CurrencySlugEnum::UAH)->id,
                 'name' => $banknoteName,
+                'url' => $banknotePageUrl,
                 'slug' => $banknoteSlug,
                 'count' => $banknoteCount,
             ]);

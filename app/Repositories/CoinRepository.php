@@ -14,12 +14,13 @@ class CoinRepository
         return Coin::where('name', $coinName)->first();
     }
 
-    public function create($coinName, $coinSlug, $coinCount): void
+    public function create($coinName, $coinSlug, $coinCount, $coinPageUrl): void
     {
-        DB::transaction(function () use ($coinName, $coinSlug, $coinCount) {
+        DB::transaction(function () use ($coinName, $coinSlug, $coinCount, $coinPageUrl) {
             Coin::query()->create([
                 'currency_id' => Currency::firstWhere('slug', CurrencySlugEnum::UAH)->id,
                 'name' => $coinName,
+                'url' => $coinPageUrl,
                 'slug' => $coinSlug,
                 'count' => $coinCount,
             ]);
