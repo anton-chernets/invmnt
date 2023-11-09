@@ -5,7 +5,6 @@ namespace App\Services\Banknote;
 use App\Repositories\BanknoteRepository;
 use App\Services\ParseBaseService;
 use Drnxloc\LaravelHtmlDom\HtmlDomParser;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class ParseBanknotesBankGovUaService extends ParseBaseService
@@ -44,16 +43,14 @@ class ParseBanknotesBankGovUaService extends ParseBaseService
 
             $existingBanknote = $this->banknoteRepository->getByName($banknoteName);
 
-            $baseURL = 'https://coins.bank.gov.ua';
-            $banknotePageURL = $baseURL . $banknoteLink->href;
-            $banknoteCount = $this->getCountElementFromPage($banknotePageURL);
+            $baseUrl = 'https://coins.bank.gov.ua';
+            $banknotePageUrl = $baseUrl . $banknoteLink->href;
+            $banknoteCount = $this->getCountElementFromPage($banknotePageUrl);
 
             if ($existingBanknote) {
                 $this->banknoteRepository->update($existingBanknote, $banknoteCount);
-                Cache::put("banknote_page_url_{$banknoteName}", $banknotePageURL, now()->addHours(1));
             } else {
-                $this->banknoteRepository->create($banknoteName, $banknoteSlug, $banknoteCount);
-                Cache::put("banknote_page_url_{$banknoteName}", $banknotePageURL, now()->addHours(1));
+                $this->banknoteRepository->create($banknoteName, $banknoteSlug, $banknoteCount, $banknotePageUrl);
             }
         }
 
