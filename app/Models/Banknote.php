@@ -13,6 +13,7 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property int $currency_id
  * @property string $name
+ * @property string|null $url
  * @property string $slug
  * @property int|null $count
  * @property Carbon|null $created_at
@@ -37,6 +38,7 @@ class Banknote extends Model
     protected $fillable = [
         'currency_id',
         'name',
+        'url',
         'slug',
         'count',
     ];

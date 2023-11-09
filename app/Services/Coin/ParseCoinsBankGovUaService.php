@@ -5,7 +5,6 @@ namespace App\Services\Coin;
 use App\Repositories\CoinRepository;
 use App\Services\ParseBaseService;
 use Drnxloc\LaravelHtmlDom\HtmlDomParser;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class ParseCoinsBankGovUaService extends ParseBaseService
@@ -44,16 +43,14 @@ class ParseCoinsBankGovUaService extends ParseBaseService
 
             $existingCoin = $this->coinRepository->getByName($coinName);
 
-            $baseURL = 'https://coins.bank.gov.ua';
-            $coinPageURL = $baseURL . $coinLink->href;
-            $coinCount = $this->getCountElementFromPage($coinPageURL);
+            $baseUrl = 'https://coins.bank.gov.ua';
+            $coinPageUrl = $baseUrl . $coinLink->href;
+            $coinCount = $this->getCountElementFromPage($coinPageUrl);
 
             if ($existingCoin) {
                 $this->coinRepository->update($existingCoin, $coinCount);
-                Cache::put("coin_page_url_{$coinName}", $coinPageURL, now()->addHours(1));
             } else {
-                $this->coinRepository->create($coinName, $coinSlug, $coinCount);
-                Cache::put("coin_page_url_{$coinName}", $coinPageURL, now()->addHours(1));
+                $this->coinRepository->create($coinName, $coinSlug, $coinCount, $coinPageUrl);
             }
         }
 
