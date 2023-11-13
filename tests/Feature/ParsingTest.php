@@ -6,14 +6,15 @@ use App\Repositories\BanknoteRepository;
 use App\Repositories\CoinRepository;
 use App\Services\Banknote\ParseBanknotesBankGovUaService;
 use App\Services\Coin\ParseCoinsBankGovUaService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\TestCase;
 
 class ParsingTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
+
     /**
      * @var BanknoteRepository|MockObject
      */
@@ -23,6 +24,7 @@ class ParsingTest extends TestCase
      * @var CoinRepository|MockObject
      */
     private $coinRepositoryMock;
+    private static $threadId;
 
     /**
      * @throws Exception
@@ -31,30 +33,24 @@ class ParsingTest extends TestCase
     {
         parent::setUp();
 
-        // Створюємо макет репозиторіїв для імітації залежностей
         $this->banknoteRepositoryMock = $this->createMock(BanknoteRepository::class);
         $this->coinRepositoryMock = $this->createMock(CoinRepository::class);
+
+        self::$threadId = getmypid();
     }
 
-    public function testParseBanknotesData()
+    public function testParseBanknotesData(): void
     {
-        // Встановлюємо очікування, що методи репозиторію будуть викликані принаймні один раз.
+        echo "Executing testParseBanknotesData in thread/process " . self::$threadId . PHP_EOL;
+
         $this->banknoteRepositoryMock->expects($this->atLeastOnce())
             ->method('getByName');
-
         $this->banknoteRepositoryMock->expects($this->atLeastOnce())
             ->method('create');
 
-//        $this->banknoteRepositoryMock->expects($this->atLeastOnce())
-//            ->method('update');
-
-        // Створюємо екземпляр сервісу і передаємо йому макет репозиторію.
         $parseService = new ParseBanknotesBankGovUaService($this->banknoteRepositoryMock);
-
-        // Викликаємо метод, який тестуємо.
         $parseService->parseBanknotesData();
 
-        // Перевіряємо, що очікування з макет репозиторію були виконані.
         $this->assertTrue(true);
     }
 
@@ -62,25 +58,19 @@ class ParsingTest extends TestCase
      * @throws \PHPUnit\Framework\MockObject\RuntimeException
      * @throws \Exception
      */
-    public function testParseCoinsData()
+    public function testParseCoinsData(): void
     {
-        // Встановлюємо очікування, що методи репозиторію будуть викликані принаймні один раз.
+        // Виведіть інформацію про потік для перевірки паралельного виконання
+        echo "Executing testParseCoinsData in thread/process " . self::$threadId . PHP_EOL;
+
         $this->coinRepositoryMock->expects($this->atLeastOnce())
             ->method('getByName');
-
         $this->coinRepositoryMock->expects($this->atLeastOnce())
             ->method('create');
 
-//        $this->coinRepositoryMock->expects($this->atLeastOnce())
-//            ->method('update');
-
-        // Створюємо екземпляр сервісу і передаємо йому макет репозиторію.
         $parseService = new ParseCoinsBankGovUaService($this->coinRepositoryMock);
-
-        // Викликаємо метод, який тестуємо.
         $parseService->parseCoinsData();
 
-        // Перевіряємо, що очікування з макет репозиторію були виконані.
         $this->assertTrue(true);
     }
 }
