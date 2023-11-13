@@ -60,7 +60,6 @@ class ParsingTest extends TestCase
      */
     public function testParseCoinsData(): void
     {
-        // Виведіть інформацію про потік для перевірки паралельного виконання
         echo "Executing testParseCoinsData in thread/process " . self::$threadId . PHP_EOL;
 
         $this->coinRepositoryMock->expects($this->atLeastOnce())
