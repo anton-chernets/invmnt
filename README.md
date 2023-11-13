@@ -16,3 +16,8 @@ php artisan horizon
 ````````
 php artisan queue:listen
 ````````
+
+## for parallel testing
+````````
+php artisan test --parallel --processes=2 
+````````
