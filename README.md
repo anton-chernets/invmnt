@@ -31,3 +31,8 @@ php artisan parse:coins_bank_gov_ua
 ````````
 php artisan test
 ````````
+
+## for parallel testing
+````````
+php artisan test --parallel --processes=2 --env=testing
+````````
