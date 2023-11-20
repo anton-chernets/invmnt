@@ -2,9 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Enums\CurrencySlugEnum;
 use App\Jobs\GetCurrencyRatesJob;
-use App\Services\Currency\CurrencyService;
+use App\Repositories\CurrencyRepository;
 use Illuminate\Console\Command;
 
 class GetCurrencyRatesCommand extends Command
@@ -25,13 +24,12 @@ class GetCurrencyRatesCommand extends Command
 
     /**
      * Execute the console command.
+     * @param CurrencyRepository $currencyRepository
      */
-    public function handle(): void
+    public function handle(CurrencyRepository $currencyRepository): void
     {
         GetCurrencyRatesJob::dispatch(
-            CurrencyService::updateOrCreateCurrency(
-                CurrencySlugEnum::UAH->value
-            )
+            $currencyRepository->getMainCurrency(),
         );
     }
 }

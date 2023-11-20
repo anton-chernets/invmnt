@@ -19,17 +19,14 @@ class GetCurrencyRatesJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(
-        public Currency $currency,
-        public CurrencyService $currencyService
-    ) {}
+    public function __construct(public Currency $currency) {}
 
     /**
      * Execute the job.
      * @throws GuzzleException
      * @throws \Exception
      */
-    public function handle(Client $httpClient): void
+    public function handle(Client $httpClient, CurrencyService $currencyService): void
     {
         $currencyExchangeApiKey = env('CURRENCY_EXCHANGE_API_KEY', '19f9b5894c0764aef905c785b328b94e');
         $json = $httpClient->request(
@@ -41,6 +38,6 @@ class GetCurrencyRatesJob implements ShouldQueue
 
         $result = json_decode($json, true);
 
-        $this->currencyService->handleRatesResponse($result);
+        $currencyService->handleRatesResponse($result);
     }
 }
