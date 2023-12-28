@@ -17,7 +17,7 @@ php artisan horizon
 ````````
 ## or
 ````````
-php artisan queue:listen
+php artisan queue:work
 ````````
 
 ## custom functional commands
