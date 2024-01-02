@@ -41,10 +41,8 @@ class SendTelegramNotification
         }
 
         $telegramBotToken = config('telegram.bot_token');
-        $userId = config('telegram.chat_admin_id');
 
-        $userTelegramIds = $this->userRepository->getUserTelegramIds();
-        foreach (array_merge($userTelegramIds, [$userId]) as $userTelegramId) {
+        foreach ($this->userRepository->getUserTelegramIds() as $userTelegramId) {
             $bodyRequest = [
                 'form_params' => [
                     'chat_id' => $userTelegramId,
