@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
     {
          $schedule->command('app:get-currency-exchanges')->everySixHours();
          $schedule->command('parse:coins_bank_gov_ua')->everyTenSeconds();
-         $schedule->command('parse:banknotes_bank_gov_ua')->everyTenMinutes();
+         $schedule->command('parse:banknotes_bank_gov_ua')->everyFifteenSeconds();
     }
 
     /**
