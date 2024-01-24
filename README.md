@@ -36,3 +36,7 @@ php artisan test
 ````````
 php artisan test --parallel --processes=2 --env=testing
 ````````
+## for front
+````````
+npm run build
+````````
