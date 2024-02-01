@@ -7,9 +7,7 @@ use App\Services\BaseService;
 
 class CurrencyService extends BaseService
 {
-    public function __construct(protected CurrencyRepository $currencyRepository)
-    {
-    }
+    public function __construct(protected CurrencyRepository $currencyRepository) {}
 
     /**
      * @throws \Exception

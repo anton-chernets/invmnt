@@ -9,12 +9,12 @@ use Illuminate\Support\Str;
 
 class ParseBanknotesBankGovUaService extends ParseBaseService
 {
+    private string $banknotePageUrl;
     public function __construct(
-        protected BanknoteRepository $banknoteRepository
+        protected BanknoteRepository $banknoteRepository,
     ) {
+        $this->banknotePageUrl = env('COINS_BANK_GOV_UA_DOMAIN') . env('COINS_BANK_GOV_UA_BANKNOTES_PAGE');
     }
-
-    private string $banknotePageUrl = 'https://coins.bank.gov.ua/banknoti/c-440.html';
 
     public function parseBanknotesData($startPage = 1): void
     {
@@ -43,7 +43,7 @@ class ParseBanknotesBankGovUaService extends ParseBaseService
 
             $existingBanknote = $this->banknoteRepository->getByName($banknoteName);
 
-            $baseUrl = 'https://coins.bank.gov.ua';
+            $baseUrl = env('COINS_BANK_GOV_UA_DOMAIN');
             $banknotePageUrl = $baseUrl . $banknoteLink->href;
             $banknoteCount = $this->getCountElementFromPage($banknotePageUrl);
 

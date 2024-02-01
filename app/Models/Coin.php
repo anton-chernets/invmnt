@@ -29,6 +29,7 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Coin whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Coin whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Coin whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coin whereUrl($value)
  * @mixin \Eloquent
  */
 class Coin extends Model

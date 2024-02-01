@@ -9,12 +9,12 @@ use Illuminate\Support\Str;
 
 class ParseCoinsBankGovUaService extends ParseBaseService
 {
+    private string $coinPageUrl;
     public function __construct(
-        protected CoinRepository $coinRepository
+        protected CoinRepository $coinRepository,
     ) {
+        $this->coinPageUrl = env('COINS_BANK_GOV_UA_DOMAIN') . env('COINS_BANK_GOV_UA_COINS_PAGE');
     }
-
-    private string $coinPageUrl = 'https://coins.bank.gov.ua/pam-atni-moneti/c-422.html';
 
     public function parseCoinsData($startPage = 1): void
     {
@@ -43,7 +43,7 @@ class ParseCoinsBankGovUaService extends ParseBaseService
 
             $existingCoin = $this->coinRepository->getByName($coinName);
 
-            $baseUrl = 'https://coins.bank.gov.ua';
+            $baseUrl = env('COINS_BANK_GOV_UA_DOMAIN');
             $coinPageUrl = $baseUrl . $coinLink->href;
             $coinCount = $this->getCountElementFromPage($coinPageUrl);
 

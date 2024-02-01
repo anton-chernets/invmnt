@@ -29,6 +29,7 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Banknote whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Banknote whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Banknote whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Banknote whereUrl($value)
  * @mixin \Eloquent
  */
 class Banknote extends Model

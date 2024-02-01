@@ -20,10 +20,6 @@ Auth::routes();
 
 Route::get('/', function () {
     return view('welcome');
-})->name('main');
-
-Route::get('/welcome', function () {
-    return view('welcome');
 })->name('welcome');
 
 Route::middleware(['auth.basic','auth'])->group(function () {

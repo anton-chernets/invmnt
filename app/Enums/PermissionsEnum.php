@@ -9,4 +9,5 @@ enum PermissionsEnum: string
     use BackedEnumToArray;
 
     case HORIZON_DASHBOARD = 'horizon';
+    case WORKFLOW_DASHBOARD = 'workflow';
 }
