@@ -21,14 +21,15 @@ class UserPermissionSeeder extends UserSeeder
         }
 
         $role = Role::firstOrCreate([
-            'name' => 'Admin',
+            'name' => self::NAME_MAIN,
             'guard_name' => 'web',
         ]);
 
-        $permissions = Permission::pluck('id','id')->all();
-        $role->syncPermissions($permissions);
+        $role->syncPermissions(
+            Permission::pluck('id','id')->all()
+        );
 
-        User::where(['email' => self::EMAIL_MAIN])
+        User::where(['email' => env('EMAIL_ADMIN')])
             ->firstOrFail()
             ->assignRole([$role->id]);
     }

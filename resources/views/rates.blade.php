@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container-fluid">
-        <h1 class="text-black-50">Currency rates!</h1>
+        <h1 class="text-black-50">Currency Rates</h1>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

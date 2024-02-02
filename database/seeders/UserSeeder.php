@@ -9,8 +9,6 @@ use Illuminate\Support\Facades\Hash;
 class UserSeeder extends Seeder
 {
     protected const NAME_MAIN = 'Admin';
-    protected const EMAIL_MAIN = 'admin.admin@admin.com';
-
     /**
      * Seed the application's database.
      */
@@ -18,11 +16,11 @@ class UserSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-         \App\Models\User::firstOrCreate([
-             'email' => self::EMAIL_MAIN,
-         ], [
+         \App\Models\User::updateOrCreate([
              'name' => self::NAME_MAIN,
-             'password' => Hash::make('password'),
+         ], [
+             'email' => env('EMAIL_ADMIN'),
+             'password' => Hash::make(env('PASSWORD_ADMIN')),
              'telegram_id' => config('telegram.chat_admin_id'),
          ]);
     }
