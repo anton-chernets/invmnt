@@ -5,20 +5,53 @@
         "version": "0.1"
     },
     "paths": {
-        "/api/user": {
-            "get": {
+        "/api/register": {
+            "post": {
                 "tags": [
                     "User"
                 ],
-                "summary": "Display current user.",
-                "operationId": "9c56ef837e374a061a0505742a2a277d",
+                "summary": "register.",
+                "operationId": "73fd9b61dff4256cc0ee710de66723d9",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "name",
+                        "schema": {
+                            "type": "string",
+                            "example": "Anton"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "email",
+                        "schema": {
+                            "type": "string",
+                            "example": "anton.fullstack@gmail.com"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "password",
+                        "schema": {
+                            "type": "string",
+                            "example": "password"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Display current user.",
+                        "description": "register.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
                                         "data": {
                                             "type": "object",
                                             "example": {
@@ -34,12 +67,7 @@
                             }
                         }
                     }
-                },
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ]
+                }
             }
         },
         "/api/login": {
@@ -123,53 +151,20 @@
                 ]
             }
         },
-        "/api/register": {
-            "post": {
+        "/api/user": {
+            "get": {
                 "tags": [
                     "User"
                 ],
-                "summary": "register.",
-                "operationId": "73fd9b61dff4256cc0ee710de66723d9",
-                "parameters": [
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "name",
-                        "schema": {
-                            "type": "string",
-                            "example": "Anton"
-                        }
-                    },
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "description": "email",
-                        "schema": {
-                            "type": "string",
-                            "example": "anton.fullstack@gmail.com"
-                        }
-                    },
-                    {
-                        "name": "password",
-                        "in": "query",
-                        "description": "password",
-                        "schema": {
-                            "type": "string",
-                            "example": "password"
-                        }
-                    }
-                ],
+                "summary": "Display current user.",
+                "operationId": "9c56ef837e374a061a0505742a2a277d",
                 "responses": {
                     "200": {
-                        "description": "register.",
+                        "description": "Display current user.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
                                         "data": {
                                             "type": "object",
                                             "example": {
@@ -185,7 +180,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
             }
         }
     }
