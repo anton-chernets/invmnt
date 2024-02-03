@@ -13,18 +13,48 @@ use OpenApi\Annotations as OA;
 class UserAuthController extends Controller
 {
     /**
-     * @OA\Get(
-     *     path="/api/user",
-     *     summary="Display current user.",
+     * @OA\Post(
+     *     path="/api/register",
+     *     summary="register.",
      *     tags={"User"},
-     *     security={{"BearerAuth": {}}},
+     *     @OA\Parameter(
+     *         name="name",
+     *         description="name",
+     *         in="query",
+     *         @OA\Schema(
+     *             type="string",
+     *             example="Anton",
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         name="email",
+     *         description="email",
+     *         in="query",
+     *         @OA\Schema(
+     *             type="string",
+     *             example="anton.fullstack@gmail.com",
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         name="password",
+     *         description="password",
+     *         in="query",
+     *         @OA\Schema(
+     *             type="string",
+     *             example="password",
+     *         ),
+     *     ),
      *     @OA\Response(
-     *         description="Display current user.",
-     *         response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(
+     *          description="register.",
+     *          response=200,
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="success",
+     *                  type="boolean",
+     *                  example=true
+     *              ),
+     *              @OA\Property(
      *                   property="data",
-     *                   type="array",
      *                   type="object",
      *                   example={
      *                       "name": "Anton",
@@ -32,17 +62,29 @@ class UserAuthController extends Controller
      *                       "updated_at": "2024-02-03T16:53:20.000000Z",
      *                       "created_at": "2024-02-03T16:53:20.000000Z"
      *                   }
-     *             )
-     *         )
-     *     )
+     *              )
+     *          )
+     *      )
      * )
+     *
      * @param Request $request
      * @return JsonResponse
      */
-    public function user(Request $request): JsonResponse
+    public function register(Request $request): JsonResponse
     {
+        $registerUserData = $request->validate([
+            'name'=>'required|string',
+            'email'=>'required|string|email|unique:users',
+            'password'=>'required|min:8'
+        ]);
+        $user = User::create([
+            'name' => $registerUserData['name'],
+            'email' => $registerUserData['email'],
+            'password' => Hash::make($registerUserData['password']),
+        ]);
         return response()->json([
-            'data' => UserResource::make($request->user())
+            'success' => true,
+            'data' => UserResource::make($user),
         ]);
     }
 
@@ -138,48 +180,18 @@ class UserAuthController extends Controller
     }
 
     /**
-     * @OA\Post(
-     *     path="/api/register",
-     *     summary="register.",
+     * @OA\Get(
+     *     path="/api/user",
+     *     summary="Display current user.",
      *     tags={"User"},
-     *     @OA\Parameter(
-     *         name="name",
-     *         description="name",
-     *         in="query",
-     *         @OA\Schema(
-     *             type="string",
-     *             example="Anton",
-     *         ),
-     *     ),
-     *     @OA\Parameter(
-     *         name="email",
-     *         description="email",
-     *         in="query",
-     *         @OA\Schema(
-     *             type="string",
-     *             example="anton.fullstack@gmail.com",
-     *         ),
-     *     ),
-     *     @OA\Parameter(
-     *         name="password",
-     *         description="password",
-     *         in="query",
-     *         @OA\Schema(
-     *             type="string",
-     *             example="password",
-     *         ),
-     *     ),
+     *     security={{"BearerAuth": {}}},
      *     @OA\Response(
-     *          description="register.",
-     *          response=200,
-     *          @OA\JsonContent(
-     *              @OA\Property(
-     *                  property="success",
-     *                  type="boolean",
-     *                  example=true
-     *              ),
-     *              @OA\Property(
+     *         description="Display current user.",
+     *         response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(
      *                   property="data",
+     *                   type="array",
      *                   type="object",
      *                   example={
      *                       "name": "Anton",
@@ -187,29 +199,17 @@ class UserAuthController extends Controller
      *                       "updated_at": "2024-02-03T16:53:20.000000Z",
      *                       "created_at": "2024-02-03T16:53:20.000000Z"
      *                   }
-     *              )
-     *          )
-     *      )
+     *             )
+     *         )
+     *     )
      * )
-     *
      * @param Request $request
      * @return JsonResponse
      */
-    public function register(Request $request): JsonResponse
+    public function user(Request $request): JsonResponse
     {
-        $registerUserData = $request->validate([
-            'name'=>'required|string',
-            'email'=>'required|string|email|unique:users',
-            'password'=>'required|min:8'
-        ]);
-        $user = User::create([
-            'name' => $registerUserData['name'],
-            'email' => $registerUserData['email'],
-            'password' => Hash::make($registerUserData['password']),
-        ]);
         return response()->json([
-            'success' => true,
-            'data' => UserResource::make($user),
+            'data' => UserResource::make($request->user())
         ]);
     }
 }
