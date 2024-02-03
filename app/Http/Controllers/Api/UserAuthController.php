@@ -16,6 +16,7 @@ class UserAuthController extends Controller
      *     path="/api/user",
      *     summary="Display current user.",
      *     tags={"User"},
+     *     security={{"BearerAuth": {}}},
      *     @OA\Response(
      *         description="Display current user.",
      *         response=200,
@@ -112,6 +113,7 @@ class UserAuthController extends Controller
      *     path="/api/logout",
      *     summary="logout.",
      *     tags={"User"},
+     *     security={{"BearerAuth": {}}},
      *     @OA\Response(
      *          description="logout.",
      *          response=200,
