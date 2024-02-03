@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -23,27 +24,25 @@ class UserAuthController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(
      *                   property="data",
+     *                   type="array",
      *                   type="object",
      *                   example={
      *                       "name": "Anton",
      *                       "email": "anton.fullstack@gmail.com",
      *                       "updated_at": "2024-02-03T16:53:20.000000Z",
-     *                       "created_at": "2024-02-03T16:53:20.000000Z",
-     *                       "id": 2
+     *                       "created_at": "2024-02-03T16:53:20.000000Z"
      *                   }
      *             )
      *         )
      *     )
      * )
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function user(Request $request): \Illuminate\Http\JsonResponse
+    public function user(Request $request): JsonResponse
     {
         return response()->json([
-            'data' => [
-                $request->user()
-            ]
+            'data' => UserResource::make($request->user())
         ]);
     }
 
@@ -88,7 +87,7 @@ class UserAuthController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function login(Request $request): \Illuminate\Http\JsonResponse
+    public function login(Request $request): JsonResponse
     {
         $loginUserData = $request->validate([
             'email'=>'required|string|email',
@@ -129,7 +128,7 @@ class UserAuthController extends Controller
      *
      * @return JsonResponse
      */
-    public function logout(): \Illuminate\Http\JsonResponse
+    public function logout(): JsonResponse
     {
         auth()->user()->tokens()->delete();
 
@@ -186,8 +185,7 @@ class UserAuthController extends Controller
      *                       "name": "Anton",
      *                       "email": "anton.fullstack@gmail.com",
      *                       "updated_at": "2024-02-03T16:53:20.000000Z",
-     *                       "created_at": "2024-02-03T16:53:20.000000Z",
-     *                       "id": 2
+     *                       "created_at": "2024-02-03T16:53:20.000000Z"
      *                   }
      *              )
      *          )
@@ -197,7 +195,7 @@ class UserAuthController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function register(Request $request): \Illuminate\Http\JsonResponse
+    public function register(Request $request): JsonResponse
     {
         $registerUserData = $request->validate([
             'name'=>'required|string',
@@ -211,7 +209,7 @@ class UserAuthController extends Controller
         ]);
         return response()->json([
             'success' => true,
-            'data' => $user->toArray(),
+            'data' => UserResource::make($user),
         ]);
     }
 }
