@@ -170,6 +170,9 @@ return [
         App\Providers\WaterlineServiceProvider::class,
         App\Providers\HorizonServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        \Modules\Article\Providers\ArticleServiceProvider::class,
+        \Modules\Product\Providers\ProductServiceProvider::class,
+        \Modules\Order\Providers\OrderServiceProvider::class,
     ])->toArray(),
 
     /*
