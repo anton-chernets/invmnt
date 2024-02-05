@@ -108,7 +108,7 @@ class UserAuthController extends Controller
      *          in="query",
      *          @OA\Schema(
      *              type="string",
-     *              example="password",
+     *              example="Tomas1989",
      *          ),
      *      ),
      *      @OA\Response(
@@ -119,7 +119,7 @@ class UserAuthController extends Controller
      *                  property="data",
      *                  type="object",
      *                  example={
-     *                      "access_token": "2|NdjBByPTcx9DzQgSN8x7dq3DUtjDLmEbwNQqvPGEfdb4e5db"
+     *                      "access_token": "Bearer 2|NdjBByPTcx9DzQgSN8x7dq3DUtjDLmEbwNQqvPGEfdb4e5db"
      *                  }
      *              )
      *          )
@@ -144,7 +144,7 @@ class UserAuthController extends Controller
         $token = $user->createToken($user->name.'-AuthToken')->plainTextToken;
         return response()->json([
             'data' => [
-                'access_token' => $token,
+                'access_token' => 'Bearer ' . $token,
             ],
         ]);
     }
@@ -154,7 +154,10 @@ class UserAuthController extends Controller
      *     path="/api/logout",
      *     summary="logout.",
      *     tags={"User"},
-     *     security={{"BearerAuth": {}}},
+     *     security={
+     *        {"Authorization":{}}
+     *     },
+     *     @OA\Response(response=401, description="Unauthorized"),
      *     @OA\Response(
      *          description="logout.",
      *          response=200,
@@ -184,7 +187,10 @@ class UserAuthController extends Controller
      *     path="/api/user",
      *     summary="Display current user.",
      *     tags={"User"},
-     *     security={{"BearerAuth": {}}},
+     *     security={
+     *        {"Authorization":{}}
+     *     },
+     *     @OA\Response(response=401, description="Unauthorized"),
      *     @OA\Response(
      *         description="Display current user.",
      *         response=200,
