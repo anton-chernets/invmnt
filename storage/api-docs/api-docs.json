@@ -159,6 +159,37 @@
                 "tags": [
                     "User"
                 ],
+                "summary": "register.",
+                "operationId": "73fd9b61dff4256cc0ee710de66723d9",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "name",
+                        "schema": {
+                            "type": "string",
+                            "example": "Anton"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "email",
+                        "schema": {
+                            "type": "string",
+                            "example": "anton.fullstack@gmail.com"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "password",
+                        "schema": {
+                            "type": "string",
+                            "example": "password"
+                        }
+                    }
+                ],
                 "summary": "Display current user.",
                 "operationId": "9c56ef837e374a061a0505742a2a277d",
                 "responses": {
@@ -193,6 +224,54 @@
                     }
                 ]
             }
+        },
+        "/api/remove": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "remove current user.",
+                "operationId": "6344be29316dd43b46a6e6ce9673a157",
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "200": {
+                        "description": "remove current user.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "Authorization": {
+                "type": "apiKey",
+                "description": "Api Key for authorization.",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    }
+}
         }
     },
     "components": {
