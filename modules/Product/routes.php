@@ -3,4 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Product\Http\Controllers\ProductController;
 
-Route::get('products', [ProductController::class, 'index']);
+Route::prefix('api')->group(function () {
+    Route::get('products', [ProductController::class, 'index']);
+});
