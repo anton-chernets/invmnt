@@ -68,7 +68,7 @@
                         "description": "password",
                         "schema": {
                             "type": "string",
-                            "example": "password"
+                            "example": "Tomas1989"
                         }
                     }
                 ],
@@ -128,16 +128,6 @@
                     }
                 ]
             }
-        }
-    },
-    "components": {
-        "securitySchemes": {
-            "Authorization": {
-                "type": "apiKey",
-                "description": "Api Key for authorization.",
-                "name": "Authorization",
-                "in": "header"
-            }
         },
         "/api/register": {
             "post": {
@@ -171,7 +161,7 @@
                         "description": "password",
                         "schema": {
                             "type": "string",
-                            "example": "Tomas1989"
+                            "example": "password"
                         }
                     }
                 ],
@@ -202,6 +192,51 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/remove": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "remove current user.",
+                "operationId": "6344be29316dd43b46a6e6ce9673a157",
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "200": {
+                        "description": "remove current user.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "Authorization": {
+                "type": "apiKey",
+                "description": "Api Key for authorization.",
+                "name": "Authorization",
+                "in": "header"
             }
         }
     }

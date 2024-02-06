@@ -217,4 +217,35 @@ class UserAuthController extends Controller
             'data' => UserResource::make($user),
         ]);
     }
+
+    /**
+     * @OA\Delete(
+     *     path="/api/remove",
+     *     summary="remove current user.",
+     *     tags={"User"},
+     *     security={
+     *        {"Authorization":{}}
+     *     },
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(
+     *         description="remove current user.",
+     *         response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                   property="success",
+     *                   type="boolean",
+     *                   example=true
+     *             )
+     *         )
+     *     )
+     * )
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function remove(Request $request): JsonResponse
+    {
+        return response()->json([
+            'success' => !($request->user()->hasRole('Admin')) && $request->user()->delete(),
+        ]);
+    }
 }
