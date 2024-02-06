@@ -2,41 +2,40 @@
 
 namespace Modules\Order\Http\Controllers;
 
+use Illuminate\Support\Collection;
 use Modules\Order\Http\Requests\CheckoutRequest;
 use Modules\Order\Models\Order;
+use Modules\Product\CartItem;
+use Modules\Product\CartItemCollection;
 use Modules\Product\Models\Product;
+use Modules\Product\Warehouse\ProductStockManager;
 
 class CheckoutController
 {
-    public function __invoke(CheckoutRequest $request)
+    public function __construct(
+        protected ProductStockManager $productStockManager
+    )
     {
-        $products = collect($request->input('products'))->map(
-            function (array $productDetails) {
-                return [
-                    'product' => Product::find($productDetails['id']),
-                    'quantity' => $productDetails['quantity']
-                ];
-            }
-        );
 
-        $orderTotal = $products->sum(
-            fn(array $productDetails) => $productDetails['quantity'] * $productDetails['product']->price
-        );
+    }
+    public function __invoke(CheckoutRequest $request): void
+    {
+        $cartItems = CartItemCollection::fromCheckoutData($request->input('products'));
+
+        $orderTotal = $cartItems->sumTotal();
 
         $order = Order::query()->create([
-            'status' => 'new',
-            'total_price' => $orderTotal,
             'user_id' => $request->user()->id,
+            'total_price' => $orderTotal,
         ]);
 
-        foreach ($products as $product) {
+        foreach ($cartItems as $cartItem) {
+            $this->productStockManager->decrement($cartItem->id, $cartItem->quantity);
+
             $order->lines()->create([
-                'status' => Order::STATUS_NEW,
-                'product_id' => $product->id,
-                'quantity' => $product->quantity,
-                'price' => $product->price,
-                'total_price' => $orderTotal,
-                'user_id' => $request->user()->id,
+                'product_id' => $cartItem->product->id,
+                'price' => $cartItem->product->price,
+                'quantity' => $cartItem->quantity,
             ]);
         }
     }

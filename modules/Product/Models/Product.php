@@ -33,6 +33,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereUpdatedAt($value)
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, Media> $media
  * @property-read int|null $media_count
+ * @property int|null $stock
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereStock($value)
  * @mixin \Eloquent
  */
 class Product extends Model implements HasMedia
@@ -43,6 +45,7 @@ class Product extends Model implements HasMedia
     protected $fillable = [
         'title',
         'price',
+        'stock',
         'description',
         'category',
     ];

@@ -27,7 +27,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Order extends Model
 {
-    public const STATUS_NEW = 'new';
     protected $fillable = [
         'user_id',
         'total_price',

@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 
 class ArticleServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function boot(): void
     {
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
         $this->mergeConfigFrom(__DIR__ . '/../config.php', 'article');

@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property int $id
  * @property int $order_id
  * @property int $quantity
- * @property string $total_price
  * @property string $price
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -23,7 +22,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static \Illuminate\Database\Eloquent\Builder|OrderLine whereOrderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderLine wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderLine whereQuantity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderLine whereTotalPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderLine whereUpdatedAt($value)
  * @property-read \Modules\Order\Models\Order|null $lines
  * @mixin \Eloquent
@@ -33,7 +31,6 @@ class OrderLine extends Model
     protected $fillable = [
         'order_id',
         'quantity',
-        'total_price',
         'price',
     ];
 

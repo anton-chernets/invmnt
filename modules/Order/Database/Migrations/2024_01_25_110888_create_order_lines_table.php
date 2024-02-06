@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained();
             $table->unsignedInteger('quantity');
-            $table->float('total_price');
             $table->float('price');
             $table->timestamps();
         });
