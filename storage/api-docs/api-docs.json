@@ -93,7 +93,7 @@
                         "description": "password",
                         "schema": {
                             "type": "string",
-                            "example": "password"
+                            "example": "Tomas1989"
                         }
                     }
                 ],
@@ -107,7 +107,7 @@
                                         "data": {
                                             "type": "object",
                                             "example": {
-                                                "access_token": "2|NdjBByPTcx9DzQgSN8x7dq3DUtjDLmEbwNQqvPGEfdb4e5db"
+                                                "access_token": "Bearer 2|NdjBByPTcx9DzQgSN8x7dq3DUtjDLmEbwNQqvPGEfdb4e5db"
                                             }
                                         }
                                     },
@@ -127,6 +127,9 @@
                 "summary": "logout.",
                 "operationId": "618f033d5ecfff68b1d0880a5f399d7b",
                 "responses": {
+                    "401": {
+                        "description": "Unauthorized"
+                    },
                     "200": {
                         "description": "logout.",
                         "content": {
@@ -146,7 +149,7 @@
                 },
                 "security": [
                     {
-                        "BearerAuth": []
+                        "Authorization": []
                     }
                 ]
             }
@@ -159,6 +162,9 @@
                 "summary": "Display current user.",
                 "operationId": "9c56ef837e374a061a0505742a2a277d",
                 "responses": {
+                    "401": {
+                        "description": "Unauthorized"
+                    },
                     "200": {
                         "description": "Display current user.",
                         "content": {
@@ -183,9 +189,54 @@
                 },
                 "security": [
                     {
-                        "BearerAuth": []
+                        "Authorization": []
                     }
                 ]
+            }
+        },
+        "/api/remove": {
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "remove current user.",
+                "operationId": "c858a10a99962bfe9b26324e20a0f627",
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "200": {
+                        "description": "remove current user.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "Authorization": {
+                "type": "apiKey",
+                "description": "Api Key for authorization.",
+                "name": "Authorization",
+                "in": "header"
             }
         }
     }
