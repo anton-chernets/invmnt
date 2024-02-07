@@ -197,7 +197,6 @@ class UserAuthController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(
      *                   property="data",
-     *                   type="array",
      *                   type="object",
      *                   example={
      *                       "name": "Anton",

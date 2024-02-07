@@ -21,13 +21,17 @@ class ProductController extends Controller
      *             @OA\Property(
      *                   property="data",
      *                   type="array",
-     *                   example=[{
-     *                       "title": "Product",
-     *                       "description": "Product description",
-     *                       "category": "Product category",
-     *                       "updated_at": "2024-02-03T16:53:20.000000Z",
-     *                       "created_at": "2024-02-03T16:53:20.000000Z"
-     *                   }]
+     *                   title="products",
+     *                   @OA\Items(
+     *                      type="object",
+     *                      example={
+     *                          "title": "Product",
+     *                          "description": "Product description",
+     *                          "category": "Product category",
+     *                          "updated_at": "2024-02-03T16:53:20.000000Z",
+     *                          "created_at": "2024-02-03T16:53:20.000000Z"
+     *                      }
+     *                   )
      *             )
      *         )
      *     )
