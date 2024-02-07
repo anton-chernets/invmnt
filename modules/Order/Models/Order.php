@@ -2,8 +2,10 @@
 
 namespace Modules\Order\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\Order\Database\Factories\OrderFactory;
 
 /**
  * Modules\Order\Models\Order
@@ -23,10 +25,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUserId($value)
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\Order\Models\OrderLine> $lines
  * @property-read int|null $lines_count
+ * @method static \Modules\Order\Database\Factories\OrderFactory factory($count = null, $state = [])
  * @mixin \Eloquent
  */
 class Order extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'user_id',
         'total_price',
@@ -35,5 +40,10 @@ class Order extends Model
     public function lines(): HasMany
     {
         return $this->hasMany(OrderLine::class, 'order_id');
+    }
+
+    public static function newFactory(): OrderFactory
+    {
+        return new OrderFactory();
     }
 }

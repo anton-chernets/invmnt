@@ -4,6 +4,7 @@ namespace Modules\Product\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use Modules\Product\Http\Recourses\ProductResource;
 use Modules\Product\Models\Product;
 use OpenApi\Annotations as OA;
 
@@ -42,7 +43,7 @@ class ProductController extends Controller
     public function index(): JsonResponse
     {
         return response()->json([
-            'data' => Product::all()->toArray()
+            'data' => ProductResource::collection(Product::all()->where('stock', '>', 0))
         ]);
     }
 }

@@ -2,23 +2,58 @@
 
 namespace Modules\Order\Http\Controllers;
 
-use Illuminate\Support\Collection;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Modules\Order\Http\Requests\CheckoutRequest;
 use Modules\Order\Models\Order;
-use Modules\Product\CartItem;
 use Modules\Product\CartItemCollection;
-use Modules\Product\Models\Product;
 use Modules\Product\Warehouse\ProductStockManager;
+use OpenApi\Annotations as OA;
 
-class CheckoutController
+class CheckoutController extends Controller
 {
     public function __construct(
         protected ProductStockManager $productStockManager
-    )
-    {
-
+    ) {
+        //
     }
-    public function __invoke(CheckoutRequest $request): void
+    /**
+     * @OA\Post(
+     *     path="/api/checkout",
+     *     summary="create order.",
+     *     tags={"Checkout"},
+     *     security={ {"Authorization":{}}},
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\RequestBody(
+     *          description="create order",
+     *          required=true,
+     *          @OA\JsonContent(
+     *               type="object",
+     *               @OA\Property(
+     *                  property="products",
+     *                  type="array",
+     *                  title="products",
+     *                  @OA\Items(type="object", example={"id": 1, "quantity": 1})
+     *              ),
+     *          )
+     *     ),
+     *     @OA\Response(
+     *          description="create order.",
+     *          response=200,
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="success",
+     *                  type="boolean",
+     *                  example=true
+     *              )
+     *          )
+     *      )
+     * )
+     *
+     * @param CheckoutRequest $request
+     * @return JsonResponse
+     */
+    public function create(CheckoutRequest $request): JsonResponse
     {
         $cartItems = CartItemCollection::fromCheckoutData($request->input('products'));
 
@@ -30,13 +65,17 @@ class CheckoutController
         ]);
 
         foreach ($cartItems as $cartItem) {
-            $this->productStockManager->decrement($cartItem->id, $cartItem->quantity);
+            $this->productStockManager->decrement($cartItem[0]->product->id, $cartItem[0]->quantity);
 
             $order->lines()->create([
-                'product_id' => $cartItem->product->id,
-                'price' => $cartItem->product->price,
-                'quantity' => $cartItem->quantity,
+                'product_id' => $cartItem[0]->product->id,
+                'price' => $cartItem[0]->product->price,
+                'quantity' => $cartItem[0]->quantity,
             ]);
         }
+
+        return response()->json([
+            'success' => true,
+        ]);
     }
 }

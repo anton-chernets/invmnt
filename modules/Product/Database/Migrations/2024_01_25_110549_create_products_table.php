@@ -17,8 +17,6 @@ return new class extends Migration
             $table->text('description');
             $table->float('price');
             $table->integer('stock');
-            $table->string('category')
-                ->nullable();
             $table->timestamps();
         });
     }

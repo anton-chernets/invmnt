@@ -39,7 +39,6 @@ class Article extends Model implements HasMedia
     protected $fillable = [
         'title',
         'description',
-        'category',
     ];
 
     public static function newFactory(): ArticleFactory

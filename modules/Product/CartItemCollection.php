@@ -11,7 +11,7 @@ class CartItemCollection
      * @param Collection<CartItem> $items
      */
     public function __construct(
-        protected Collection $items
+        public Collection $items
     ) {
         return $items;
     }
@@ -20,8 +20,9 @@ class CartItemCollection
     {
         $cartItems = collect($data)->map(
             function (array $productDetails) {
+                $product = Product::findOrFail($productDetails['id']);
                 return new CartItem(
-                    ProductDTO::fromEloquentModel(Product::find($productDetails['id'])),
+                    ProductDTO::fromEloquentModel($product),
                     $productDetails['quantity'],
                 );
             }

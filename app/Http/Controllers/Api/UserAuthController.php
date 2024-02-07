@@ -154,9 +154,7 @@ class UserAuthController extends Controller
      *     path="/api/logout",
      *     summary="logout.",
      *     tags={"User"},
-     *     security={
-     *        {"Authorization":{}}
-     *     },
+     *     security={ {"Authorization":{}}},
      *     @OA\Response(response=401, description="Unauthorized"),
      *     @OA\Response(
      *          description="logout.",
@@ -187,9 +185,7 @@ class UserAuthController extends Controller
      *     path="/api/user",
      *     summary="Display current user.",
      *     tags={"User"},
-     *     security={
-     *        {"Authorization":{}}
-     *     },
+     *     security={ {"Authorization":{}}},
      *     @OA\Response(response=401, description="Unauthorized"),
      *     @OA\Response(
      *         description="Display current user.",
@@ -223,9 +219,7 @@ class UserAuthController extends Controller
      *     path="/api/remove",
      *     summary="remove current user.",
      *     tags={"User"},
-     *     security={
-     *        {"Authorization":{}}
-     *     },
+     *     security={ {"Authorization":{}}},
      *     @OA\Response(response=401, description="Unauthorized"),
      *     @OA\Response(
      *         description="remove current user.",

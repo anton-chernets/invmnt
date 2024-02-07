@@ -16,7 +16,6 @@ class ProductFactory extends Factory
             'price' => 10.1,
             'stock' => 1,
             'description' => fake()->text(),
-            'category' => fake()->name(),
         ];
     }
 }

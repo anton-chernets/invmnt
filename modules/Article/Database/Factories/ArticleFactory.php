@@ -14,7 +14,6 @@ class ArticleFactory extends Factory
         return [
             'title' => fake()->name(),
             'description' => fake()->text(),
-            'category' => fake()->name(),
         ];
     }
 }

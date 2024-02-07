@@ -47,7 +47,6 @@ class Product extends Model implements HasMedia
         'price',
         'stock',
         'description',
-        'category',
     ];
 
     public static function newFactory(): ProductFactory
