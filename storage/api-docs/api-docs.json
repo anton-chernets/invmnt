@@ -408,7 +408,8 @@
                                                 "example": {
                                                     "title": "Product",
                                                     "description": "Product description",
-                                                    "category": "Product category",
+                                                    "stock": 111,
+                                                    "price": 10.1,
                                                     "updated_at": "2024-02-03T16:53:20.000000Z",
                                                     "created_at": "2024-02-03T16:53:20.000000Z",
                                                     "images": [
