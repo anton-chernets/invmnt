@@ -34,7 +34,14 @@ class OrderController extends Controller
      *                          "line_items": {
      *                              {
      *                                  "price": 111,
-     *                                  "quantity": 1
+     *                                  "quantity": 1,
+     *                                  "product_info": {
+     *                                      {
+     *                                          "title": "title product",
+     *                                          "description": "description product",
+     *                                          "images": {}
+     *                                      }
+     *                                  }
      *                              }
      *                          }
      *                      }

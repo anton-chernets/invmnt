@@ -1,36 +1,36 @@
 <?php
 
-namespace Modules\Product\Http\Controllers;
+namespace Modules\Article\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Modules\Product\Http\Recourses\ProductResource;
-use Modules\Product\Models\Product;
+use Modules\Article\Http\Recourses\ArticleResource;
+use Modules\Article\Models\Article;
 use OpenApi\Annotations as OA;
 
-class ProductController extends Controller
+class ArticleController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/products",
-     *     summary="Display products",
-     *     tags={"Product"},
+     *     path="/api/articles",
+     *     summary="Display articles",
+     *     tags={"Article"},
      *     @OA\Response(
-     *         description="Display products",
+     *         description="Display articles",
      *         response=200,
      *         @OA\JsonContent(
      *             @OA\Property(
      *                   property="data",
      *                   type="array",
-     *                   title="products",
+     *                   title="articles",
      *                   @OA\Items(
      *                      type="object",
      *                      example={
-     *                          "title": "Product",
-     *                          "description": "Product description",
-     *                          "category": "Product category",
-     *                          "updated_at": "2024-02-03T16:53:20.000000Z",
+     *                          "id": 1,
+     *                          "title": "Article",
+     *                          "description": "Article description",
      *                          "created_at": "2024-02-03T16:53:20.000000Z",
+     *                          "updated_at": "2024-02-03T16:53:20.000000Z",
      *                          "images": {},
      *                      }
      *                   )
@@ -44,7 +44,7 @@ class ProductController extends Controller
     public function index(): JsonResponse
     {
         return response()->json([
-            'data' => ProductResource::collection(Product::all()->where('stock', '>', 0))
+            'data' => ArticleResource::collection(Article::all())
         ]);
     }
 }

@@ -229,6 +229,44 @@
                 ]
             }
         },
+        "/api/articles": {
+            "get": {
+                "tags": [
+                    "Article"
+                ],
+                "summary": "Display articles",
+                "operationId": "30b5d227a8aced622e73b1e9fb1d271b",
+                "responses": {
+                    "200": {
+                        "description": "Display articles",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "title": "articles",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "example": {
+                                                    "id": 1,
+                                                    "title": "Article",
+                                                    "description": "Article description",
+                                                    "created_at": "2024-02-03T16:53:20.000000Z",
+                                                    "updated_at": "2024-02-03T16:53:20.000000Z",
+                                                    "images": []
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/checkout": {
             "post": {
                 "tags": [
@@ -317,7 +355,14 @@
                                                     "line_items": [
                                                         {
                                                             "price": 111,
-                                                            "quantity": 1
+                                                            "quantity": 1,
+                                                            "product_info": [
+                                                                {
+                                                                    "title": "title product",
+                                                                    "description": "description product",
+                                                                    "images": []
+                                                                }
+                                                            ]
                                                         }
                                                     ]
                                                 }
@@ -361,7 +406,8 @@
                                                     "description": "Product description",
                                                     "category": "Product category",
                                                     "updated_at": "2024-02-03T16:53:20.000000Z",
-                                                    "created_at": "2024-02-03T16:53:20.000000Z"
+                                                    "created_at": "2024-02-03T16:53:20.000000Z",
+                                                    "images": []
                                                 }
                                             }
                                         }
