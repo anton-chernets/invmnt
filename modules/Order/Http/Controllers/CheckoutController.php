@@ -4,6 +4,7 @@ namespace Modules\Order\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use Modules\Order\Http\Requests\CheckoutRequest;
 use Modules\Order\Models\Order;
 use Modules\Product\CartItemCollection;
@@ -57,12 +58,14 @@ class CheckoutController extends Controller
     {
         $cartItems = CartItemCollection::fromCheckoutData($request->input('products'));
 
-        $order = Order::startForUser($request->user()->id);
-        $order->addLinesFromCartItems($cartItems);
+        DB::transaction(function () use($request, $cartItems) {
+            $order = Order::startForUser($request->user()->id);
+            $order->addLinesFromCartItems($cartItems);
 
-        foreach ($cartItems->items() as $cartItem) {
-            $this->productStockManager->decrement($cartItem->product->id, $cartItem->quantity);
-        }
+            foreach ($cartItems->items() as $cartItem) {
+                $this->productStockManager->decrement($cartItem->product->id, $cartItem->quantity);
+            }
+        });
 
         return response()->json([
             'success' => true,
