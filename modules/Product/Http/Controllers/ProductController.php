@@ -3,6 +3,7 @@
 namespace Modules\Product\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Modules\Order\Http\Requests\ProductCreateRequest;
 use Modules\Product\Http\Recourses\ProductResource;
@@ -100,9 +101,16 @@ class ProductController extends Controller
      *
      * @param ProductCreateRequest $request
      * @return JsonResponse
+     * @throws Exception
      */
     public function store(ProductCreateRequest $request): JsonResponse
     {
+        if (! $request->user()->isAdmin()) {
+            return response()->json([
+                'message' => 'this action only admin'
+            ], 404);
+        }
+
         return response()->json([
             'data' => ProductResource::make(
                 Product::create($request->validated())

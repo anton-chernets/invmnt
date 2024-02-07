@@ -91,6 +91,11 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function isAdmin(): bool
+    {
+        return $this->hasRole('Admin');
+    }
+
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class, 'user_id');
