@@ -198,7 +198,8 @@ class UserAuthController extends Controller
      *                       "name": "Anton",
      *                       "email": "anton.fullstack@gmail.com",
      *                       "updated_at": "2024-02-03T16:53:20.000000Z",
-     *                       "created_at": "2024-02-03T16:53:20.000000Z"
+     *                       "created_at": "2024-02-03T16:53:20.000000Z",
+     *                       "roles": {{"Admin"}},
      *                   }
      *             )
      *         )

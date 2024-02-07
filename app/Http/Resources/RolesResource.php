@@ -1,16 +1,15 @@
 <?php
 
-
 namespace App\Http\Resources;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Spatie\Permission\Models\Role;
 
-class UserResource extends JsonResource
+class RolesResource extends JsonResource
 {
     /**
-     * @var User
+     * @var Role
      */
     public $resource;
 
@@ -24,10 +23,6 @@ class UserResource extends JsonResource
     {
         return [
             'name' => $this->resource->name,
-            'email' => $this->resource->email,
-            'created_at' => $this->resource->created_at,
-            'updated_at' => $this->resource->updated_at,
-            'roles' => RolesResource::collection($this->resource->roles),
         ];
     }
 }
