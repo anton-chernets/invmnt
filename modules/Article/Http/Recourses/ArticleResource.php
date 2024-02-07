@@ -25,7 +25,7 @@ class ArticleResource extends JsonResource
             'description' => $this->resource->description,
             'created_at' => $this->resource->created_at,
             'updated_at' => $this->resource->updated_at,
-            'images' => $this->resource->getMedia('*')
+            'images' => ['https://gssc.esa.int/navipedia/images/a/a9/Example.jpg']//$this->resource->getMedia('*')
         ];
     }
 }
