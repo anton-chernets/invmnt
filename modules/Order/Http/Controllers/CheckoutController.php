@@ -3,8 +3,8 @@
 namespace Modules\Order\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Database\DatabaseManager;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 use Modules\Order\Http\Requests\CheckoutRequest;
 use Modules\Order\Models\Order;
 use Modules\Product\CartItemCollection;
@@ -14,10 +14,12 @@ use OpenApi\Annotations as OA;
 class CheckoutController extends Controller
 {
     public function __construct(
-        protected ProductStockManager $productStockManager
+        protected ProductStockManager $productStockManager,
+        protected DatabaseManager $databaseManager,
     ) {
         //
     }
+
     /**
      * @OA\Post(
      *     path="/api/checkout",
@@ -53,12 +55,13 @@ class CheckoutController extends Controller
      *
      * @param CheckoutRequest $request
      * @return JsonResponse
+     * @throws \Throwable
      */
     public function create(CheckoutRequest $request): JsonResponse
     {
         $cartItems = CartItemCollection::fromCheckoutData($request->input('products'));
 
-        DB::transaction(function () use($request, $cartItems) {
+        $this->databaseManager->transaction(function () use($request, $cartItems) {
             $order = Order::startForUser($request->user()->id);
             $order->addLinesFromCartItems($cartItems);
 
