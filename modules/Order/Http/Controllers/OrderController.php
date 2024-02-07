@@ -39,7 +39,9 @@ class OrderController extends Controller
      *                                      {
      *                                          "title": "title product",
      *                                          "description": "description product",
-     *                                          "images": {}
+     *                                          "images": {
+     *                                              "https://gssc.esa.int/navipedia/images/a/a9/Example.jpg"
+     *                                          },
      *                                      }
      *                                  }
      *                              }

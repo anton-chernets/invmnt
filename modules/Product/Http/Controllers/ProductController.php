@@ -31,7 +31,9 @@ class ProductController extends Controller
      *                          "category": "Product category",
      *                          "updated_at": "2024-02-03T16:53:20.000000Z",
      *                          "created_at": "2024-02-03T16:53:20.000000Z",
-     *                          "images": {},
+     *                          "images": {
+     *                               "https://gssc.esa.int/navipedia/images/a/a9/Example.jpg"
+     *                          },
      *                      }
      *                   )
      *             )
