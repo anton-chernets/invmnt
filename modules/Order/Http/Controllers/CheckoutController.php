@@ -57,21 +57,11 @@ class CheckoutController extends Controller
     {
         $cartItems = CartItemCollection::fromCheckoutData($request->input('products'));
 
-        $orderTotal = $cartItems->sumTotal();
+        $order = Order::startForUser($request->user()->id);
+        $order->addLinesFromCartItems($cartItems);
 
-        $order = Order::query()->create([
-            'user_id' => $request->user()->id,
-            'total_price' => $orderTotal,
-        ]);
-
-        foreach ($cartItems as $cartItem) {
-            $this->productStockManager->decrement($cartItem[0]->product->id, $cartItem[0]->quantity);
-
-            $order->lines()->create([
-                'product_id' => $cartItem[0]->product->id,
-                'price' => $cartItem[0]->product->price,
-                'quantity' => $cartItem[0]->quantity,
-            ]);
+        foreach ($cartItems->items() as $cartItem) {
+            $this->productStockManager->decrement($cartItem->product->id, $cartItem->quantity);
         }
 
         return response()->json([

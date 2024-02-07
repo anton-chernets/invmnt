@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Order\Database\Factories\OrderFactory;
+use Modules\Product\CartItemCollection;
 
 /**
  * Modules\Order\Models\Order
@@ -32,6 +33,8 @@ class Order extends Model
 {
     use HasFactory;
 
+    const PENDING = 'pending';
+
     protected $fillable = [
         'user_id',
         'total_price',
@@ -45,5 +48,28 @@ class Order extends Model
     public static function newFactory(): OrderFactory
     {
         return new OrderFactory();
+    }
+
+    public static function startForUser(int $userId): self
+    {
+        return self::make([
+            'user_id' => $userId,
+//            'status' => self::PENDING,//TODO
+        ]);
+    }
+
+    public function addLinesFromCartItems(CartItemCollection $itemCollection): void
+    {
+        foreach ($itemCollection->items() as $cartItem) {
+            $this->lines->push(
+                OrderLine::make([
+                    'product_id' => $cartItem->product->id,
+                    'price' => $cartItem->product->price,
+                    'quantity' => $cartItem->quantity,
+                ])
+            );
+        }
+
+        $this->total_price = $this->lines->sum(fn(OrderLine $line) => $line->price);
     }
 }
