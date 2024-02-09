@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\RolesEnum;
 use App\Models\User;
 
 use Spatie\Permission\Models\Permission;
@@ -15,15 +16,18 @@ class UserPermissionSeeder extends UserSeeder
      */
     public function run(): void
     {
-        $values = array_column(PermissionsEnum::cases(), 'value');
-        foreach ($values as $permission) {
+        foreach (array_column(RolesEnum::cases(), 'value') as $role) {
+            Role::firstOrCreate([
+                'name' => $role,
+                'guard_name' => 'web',
+            ]);
+        }
+
+        foreach (array_column(PermissionsEnum::cases(), 'value') as $permission) {
             Permission::firstOrCreate(['name' => $permission]);
         }
 
-        $role = Role::firstOrCreate([
-            'name' => self::NAME_MAIN,
-            'guard_name' => 'web',
-        ]);
+        $role = Role::firstWhere(['name' => RolesEnum::ADMIN]);
 
         $role->syncPermissions(
             Permission::pluck('id','id')->all()

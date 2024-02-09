@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\RolesEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -9,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use OpenApi\Annotations as OA;
+use Spatie\Permission\Models\Role;
 
 class UserAuthController extends Controller
 {
@@ -82,6 +84,8 @@ class UserAuthController extends Controller
             'email' => $registerUserData['email'],
             'password' => Hash::make($registerUserData['password']),
         ]);
+        $role = Role::firstOrCreate(['name' => RolesEnum::CUSTOMER]);
+        $user->assignRole([$role->id]);
         return response()->json([
             'success' => true,
             'data' => UserResource::make($user),
