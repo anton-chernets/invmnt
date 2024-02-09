@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\FIle\Http\Controllers;
+namespace Modules\File\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Modules\Article\Models\Article;
-use Modules\FIle\Http\Requests\UploadRequest;
+use Modules\File\Http\Requests\UploadRequest;
 use Modules\Product\Models\Product;
 use OpenApi\Annotations as OA;
 
@@ -80,7 +80,7 @@ class FileController extends Controller
         foreach ($request->allFiles() as $file) {
             $object->addMedia($file)->toMediaCollection('images');
         }
-die;
+
         return response()->json(['success' => true]);
     }
 }
