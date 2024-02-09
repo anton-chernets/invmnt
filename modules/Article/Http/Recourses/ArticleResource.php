@@ -25,7 +25,8 @@ class ArticleResource extends JsonResource
             'description' => $this->resource->description,
             'created_at' => $this->resource->created_at,
             'updated_at' => $this->resource->updated_at,
-            'images' => ['https://www.coindesk.com/resizer/c7Jzk14I7BKWigGGcVAOqgmWf90=/1248x654/filters:quality(80):format(webp)/cloudfront-us-east-1.images.arcpublishing.com/coindesk/FCFNUOOTIZAZDHLXU7Z2TDHRAI.png']//$this->resource->getMedia('*')
+            'images' => $this->resource->getMedia('*')
+                ->pluck('original_url'),
         ];
     }
 }

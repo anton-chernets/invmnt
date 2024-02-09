@@ -377,6 +377,74 @@
                 ]
             }
         },
+        "/api/files/upload": {
+            "post": {
+                "tags": [
+                    "Files"
+                ],
+                "description": "upload files for models",
+                "operationId": "d939b49815f82909d0eab3ff267b397c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "description": "model id",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "model": {
+                                        "description": "model type",
+                                        "type": "string",
+                                        "example": "Article"
+                                    },
+                                    "files": {
+                                        "description": "file to upload",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "upload",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ]
+            }
+        },
         "/api/checkout": {
             "post": {
                 "tags": [

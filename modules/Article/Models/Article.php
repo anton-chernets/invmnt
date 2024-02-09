@@ -48,6 +48,6 @@ class Article extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('articles');
+        $this->addMediaCollection('images')->singleFile();;
     }
 }

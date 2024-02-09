@@ -173,6 +173,7 @@ return [
         \Modules\Article\Providers\ArticleServiceProvider::class,
         \Modules\Product\Providers\ProductServiceProvider::class,
         \Modules\Order\Providers\OrderServiceProvider::class,
+        \Modules\File\Providers\FileServiceProvider::class,
     ])->toArray(),
 
     /*
