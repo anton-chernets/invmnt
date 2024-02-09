@@ -5,8 +5,8 @@ namespace Modules\Product\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Modules\Order\Http\Requests\ProductCreateRequest;
 use Modules\Product\Http\Recourses\ProductResource;
+use Modules\Product\Http\Requests\ProductCreateRequest;
 use Modules\Product\Models\Product;
 use OpenApi\Annotations as OA;
 
