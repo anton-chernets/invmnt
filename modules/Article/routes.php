@@ -6,6 +6,9 @@ use Modules\Article\Http\Controllers\ArticleController;
 Route::prefix('api')->group(function () {
     Route::prefix('articles')->group(function () {
         Route::get('/', [ArticleController::class, 'index']);
-        Route::post('/store', [ArticleController::class, 'store'])->middleware('auth:sanctum');
+        Route::middleware(['auth:sanctum'])->group(function () {
+            Route::post('/store', [ArticleController::class, 'store']);
+            Route::delete('/remove', [ArticleController::class, 'remove']);
+        });
     });
 });

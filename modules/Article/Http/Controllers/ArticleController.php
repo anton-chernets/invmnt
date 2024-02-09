@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Modules\Article\Http\Recourses\ArticleResource;
 use Modules\Article\Http\Requests\ArticleCreateRequest;
+use Modules\Article\Http\Requests\ArticleRemoveRequest;
 use Modules\Article\Models\Article;
 use OpenApi\Annotations as OA;
 
@@ -108,6 +109,51 @@ class ArticleController extends Controller
             'data' => ArticleResource::make(
                 Article::create($request->validated())
             )
+        ]);
+    }
+
+    /**
+     * @OA\Delete(
+     *     path="/api/articles/remove",
+     *     summary="remove current article",
+     *     tags={"Article"},
+     *     security={ {"Authorization":{}}},
+     *     @OA\RequestBody(
+     *        description="remove article",
+     *        required=true,
+     *        @OA\JsonContent(
+     *            type="object",
+     *            example={
+     *               "id": 1,
+     *           }
+     *        )
+     *     ),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(
+     *         description="remove current article",
+     *         response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                   property="success",
+     *                   type="boolean",
+     *                   example=true
+     *             )
+     *         )
+     *     )
+     * )
+     * @param ArticleRemoveRequest $request
+     * @return JsonResponse
+     */
+    public function remove(ArticleRemoveRequest $request): JsonResponse
+    {
+        if (! $request->user()->isAdmin()) {
+            return response()->json([
+                'message' => 'this action only admin'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => (bool) Article::where('id', $request->input('id'))->delete(),
         ]);
     }
 }

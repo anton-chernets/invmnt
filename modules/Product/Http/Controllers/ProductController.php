@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Modules\Product\Http\Recourses\ProductResource;
 use Modules\Product\Http\Requests\ProductCreateRequest;
+use Modules\Product\Http\Requests\ProductRemoveRequest;
 use Modules\Product\Models\Product;
 use OpenApi\Annotations as OA;
 
@@ -111,6 +112,51 @@ class ProductController extends Controller
             'data' => ProductResource::make(
                 Product::create($request->validated())
             )
+        ]);
+    }
+
+    /**
+     * @OA\Delete(
+     *     path="/api/products/remove",
+     *     summary="remove current product",
+     *     tags={"Product"},
+     *     security={ {"Authorization":{}}},
+     *     @OA\RequestBody(
+     *        description="remove product",
+     *        required=true,
+     *        @OA\JsonContent(
+     *            type="object",
+     *            example={
+     *               "id": 1,
+     *           }
+     *        )
+     *     ),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(
+     *         description="remove current product",
+     *         response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                   property="success",
+     *                   type="boolean",
+     *                   example=true
+     *             )
+     *         )
+     *     )
+     * )
+     * @param ProductRemoveRequest $request
+     * @return JsonResponse
+     */
+    public function remove(ProductRemoveRequest $request): JsonResponse
+    {
+        if (! $request->user()->isAdmin()) {
+            return response()->json([
+                'message' => 'this action only admin'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => (bool) Product::where('id', $request->input('id'))->delete(),
         ]);
     }
 }
