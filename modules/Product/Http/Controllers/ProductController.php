@@ -29,6 +29,7 @@ class ProductController extends Controller
      *                   @OA\Items(
      *                      type="object",
      *                      example={
+     *                          "id": 1,
      *                          "title": "Product Title",
      *                          "description": "Product description",
      *                          "stock": 111,
@@ -82,6 +83,7 @@ class ProductController extends Controller
      *                    property="data",
      *                    type="object",
      *                    example={
+     *                        "id": 1,
      *                        "title": "Product Title",
      *                        "description": "Product description",
      *                        "updated_at": "2024-02-03T16:53:20.000000Z",
