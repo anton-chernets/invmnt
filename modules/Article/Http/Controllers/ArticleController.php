@@ -3,8 +3,10 @@
 namespace Modules\Article\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Modules\Article\Http\Recourses\ArticleResource;
+use Modules\Article\Http\Requests\ArticleCreateRequest;
 use Modules\Article\Models\Article;
 use OpenApi\Annotations as OA;
 
@@ -47,6 +49,65 @@ class ArticleController extends Controller
     {
         return response()->json([
             'data' => ArticleResource::collection(Article::all())
+        ]);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/articles/store",
+     *     summary="Create article",
+     *     tags={"Article"},
+     *      security={{"Authorization":{}}},
+     *      @OA\RequestBody(
+     *           description="create article",
+     *           required=true,
+     *           @OA\JsonContent(
+     *                type="object",
+     *                example={
+     *                   "title": "Article Title",
+     *                   "description": "Article description",
+     *                }
+     *           )
+     *      ),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(
+     *          description="Create article",
+     *          response=200,
+     *          @OA\JsonContent(
+     *                @OA\Property(
+     *                     property="data",
+     *                     type="object",
+     *                     example={
+     *                         "title": "Article Title",
+     *                         "description": "Article description",
+     *                         "updated_at": "2024-02-03T16:53:20.000000Z",
+     *                         "created_at": "2024-02-03T16:53:20.000000Z",
+     *                         "images": {
+     *                            "https://gssc.esa.int/navipedia/images/a/a9/Example.jpg"
+     *                         },
+     *                     }
+     *                  )
+     *
+     *          )
+     *      )
+     * )
+     *
+     * @param ArticleCreateRequest $request
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function store(ArticleCreateRequest $request): JsonResponse
+    {
+        if (! $request->user()->isAdmin()) {
+            return response()->json([
+                'message' => 'this action only admin'
+            ], 404);
+        }
+
+        return response()->json([
+            'data' => ArticleResource::make(
+                Article::create($request->validated())
+            )
         ]);
     }
 }

@@ -28,7 +28,7 @@ class ProductController extends Controller
      *                   @OA\Items(
      *                      type="object",
      *                      example={
-     *                          "title": "Product",
+     *                          "title": "Product Title",
      *                          "description": "Product description",
      *                          "stock": 111,
      *                          "price": 10.1,
@@ -74,26 +74,22 @@ class ProductController extends Controller
      *      ),
      *      @OA\Response(response=401, description="Unauthorized"),
      *      @OA\Response(
-     *          description="Display products",
+     *          description="Create product",
      *          response=200,
      *          @OA\JsonContent(
-     *              @OA\Property(
+     *               @OA\Property(
      *                    property="data",
-     *                    type="array",
-     *                    title="products",
-     *                    @OA\Items(
-     *                       type="object",
-     *                       example={
-     *                           "title": "Product",
-     *                           "description": "Product description",
-     *                           "category": "Product category",
-     *                           "updated_at": "2024-02-03T16:53:20.000000Z",
-     *                           "created_at": "2024-02-03T16:53:20.000000Z",
-     *                           "images": {
-     *                                "https://gssc.esa.int/navipedia/images/a/a9/Example.jpg"
-     *                           },
-     *                       }
-     *                    )
+     *                    type="object",
+     *                    example={
+     *                        "title": "Product Title",
+     *                        "description": "Product description",
+     *                        "updated_at": "2024-02-03T16:53:20.000000Z",
+     *                        "created_at": "2024-02-03T16:53:20.000000Z",
+     *                        "images": {
+     *                           "https://gssc.esa.int/navipedia/images/a/a9/Example.jpg"
+     *                        },
+     *                    }
+     *                 )
      *              )
      *          )
      *      )
