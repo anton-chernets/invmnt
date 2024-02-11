@@ -5,9 +5,11 @@ namespace Modules\Product\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Modules\Product\Http\Recourses\ProductResource;
 use Modules\Product\Http\Requests\ProductCreateRequest;
 use Modules\Product\Http\Requests\ProductRemoveRequest;
+use Modules\Product\Http\Requests\ProductUpdateRequest;
 use Modules\Product\Models\Product;
 use OpenApi\Annotations as OA;
 
@@ -114,6 +116,137 @@ class ProductController extends Controller
             'data' => ProductResource::make(
                 Product::create($request->validated())
             )
+        ]);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/products/show/{id}",
+     *     summary="Get product",
+     *     tags={"Product"},
+     *     @OA\Parameter(
+     *       name="id",
+     *       in="path",
+     *       required=true,
+     *       @OA\Schema(
+     *            type="integer",
+     *            example=1,
+     *       ),
+     *      ),
+     *      @OA\Response(
+     *          description="Get product",
+     *          response=200,
+     *          @OA\JsonContent(
+     *               @OA\Property(
+     *                    property="data",
+     *                    type="object",
+     *                    example={
+     *                        "id": 1,
+     *                        "title": "Product Title",
+     *                        "description": "Product description",
+     *                        "updated_at": "2024-02-03T16:53:20.000000Z",
+     *                        "created_at": "2024-02-03T16:53:20.000000Z",
+     *                        "images": {
+     *                           "https://gssc.esa.int/navipedia/images/a/a9/Example.jpg"
+     *                        },
+     *                    }
+     *                 )
+     *              )
+     *          )
+     *      )
+     * )
+     *
+     * @param int $productId
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function show(int $productId): JsonResponse
+    {
+        return response()->json([
+            'data' => ProductResource::make(
+                Product::findOrFail($productId)
+            )
+        ]);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/products/update/{id}",
+     *     summary="update product",
+     *     tags={"Product"},
+     *      security={ {"Authorization":{}}},
+     *     @OA\Parameter(
+     *       name="id",
+     *       in="path",
+     *       required=true,
+     *       @OA\Schema(
+     *            type="integer",
+     *            example=1,
+     *       ),
+     *      ),
+     *       @OA\RequestBody(
+     *            description="update product",
+     *            required=true,
+     *            @OA\JsonContent(
+     *                 type="object",
+     *                 example={
+     *                    "title": "Product",
+     *                    "description": "Product description",
+     *                    "stock": 111,
+     *                    "price": 10.1,
+     *                 }
+     *            )
+     *       ),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(
+     *          description="Get product",
+     *          response=200,
+     *          @OA\JsonContent(
+     *               @OA\Property(
+     *                    property="data",
+     *                    type="object",
+     *                    example={
+     *                        "id": 1,
+     *                        "title": "Product Title",
+     *                        "description": "Product description",
+     *                        "stock": 1,
+     *                        "price": 10.1,
+     *                        "updated_at": "2024-02-03T16:53:20.000000Z",
+     *                        "created_at": "2024-02-03T16:53:20.000000Z",
+     *                        "images": {
+     *                           "https://gssc.esa.int/navipedia/images/a/a9/Example.jpg"
+     *                        },
+     *                    }
+     *                 )
+     *              )
+     *          )
+     *      )
+     * )
+     *
+     * @param int $productId
+     * @param ProductUpdateRequest $request
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function update(int $productId, ProductUpdateRequest $request): JsonResponse
+    {
+        if (! $request->user()->isAdmin()) {
+            return response()->json([
+                'message' => 'this action only admin'
+            ], 404);
+        }
+
+        $product = Product::findOrFail($productId);
+
+        $product->update([
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'price' => $request->input('price'),
+            'stock' => $request->input('stock'),
+        ]);
+
+        return response()->json([
+            'data' => ProductResource::make($product)
         ]);
     }
 
