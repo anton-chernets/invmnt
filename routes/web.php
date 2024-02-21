@@ -38,6 +38,6 @@ Route::middleware(['auth.basic','auth'])->group(function () {
     });
 
     Route::get('/home', function () {
-        return view('home');
-    })->name('home');
+        return view('welcome');
+    })->name('welcome');
 });
