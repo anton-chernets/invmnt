@@ -36,8 +36,4 @@ Route::middleware(['auth.basic','auth'])->group(function () {
             return view('rates', compact('rates','timeFrames'));
         })->name('user.rates');
     });
-
-    Route::get('/home', function () {
-        redirect()->route('/');
-    })->name('home');
 });
