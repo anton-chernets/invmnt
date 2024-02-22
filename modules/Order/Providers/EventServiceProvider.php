@@ -4,13 +4,13 @@ namespace Modules\Order\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as BaseEventServiceProvider;
 use Modules\Order\Events\OrderFulfilled;
-use Modules\Order\Events\SendOrderCreatedTelegram;
+use Modules\Order\Events\SendOrderCreatedMail;
 
 class EventServiceProvider extends BaseEventServiceProvider
 {
     protected $listen = [
         OrderFulfilled::class => [
-            SendOrderCreatedTelegram::class
+            SendOrderCreatedMail::class
         ]
     ];
 }

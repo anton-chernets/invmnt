@@ -2,10 +2,12 @@
 
 namespace Modules\Order\Events;
 
-class SendOrderCreatedTelegram
+use Illuminate\Support\Facades\Mail;
+
+class SendOrderCreatedMail
 {
     public function handle(OrderFulfilled $event): void
     {
-//        dd($event);
+//        Mail::to($event->userEmail)->send();
     }
 }

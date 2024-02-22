@@ -28,6 +28,8 @@ use Modules\Product\CartItemCollection;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\Order\Models\OrderLine> $lines
  * @property-read int|null $lines_count
  * @method static \Modules\Order\Database\Factories\OrderFactory factory($count = null, $state = [])
+ * @property string|null $status
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereStatus($value)
  * @mixin \Eloquent
  */
 class Order extends Model
@@ -38,6 +40,7 @@ class Order extends Model
     const PENDING = 'pending';
 
     protected $fillable = [
+        'status',
         'user_id',
         'total_price',
     ];
@@ -56,7 +59,7 @@ class Order extends Model
     {
         return self::make([
             'user_id' => $userId,
-//            'status' => self::PENDING,//TODO
+            'status' => self::PENDING,
         ]);
     }
 
@@ -82,7 +85,8 @@ class Order extends Model
     {
         if($this->lines->isEmpty())
             throw new OrderMissingOrderLinesException();
-//        $this->status = self::COMPLETED;//TODO
+
+        $this->status = self::COMPLETED;
 
         $this->save();
         $this->lines()->saveMany($this->lines);
