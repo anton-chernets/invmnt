@@ -63,12 +63,6 @@ class FileController extends Controller
      */
     public function upload(UploadRequest $request): JsonResponse
     {
-        if (! $request->user()->isAdmin()) {
-            return response()->json([
-                'message' => 'this action only admin'
-            ], 404);
-        }
-
         $model = match ($request->get('model')) {
             'Article' => Article::where('id', $request->input('id')),
             'Product' => Product::where('id', $request->input('id')),

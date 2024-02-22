@@ -140,12 +140,6 @@ class ArticleController extends Controller
      */
     public function store(ArticleCreateRequest $request): JsonResponse
     {
-        if (! $request->user()->isAdmin()) {
-            return response()->json([
-                'message' => 'this action only admin'
-            ], 404);
-        }
-
         return response()->json([
             'data' => ArticleResource::make(
                 Article::create($request->validated())
@@ -187,12 +181,6 @@ class ArticleController extends Controller
      */
     public function remove(ArticleRemoveRequest $request): JsonResponse
     {
-        if (! $request->user()->isAdmin()) {
-            return response()->json([
-                'message' => 'this action only admin'
-            ], 404);
-        }
-
         return response()->json([
             'success' => (bool) Article::where('id', $request->input('id'))->delete(),
         ]);
@@ -232,12 +220,6 @@ class ArticleController extends Controller
      */
     public function restore(ArticleRemoveRequest $request): JsonResponse
     {
-        if (! $request->user()->isAdmin()) {
-            return response()->json([
-                'message' => 'this action only admin'
-            ], 404);
-        }
-
         return response()->json([
             'success' => (bool) Article::where('id', $request->input('id'))->restore(),
         ]);

@@ -7,7 +7,7 @@ Route::prefix('api')->group(function () {
     Route::prefix('products')->group(function () {
         Route::get('/', [ProductController::class, 'index']);
         Route::get('/show/{id}', [ProductController::class, 'show']);
-        Route::middleware(['auth:sanctum'])->group(function () {
+        Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::get('/trashed', [ProductController::class, 'trashed']);
             Route::post('/update/{id}', [ProductController::class, 'update']);
             Route::post('/store', [ProductController::class, 'store']);

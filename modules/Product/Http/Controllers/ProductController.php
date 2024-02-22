@@ -149,12 +149,6 @@ class ProductController extends Controller
      */
     public function store(ProductCreateRequest $request): JsonResponse
     {
-        if (! $request->user()->isAdmin()) {
-            return response()->json([
-                'message' => 'this action only admin'
-            ], 404);
-        }
-
         return response()->json([
             'data' => ProductResource::make(
                 Product::create($request->validated())
@@ -273,12 +267,6 @@ class ProductController extends Controller
      */
     public function update(int $productId, ProductUpdateRequest $request): JsonResponse
     {
-        if (! $request->user()->isAdmin()) {
-            return response()->json([
-                'message' => 'this action only admin'
-            ], 404);
-        }
-
         $product = Product::findOrFail($productId);
 
         $product->update([
@@ -327,12 +315,6 @@ class ProductController extends Controller
      */
     public function remove(ProductRemoveRequest $request): JsonResponse
     {
-        if (! $request->user()->isAdmin()) {
-            return response()->json([
-                'message' => 'this action only admin'
-            ], 404);
-        }
-
         return response()->json([
             'success' => (bool) Product::where('id', $request->input('id'))->delete(),
         ]);
@@ -372,12 +354,6 @@ class ProductController extends Controller
      */
     public function restore(ProductRemoveRequest $request): JsonResponse
     {
-        if (! $request->user()->isAdmin()) {
-            return response()->json([
-                'message' => 'this action only admin'
-            ], 404);
-        }
-
         return response()->json([
             'success' => (bool) Product::where('id', $request->input('id'))->restore(),
         ]);
