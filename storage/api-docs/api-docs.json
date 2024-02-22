@@ -448,7 +448,7 @@
                         "description": "Unauthorized"
                     },
                     "200": {
-                        "description": "remove current article",
+                        "description": "restore current article",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -698,6 +698,53 @@
                 }
             }
         },
+        "/api/products/trashed": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Display trashed products",
+                "operationId": "004b9c53df48271d35554a3a4528a14e",
+                "responses": {
+                    "200": {
+                        "description": "Display trashed products",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "title": "products",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "example": {
+                                                    "id": 1,
+                                                    "title": "Product Title",
+                                                    "description": "Product description",
+                                                    "stock": 111,
+                                                    "price": 10.1,
+                                                    "updated_at": "2024-02-03T16:53:20.000000Z",
+                                                    "created_at": "2024-02-03T16:53:20.000000Z",
+                                                    "images": [
+                                                        "https://gssc.esa.int/navipedia/images/a/a9/Example.jpg"
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ]
+            }
+        },
         "/api/products/store": {
             "post": {
                 "tags": [
@@ -907,6 +954,55 @@
                     },
                     "200": {
                         "description": "remove current product",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ]
+            }
+        },
+        "/api/products/restore": {
+            "put": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "restore current product",
+                "operationId": "5f8b81c4e473efdbb6d830e4fea53e9d",
+                "requestBody": {
+                    "description": "restore product",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object"
+                            },
+                            "example": {
+                                "id": 1
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "200": {
+                        "description": "restore current product",
                         "content": {
                             "application/json": {
                                 "schema": {

@@ -216,7 +216,7 @@ class ArticleController extends Controller
      *     ),
      *     @OA\Response(response=401, description="Unauthorized"),
      *     @OA\Response(
-     *         description="remove current article",
+     *         description="restore current article",
      *         response=200,
      *         @OA\JsonContent(
      *             @OA\Property(

@@ -58,6 +58,49 @@ class ProductController extends Controller
     }
 
     /**
+     * @OA\Get(
+     *     path="/api/products/trashed",
+     *     summary="Display trashed products",
+     *     tags={"Product"},
+     *     security={ {"Authorization":{}}},
+     *     @OA\Response(
+     *         description="Display trashed products",
+     *         response=200,
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                    property="data",
+     *                    type="array",
+     *                    title="products",
+     *                    @OA\Items(
+     *                       type="object",
+     *                       example={
+     *                           "id": 1,
+     *                           "title": "Product Title",
+     *                           "description": "Product description",
+     *                           "stock": 111,
+     *                           "price": 10.1,
+     *                           "updated_at": "2024-02-03T16:53:20.000000Z",
+     *                           "created_at": "2024-02-03T16:53:20.000000Z",
+     *                           "images": {
+     *                                "https://gssc.esa.int/navipedia/images/a/a9/Example.jpg"
+     *                           },
+     *                       }
+     *                    )
+     *              )
+     *          )
+     *     )
+     * )
+     *
+     * @return JsonResponse
+     */
+    public function trashed(): JsonResponse
+    {
+        return response()->json([
+            'data' => ProductResource::collection(Product::onlyTrashed()->get())
+        ]);
+    }
+
+    /**
      * @OA\Post(
      *     path="/api/products/store",
      *     summary="Create product",
@@ -292,6 +335,51 @@ class ProductController extends Controller
 
         return response()->json([
             'success' => (bool) Product::where('id', $request->input('id'))->delete(),
+        ]);
+    }
+
+    /**
+     * @OA\Put(
+     *     path="/api/products/restore",
+     *     summary="restore current product",
+     *     tags={"Product"},
+     *     security={ {"Authorization":{}}},
+     *     @OA\RequestBody(
+     *        description="restore product",
+     *        required=true,
+     *        @OA\JsonContent(
+     *            type="object",
+     *            example={
+     *               "id": 1,
+     *           }
+     *        )
+     *     ),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(
+     *         description="restore current product",
+     *         response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                   property="success",
+     *                   type="boolean",
+     *                   example=true
+     *             )
+     *         )
+     *     )
+     * )
+     * @param ProductRemoveRequest $request
+     * @return JsonResponse
+     */
+    public function restore(ProductRemoveRequest $request): JsonResponse
+    {
+        if (! $request->user()->isAdmin()) {
+            return response()->json([
+                'message' => 'this action only admin'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => (bool) Product::where('id', $request->input('id'))->restore(),
         ]);
     }
 }
