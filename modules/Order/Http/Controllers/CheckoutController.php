@@ -4,11 +4,14 @@ namespace Modules\Order\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Database\DatabaseManager;
+use Illuminate\Events\Dispatcher;
 use Illuminate\Http\JsonResponse;
+use Modules\Order\Events\OrderFulfilled;
 use Modules\Order\Http\Requests\CheckoutRequest;
 use Modules\Order\Models\Order;
 use Modules\Product\CartItemCollection;
 use Modules\Product\Warehouse\ProductStockManager;
+use Modules\UserDto;
 use OpenApi\Annotations as OA;
 
 class CheckoutController extends Controller
@@ -16,6 +19,7 @@ class CheckoutController extends Controller
     public function __construct(
         protected ProductStockManager $productStockManager,
         protected DatabaseManager $databaseManager,
+        protected Dispatcher $events,
     ) {
         //
     }
@@ -61,13 +65,21 @@ class CheckoutController extends Controller
     {
         $cartItems = CartItemCollection::fromCheckoutData($request->input('products'));
 
-        $this->databaseManager->transaction(function () use($request, $cartItems) {
-            $order = Order::startForUser($request->user()->id);
-            $order->addLinesFromCartItems($cartItems);
+        $userDTO = UserDto::fromEloquentModel($request->user());
 
-            foreach ($cartItems->items() as $cartItem) {
-                $this->productStockManager->decrement($cartItem->product->id, $cartItem->quantity);
-            }
+        $this->databaseManager->transaction(function () use($request, $cartItems, $userDTO) {
+            $order = Order::startForUser($userDTO->id);
+            $order->addLinesFromCartItems($cartItems);
+            $order->fullFill();
+            $this->events->dispatch(
+                new OrderFulfilled(
+                    $order->total_price,
+                    $order->id,
+                    $userDTO->id,
+                    $userDTO->email,
+                    $cartItems,
+                )
+            );
         });
 
         return response()->json([

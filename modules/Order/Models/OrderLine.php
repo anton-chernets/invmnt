@@ -31,6 +31,7 @@ use Modules\Product\Models\Product;
  * @property-read Product|null $product
  * @method static \Modules\Order\Database\Factories\OrderLineFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|OrderLine whereProductId($value)
+ * @property-read \Modules\Order\Models\Order|null $order
  * @mixin \Eloquent
  */
 class OrderLine extends Model

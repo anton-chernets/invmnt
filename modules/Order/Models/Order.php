@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Order\Database\Factories\OrderFactory;
+use Modules\Order\Exceptions\OrderMissingOrderLinesException;
 use Modules\Product\CartItemCollection;
 
 /**
@@ -33,6 +34,7 @@ class Order extends Model
 {
     use HasFactory;
 
+    const COMPLETED = 'completed';
     const PENDING = 'pending';
 
     protected $fillable = [
@@ -71,5 +73,18 @@ class Order extends Model
         }
 
         $this->total_price = $this->lines->sum(fn(OrderLine $line) => $line->price);
+    }
+
+    /**
+     * @throws OrderMissingOrderLinesException
+     */
+    public function fullFill(): void
+    {
+        if($this->lines->isEmpty())
+            throw new OrderMissingOrderLinesException();
+//        $this->status = self::COMPLETED;//TODO
+
+        $this->save();
+        $this->lines()->saveMany($this->lines);
     }
 }
