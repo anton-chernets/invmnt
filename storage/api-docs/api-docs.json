@@ -423,12 +423,12 @@
             }
         },
         "/api/articles/restore": {
-            "post": {
+            "put": {
                 "tags": [
                     "Article"
                 ],
                 "summary": "restore current article",
-                "operationId": "bf87a4909d0ca4817ac5e5856815a1e2",
+                "operationId": "9173c8bf27a26fd333b559b2e35ca934",
                 "requestBody": {
                     "description": "restore article",
                     "required": true,

@@ -10,7 +10,7 @@ Route::prefix('api')->group(function () {
             Route::get('/trashed', [ArticleController::class, 'trashed']);
             Route::post('/store', [ArticleController::class, 'store']);
             Route::delete('/remove', [ArticleController::class, 'remove']);
-            Route::post('/restore', [ArticleController::class, 'restore']);
+            Route::put('/restore', [ArticleController::class, 'restore']);
         });
     });
 });

@@ -199,7 +199,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * @OA\Post(
+     * @OA\Put(
      *     path="/api/articles/restore",
      *     summary="restore current article",
      *     tags={"Article"},
