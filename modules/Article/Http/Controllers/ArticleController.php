@@ -54,6 +54,47 @@ class ArticleController extends Controller
     }
 
     /**
+     * @OA\Get(
+     *     path="/api/articles/trashed",
+     *     summary="Display trashed articles",
+     *     tags={"Article"},
+     *     security={ {"Authorization":{}}},
+     *     @OA\Response(
+     *         description="Display trashed articles",
+     *         response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                   property="data",
+     *                   type="array",
+     *                   title="articles",
+     *                   @OA\Items(
+     *                      type="object",
+     *                      example={
+     *                          "id": 1,
+     *                          "title": "Article",
+     *                          "description": "Article description",
+     *                          "created_at": "2024-02-03T16:53:20.000000Z",
+     *                          "updated_at": "2024-02-03T16:53:20.000000Z",
+     *                          "images": {
+     *                              "https://gssc.esa.int/navipedia/images/a/a9/Example.jpg"
+     *                          },
+     *                      }
+     *                   )
+     *             )
+     *         )
+     *     )
+     * )
+     *
+     * @return JsonResponse
+     */
+    public function trashed(): JsonResponse
+    {
+        return response()->json([
+            'data' => ArticleResource::collection(Article::onlyTrashed()->get())
+        ]);
+    }
+
+    /**
      * @OA\Post(
      *     path="/api/articles/store",
      *     summary="Create article",
@@ -154,6 +195,51 @@ class ArticleController extends Controller
 
         return response()->json([
             'success' => (bool) Article::where('id', $request->input('id'))->delete(),
+        ]);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/articles/restore",
+     *     summary="restore current article",
+     *     tags={"Article"},
+     *     security={ {"Authorization":{}}},
+     *     @OA\RequestBody(
+     *        description="restore article",
+     *        required=true,
+     *        @OA\JsonContent(
+     *            type="object",
+     *            example={
+     *               "id": 1,
+     *           }
+     *        )
+     *     ),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(
+     *         description="remove current article",
+     *         response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                   property="success",
+     *                   type="boolean",
+     *                   example=true
+     *             )
+     *         )
+     *     )
+     * )
+     * @param ArticleRemoveRequest $request
+     * @return JsonResponse
+     */
+    public function restore(ArticleRemoveRequest $request): JsonResponse
+    {
+        if (! $request->user()->isAdmin()) {
+            return response()->json([
+                'message' => 'this action only admin'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => (bool) Article::where('id', $request->input('id'))->restore(),
         ]);
     }
 }

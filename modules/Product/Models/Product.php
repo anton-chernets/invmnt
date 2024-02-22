@@ -4,6 +4,7 @@ namespace Modules\Product\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Product\Database\Factories\ProductFactory;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -35,12 +36,18 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read int|null $media_count
  * @property int|null $stock
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereStock($value)
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Product onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Product withoutTrashed()
  * @mixin \Eloquent
  */
 class Product extends Model implements HasMedia
 {
     use InteractsWithMedia;
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'title',
