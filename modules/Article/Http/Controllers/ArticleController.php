@@ -49,7 +49,7 @@ class ArticleController extends Controller
     public function index(): JsonResponse
     {
         return response()->json([
-            'data' => ArticleResource::collection(Article::all())
+            'data' => ArticleResource::collection(Article::orderBy('created_at', 'desc')->paginate())
         ]);
     }
 
