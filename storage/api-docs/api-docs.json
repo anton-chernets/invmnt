@@ -1163,12 +1163,10 @@
                                                     "id": 1,
                                                     "title": "Title",
                                                     "description": "Description",
-                                                    "updated_at": "2024-02-03T16:53:20.000000Z",
-                                                    "created_at": "2024-02-03T16:53:20.000000Z",
                                                     "images": [
                                                         "https://gssc.esa.int/navipedia/images/a/a9/Example.jpg"
                                                     ],
-                                                    "details_url": "https://invmnt.site/articles/1"
+                                                    "details_uri": "articles/1"
                                                 }
                                             }
                                         }
