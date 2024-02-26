@@ -174,6 +174,7 @@ return [
         \Modules\Product\Providers\ProductServiceProvider::class,
         \Modules\Order\Providers\OrderServiceProvider::class,
         \Modules\File\Providers\FileServiceProvider::class,
+        \Modules\Search\Providers\SearchServiceProvider::class,
     ])->toArray(),
 
     /*
