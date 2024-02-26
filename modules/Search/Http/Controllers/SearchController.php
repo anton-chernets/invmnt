@@ -60,16 +60,15 @@ class SearchController extends Controller
         $searchExpression = "%{$request->input('needle')}%";//TODO implement ElasticSearch
         return response()->json([
             'data' => SearchResource::collection(
-                array_merge(
-                    Article::where('title', 'LIKE', $searchExpression)
-                        ->orWhere('description', 'LIKE', $searchExpression)
-                        ->orderBy('created_at', 'desc')
-                        ->get()->toArray(),
-                    Product::where('title', 'LIKE', $searchExpression)
-                        ->orWhere('description', 'LIKE', $searchExpression)
-                        ->orderBy('created_at', 'desc')
-                        ->get()->toArray()
-                )
+                Article::where('title', 'LIKE', $searchExpression)
+                    ->orWhere('description', 'LIKE', $searchExpression)
+                    ->orderBy('created_at', 'desc')
+                    ->get()->merge(
+                        Product::where('title', 'LIKE', $searchExpression)
+                            ->orWhere('description', 'LIKE', $searchExpression)
+                            ->orderBy('created_at', 'desc')
+                            ->get()
+                    ),
             )
         ]);
     }
