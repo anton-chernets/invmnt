@@ -21,11 +21,10 @@ class SearchResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->resource->id,
             'title' => $this->resource->title,
             'description' => $this->resource->description,
             'images' =>  $this->resource->getMedia('*')->pluck('original_url'),
-            'details_url' => lcfirst(class_basename($this->resource)) . 's/' . $this->resource->id,
+            'details_uri' => lcfirst(class_basename($this->resource)) . 's/' . $this->resource->id,
         ];
     }
 }
