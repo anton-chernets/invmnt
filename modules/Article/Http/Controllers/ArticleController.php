@@ -100,7 +100,8 @@ class ArticleController extends Controller
     {
         return response()->json([
             'data' => ArticleResource::collection(
-                Article::where('title', 'like', '%' . $request->input('needle') . '%')
+                Article::where('title','LIKE', "%{$request->input('needle')}%")
+                    ->orWhere('description','LIKE', "%{$request->input('needle')}%")
                     ->orderBy('created_at', 'desc')
                     ->paginate()
             )

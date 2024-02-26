@@ -5,7 +5,6 @@ namespace Modules\Product\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Modules\Product\Http\Recourses\ProductResource;
 use Modules\Product\Http\Requests\ProductCreateRequest;
 use Modules\Product\Http\Requests\ProductRemoveRequest;
@@ -106,7 +105,8 @@ class ProductController extends Controller
     {
         return response()->json([
             'data' => ProductResource::collection(
-                Product::where('title', 'like', '%' . $request->input('needle') . '%')
+                Product::where('title','LIKE', "%{$request->input('needle')}%")
+                    ->orWhere('description','LIKE', "%{$request->input('needle')}%")
                     ->orderBy('created_at', 'desc')
                     ->paginate()
             )
