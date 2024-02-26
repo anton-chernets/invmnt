@@ -24,7 +24,7 @@ class SearchResource extends JsonResource
             'title' => $this->resource->title,
             'description' => $this->resource->description,
             'images' =>  $this->resource->getMedia('*')->pluck('original_url'),
-            'details_uri' => lcfirst(class_basename($this->resource)) . 's/' . $this->resource->id,
+            'details_uri' => lcfirst(class_basename($this->resource)) . 's/show/' . $this->resource->id,
         ];
     }
 }
