@@ -18,6 +18,10 @@ use App\Models\Currency;
 
 Auth::routes();
 
+Route::get('/home', function () {
+    return view('welcome');
+})->name('home');
+
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
