@@ -270,6 +270,57 @@
                 }
             }
         },
+        "/api/articles/search": {
+            "get": {
+                "tags": [
+                    "Article"
+                ],
+                "summary": "Display articles",
+                "operationId": "bdf7327fa1851380527433a4eccc76f6",
+                "parameters": [
+                    {
+                        "name": "needle",
+                        "in": "query",
+                        "description": "for search",
+                        "schema": {
+                            "type": "string",
+                            "example": "Bitcoin"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Display articles",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "title": "articles",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "example": {
+                                                    "id": 1,
+                                                    "title": "Article",
+                                                    "description": "Article description",
+                                                    "created_at": "2024-02-03T16:53:20.000000Z",
+                                                    "updated_at": "2024-02-03T16:53:20.000000Z",
+                                                    "images": [
+                                                        "https://gssc.esa.int/navipedia/images/a/a9/Example.jpg"
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/articles/trashed": {
             "get": {
                 "tags": [
@@ -663,6 +714,59 @@
                 ],
                 "summary": "Display products",
                 "operationId": "55752f3015ba0bb55b2a43348978ac14",
+                "responses": {
+                    "200": {
+                        "description": "Display products",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "title": "products",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "example": {
+                                                    "id": 1,
+                                                    "title": "Product Title",
+                                                    "description": "Product description",
+                                                    "stock": 111,
+                                                    "price": 10.1,
+                                                    "updated_at": "2024-02-03T16:53:20.000000Z",
+                                                    "created_at": "2024-02-03T16:53:20.000000Z",
+                                                    "images": [
+                                                        "https://gssc.esa.int/navipedia/images/a/a9/Example.jpg"
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/products/search": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Display products",
+                "operationId": "19b287413a138b3de0550c4dd5f696e5",
+                "parameters": [
+                    {
+                        "name": "needle",
+                        "in": "query",
+                        "description": "for search",
+                        "schema": {
+                            "type": "string",
+                            "example": "Укр"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Display products",

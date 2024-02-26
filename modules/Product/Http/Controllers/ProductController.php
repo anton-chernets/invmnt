@@ -10,6 +10,7 @@ use Modules\Product\Http\Recourses\ProductResource;
 use Modules\Product\Http\Requests\ProductCreateRequest;
 use Modules\Product\Http\Requests\ProductRemoveRequest;
 use Modules\Product\Http\Requests\ProductUpdateRequest;
+use Modules\Product\Http\Requests\SearchRequest;
 use Modules\Product\Models\Product;
 use OpenApi\Annotations as OA;
 
@@ -54,6 +55,61 @@ class ProductController extends Controller
     {
         return response()->json([
             'data' => ProductResource::collection(Product::all()->where('stock', '>', 0))
+        ]);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/products/search",
+     *     summary="Display products",
+     *     tags={"Product"},
+     *      @OA\Parameter(
+     *          name="needle",
+     *          description="for search",
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              example="Укр",
+     *          ),
+     *      ),
+     *     @OA\Response(
+     *         description="Display products",
+     *         response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                   property="data",
+     *                   type="array",
+     *                   title="products",
+     *                    @OA\Items(
+     *                       type="object",
+     *                       example={
+     *                           "id": 1,
+     *                           "title": "Product Title",
+     *                           "description": "Product description",
+     *                           "stock": 111,
+     *                           "price": 10.1,
+     *                           "updated_at": "2024-02-03T16:53:20.000000Z",
+     *                           "created_at": "2024-02-03T16:53:20.000000Z",
+     *                           "images": {
+     *                                "https://gssc.esa.int/navipedia/images/a/a9/Example.jpg"
+     *                           },
+     *                       }
+     *                    )
+     *             )
+     *         )
+     *     )
+     * )
+     * @param SearchRequest $request
+     * @return JsonResponse
+     */
+    public function search(SearchRequest $request): JsonResponse
+    {
+        return response()->json([
+            'data' => ProductResource::collection(
+                Product::where('title', 'like', '%' . $request->input('needle') . '%')
+                    ->orderBy('created_at', 'desc')
+                    ->paginate()
+            )
         ]);
     }
 

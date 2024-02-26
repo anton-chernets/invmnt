@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Modules\Article\Http\Recourses\ArticleResource;
 use Modules\Article\Http\Requests\ArticleCreateRequest;
 use Modules\Article\Http\Requests\ArticleRemoveRequest;
+use Modules\Article\Http\Requests\SearchRequest;
 use Modules\Article\Models\Article;
 use OpenApi\Annotations as OA;
 
@@ -50,6 +51,59 @@ class ArticleController extends Controller
     {
         return response()->json([
             'data' => ArticleResource::collection(Article::orderBy('created_at', 'desc')->paginate())
+        ]);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/articles/search",
+     *     summary="Display articles",
+     *     tags={"Article"},
+     *      @OA\Parameter(
+     *          name="needle",
+     *          description="for search",
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              example="Bitcoin",
+     *          ),
+     *      ),
+     *     @OA\Response(
+     *         description="Display articles",
+     *         response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                   property="data",
+     *                   type="array",
+     *                   title="articles",
+     *                   @OA\Items(
+     *                      type="object",
+     *                      example={
+     *                          "id": 1,
+     *                          "title": "Article",
+     *                          "description": "Article description",
+     *                          "created_at": "2024-02-03T16:53:20.000000Z",
+     *                          "updated_at": "2024-02-03T16:53:20.000000Z",
+     *                          "images": {
+     *                              "https://gssc.esa.int/navipedia/images/a/a9/Example.jpg"
+     *                          },
+     *                      }
+     *                   )
+     *             )
+     *         )
+     *     )
+     * )
+     * @param SearchRequest $request
+     * @return JsonResponse
+     */
+    public function search(SearchRequest $request): JsonResponse
+    {
+        return response()->json([
+            'data' => ArticleResource::collection(
+                Article::where('title', 'like', '%' . $request->input('needle') . '%')
+                    ->orderBy('created_at', 'desc')
+                    ->paginate()
+            )
         ]);
     }
 
