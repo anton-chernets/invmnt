@@ -522,6 +522,52 @@
                 ]
             }
         },
+        "/api/articles/show/{id}": {
+            "get": {
+                "tags": [
+                    "Article"
+                ],
+                "summary": "Get article",
+                "operationId": "ff76ced60c1b00f88199ef8ffe301d16",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get article",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "example": {
+                                                "title": "Article Title",
+                                                "description": "Article description",
+                                                "updated_at": "2024-02-03T16:53:20.000000Z",
+                                                "created_at": "2024-02-03T16:53:20.000000Z",
+                                                "images": [
+                                                    "https://gssc.esa.int/navipedia/images/a/a9/Example.jpg"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/files/upload": {
             "post": {
                 "tags": [

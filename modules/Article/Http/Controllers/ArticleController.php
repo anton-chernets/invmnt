@@ -279,4 +279,52 @@ class ArticleController extends Controller
             'success' => (bool) Article::where('id', $request->input('id'))->restore(),
         ]);
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/articles/show/{id}",
+     *     summary="Get article",
+     *     tags={"Article"},
+     *     @OA\Parameter(
+     *       name="id",
+     *       in="path",
+     *       required=true,
+     *       @OA\Schema(
+     *            type="integer",
+     *            example=1,
+     *       ),
+     *      ),
+     *      @OA\Response(
+     *          description="Get article",
+     *          response=200,
+     *          @OA\JsonContent(
+     *                 @OA\Property(
+     *                      property="data",
+     *                      type="object",
+     *                      example={
+     *                          "title": "Article Title",
+     *                          "description": "Article description",
+     *                          "updated_at": "2024-02-03T16:53:20.000000Z",
+     *                          "created_at": "2024-02-03T16:53:20.000000Z",
+     *                          "images": {
+     *                             "https://gssc.esa.int/navipedia/images/a/a9/Example.jpg"
+     *                          },
+     *                      }
+     *                   )
+     *          )
+     *      )
+     * )
+     *
+     * @param int $id
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function show(int $id): JsonResponse
+    {
+        return response()->json([
+            'data' => ArticleResource::make(
+                Article::findOrFail($id)
+            )
+        ]);
+    }
 }
