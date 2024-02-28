@@ -44,7 +44,7 @@ class GettingNewsService extends ParseBaseService
                     $new->text,
                     $new->author,
                     $new->publish_date,
-                    now(),
+                    null,
                     $new->image,
                 );
                 continue;
