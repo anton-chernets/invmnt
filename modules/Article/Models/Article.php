@@ -40,6 +40,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property string|null $publish_date
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereAuthor($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article wherePublishDate($value)
+ * @property string|null $alias
+ * @method static \Illuminate\Database\Eloquent\Builder|Article whereAlias($value)
  * @mixin \Eloquent
  */
 class Article extends Model implements HasMedia
@@ -49,6 +51,7 @@ class Article extends Model implements HasMedia
     use SoftDeletes;
 
     protected $fillable = [
+        'alias',
         'title',
         'description',
         'author',

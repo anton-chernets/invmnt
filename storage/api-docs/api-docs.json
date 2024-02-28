@@ -251,7 +251,8 @@
                                                 "type": "object",
                                                 "example": {
                                                     "id": 1,
-                                                    "title": "Article",
+                                                    "title": "Article Title",
+                                                    "alias": "article-title",
                                                     "description": "Article description",
                                                     "created_at": "2024-02-03T16:53:20.000000Z",
                                                     "updated_at": "2024-02-03T16:53:20.000000Z",
@@ -302,7 +303,8 @@
                                                 "type": "object",
                                                 "example": {
                                                     "id": 1,
-                                                    "title": "Article",
+                                                    "title": "Article Title",
+                                                    "alias": "article-title",
                                                     "description": "Article description",
                                                     "created_at": "2024-02-03T16:53:20.000000Z",
                                                     "updated_at": "2024-02-03T16:53:20.000000Z",
@@ -342,7 +344,8 @@
                                                 "type": "object",
                                                 "example": {
                                                     "id": 1,
-                                                    "title": "Article",
+                                                    "title": "Article Title",
+                                                    "alias": "article-title",
                                                     "description": "Article description",
                                                     "created_at": "2024-02-03T16:53:20.000000Z",
                                                     "updated_at": "2024-02-03T16:53:20.000000Z",
@@ -401,7 +404,9 @@
                                         "data": {
                                             "type": "object",
                                             "example": {
+                                                "id": 1,
                                                 "title": "Article Title",
+                                                "alias": "article-title",
                                                 "description": "Article description",
                                                 "updated_at": "2024-02-03T16:53:20.000000Z",
                                                 "created_at": "2024-02-03T16:53:20.000000Z",
@@ -551,6 +556,7 @@
                                             "type": "object",
                                             "example": {
                                                 "title": "Article Title",
+                                                "alias": "article-title",
                                                 "description": "Article description",
                                                 "updated_at": "2024-02-03T16:53:20.000000Z",
                                                 "created_at": "2024-02-03T16:53:20.000000Z",

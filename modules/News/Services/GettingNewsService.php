@@ -5,6 +5,7 @@ namespace Modules\News\Services;
 use App\Services\ParseBaseService;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use Modules\Article\ArticleDTO;
 use Modules\Article\Models\Article;
 use Modules\ChatGPT\Services\ChatGPTService;
@@ -15,13 +16,29 @@ use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 class GettingNewsService extends ParseBaseService
 {
+    private const FINANCE = 'finance';
+    private const CRYPTO = 'crypto';
+    private const ECONOMIC = 'economic';
+    private const INVESTMENT = 'investment';
+    private const DOLLAR = 'dollar';
+    private const BITCOIN = 'bitcoin';
+
+    private const CATEGORIES = [
+        self::FINANCE,
+        self::CRYPTO,
+        self::ECONOMIC,
+        self::INVESTMENT,
+        self::DOLLAR,
+        self::BITCOIN,
+    ];
+
     protected string $url;
     protected TranslateService $translateService;
     protected ChatGPTService $chatGPTService;
 
     public function __construct() {
         $this->url = env('WORLD_NEWS_API_DOMAIN') . '/search-news?api-key='
-            . env('WORLD_NEWS_API_API_KEY') . '&text=' . env('WORLD_NEWS_CATEGORY');
+            . env('WORLD_NEWS_API_API_KEY') . '&text=' . $this->getCategory();
         $this->translateService = new TranslateService();
         $this->chatGPTService = new ChatGPTService();
     }
@@ -54,6 +71,7 @@ class GettingNewsService extends ParseBaseService
         }
 
         $article = new Article();
+        $article->alias = Str::snake($articleDTO->title, '-');
         $article->title = $this->chatGPTService->rewrite(
             $this->translateService->translate($articleDTO->title)
         );
@@ -65,5 +83,10 @@ class GettingNewsService extends ParseBaseService
         $article->deleted_at = $articleDTO->deleted_at;
         $article->save();
         $article->addMediaFromUrl($articleDTO->image)->toMediaCollection('images');
+    }
+
+    private function getCategory(): string
+    {
+        return self::CATEGORIES[array_rand(self::CATEGORIES)];
     }
 }

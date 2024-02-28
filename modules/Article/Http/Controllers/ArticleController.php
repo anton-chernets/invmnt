@@ -31,7 +31,8 @@ class ArticleController extends Controller
      *                      type="object",
      *                      example={
      *                          "id": 1,
-     *                          "title": "Article",
+     *                          "title": "Article Title",
+     *                          "alias": "article-title",
      *                          "description": "Article description",
      *                          "created_at": "2024-02-03T16:53:20.000000Z",
      *                          "updated_at": "2024-02-03T16:53:20.000000Z",
@@ -80,7 +81,8 @@ class ArticleController extends Controller
      *                      type="object",
      *                      example={
      *                          "id": 1,
-     *                          "title": "Article",
+     *                          "title": "Article Title",
+     *                          "alias": "article-title",
      *                          "description": "Article description",
      *                          "created_at": "2024-02-03T16:53:20.000000Z",
      *                          "updated_at": "2024-02-03T16:53:20.000000Z",
@@ -126,7 +128,8 @@ class ArticleController extends Controller
      *                      type="object",
      *                      example={
      *                          "id": 1,
-     *                          "title": "Article",
+     *                          "title": "Article Title",
+     *                          "alias": "article-title",
      *                          "description": "Article description",
      *                          "created_at": "2024-02-03T16:53:20.000000Z",
      *                          "updated_at": "2024-02-03T16:53:20.000000Z",
@@ -175,7 +178,9 @@ class ArticleController extends Controller
      *                     property="data",
      *                     type="object",
      *                     example={
+     *                         "id": 1,
      *                         "title": "Article Title",
+     *                         "alias": "article-title",
      *                         "description": "Article description",
      *                         "updated_at": "2024-02-03T16:53:20.000000Z",
      *                         "created_at": "2024-02-03T16:53:20.000000Z",
@@ -303,6 +308,7 @@ class ArticleController extends Controller
      *                      type="object",
      *                      example={
      *                          "title": "Article Title",
+     *                          "alias": "article-title",
      *                          "description": "Article description",
      *                          "updated_at": "2024-02-03T16:53:20.000000Z",
      *                          "created_at": "2024-02-03T16:53:20.000000Z",
