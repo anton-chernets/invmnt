@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Jobs\ParseCoinsBankGovUaJob;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class ParseCoinsBankGovUaCommand extends Command
 {
@@ -26,6 +27,8 @@ class ParseCoinsBankGovUaCommand extends Command
      */
     public function handle(): void
     {
-        ParseCoinsBankGovUaJob::dispatch();
+        if (DB::table('jobs')->where('payload', 'like', '%ParseCoinsBankGovUa",%')->count() === 0) {
+            ParseCoinsBankGovUaJob::dispatch();
+        }
     }
 }
