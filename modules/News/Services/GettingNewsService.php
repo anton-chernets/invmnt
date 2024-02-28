@@ -44,6 +44,7 @@ class GettingNewsService extends ParseBaseService
 
     /**
      * @throws GuzzleException
+     * @throws FileCannotBeAdded
      */
     public function getNews(): void
     {
@@ -68,7 +69,6 @@ class GettingNewsService extends ParseBaseService
                 $article->author = $articleDTO->author;
                 $article->publish_date = $articleDTO->publish_date;
                 $article->deleted_at = $articleDTO->deleted_at;
-                $article->addMediaFromUrl($articleDTO->image)->toMediaCollection('images');
 
                 continue;
             } catch (\Exception) {
@@ -82,6 +82,7 @@ class GettingNewsService extends ParseBaseService
         $article->description = $this->chatGPTService->rewrite(
             $this->translateService->translate($articleDTO->description)
         );
+        $article->addMediaFromUrl($articleDTO->image)->toMediaCollection('images');
         $article->save();
     }
 
