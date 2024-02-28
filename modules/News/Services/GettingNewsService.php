@@ -5,7 +5,6 @@ namespace Modules\News\Services;
 use App\Services\ParseBaseService;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Str;
 use Modules\Article\ArticleDTO;
 use Modules\Article\Models\Article;
 use Modules\ChatGPT\Services\ChatGPTService;
@@ -71,7 +70,7 @@ class GettingNewsService extends ParseBaseService
         }
 
         $article = new Article();
-        $article->alias = Str::snake($articleDTO->title, '-');
+        $article->alias = $articleDTO->title;
         $article->title = $this->chatGPTService->rewrite(
             $this->translateService->translate($articleDTO->title)
         );

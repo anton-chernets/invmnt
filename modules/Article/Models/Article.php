@@ -2,9 +2,11 @@
 
 namespace Modules\Article\Models;
 
+use App\Helpers\StringHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use Modules\Article\Database\Factories\ArticleFactory;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -58,6 +60,22 @@ class Article extends Model implements HasMedia
         'publish_date',
     ];
 
+    public static function boot(): void
+    {
+        parent::boot();
+        self::creating(function(self $model){
+            if ($model->alias) {
+                $model->alias = StringHelper::removeSpecSim(
+                    Str::snake($model->alias, '-')
+                );
+            } else {
+                $model->alias = StringHelper::removeSpecSim(
+                    Str::snake($model->title, '-')
+                );
+            }
+        });
+    }
+
     public static function newFactory(): ArticleFactory
     {
         return new ArticleFactory();
@@ -68,11 +86,8 @@ class Article extends Model implements HasMedia
         $this->addMediaCollection('images')->singleFile();;
     }
 
-
-
     public function registerMediaConversions(?Media $media = null): void
     {
-        $this->addMediaConversion('thumb')
-            ->width(1200);
+        $this->addMediaConversion('thumb')->width(1200);
     }
 }
