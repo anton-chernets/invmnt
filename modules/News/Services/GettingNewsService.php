@@ -43,9 +43,6 @@ class GettingNewsService extends ParseBaseService
     }
 
     /**
-     * @throws FileCannotBeAdded
-     * @throws FileDoesNotExist
-     * @throws FileIsTooBig
      * @throws GuzzleException
      */
     public function getNews(): void
@@ -53,6 +50,8 @@ class GettingNewsService extends ParseBaseService
         $rawResponse = Http::get($this->url)->body();
         $response = json_decode($rawResponse);
         $news = $response->news;
+        /** @var Article $article */
+        /** @var ArticleDTO $articleDTO */
         foreach ($news as $new) {
             try {
                 $articleDTO = new ArticleDTO(
@@ -63,25 +62,27 @@ class GettingNewsService extends ParseBaseService
                     null,
                     $new->image,
                 );
+
+                $article = new Article();
+                $article->alias = $articleDTO->title;
+                $article->author = $articleDTO->author;
+                $article->publish_date = $articleDTO->publish_date;
+                $article->deleted_at = $articleDTO->deleted_at;
+                $article->addMediaFromUrl($articleDTO->image)->toMediaCollection('images');
+
                 continue;
             } catch (\Exception) {
                 //next new
             }
         }
 
-        $article = new Article();
-        $article->alias = $articleDTO->title;
         $article->title = $this->chatGPTService->rewrite(
             $this->translateService->translate($articleDTO->title)
         );
         $article->description = $this->chatGPTService->rewrite(
             $this->translateService->translate($articleDTO->description)
         );
-        $article->author = $articleDTO->author;
-        $article->publish_date = $articleDTO->publish_date;
-        $article->deleted_at = $articleDTO->deleted_at;
         $article->save();
-        $article->addMediaFromUrl($articleDTO->image)->toMediaCollection('images');
     }
 
     private function getCategory(): string
