@@ -9,7 +9,7 @@ readonly class ArticleDTO
         public string $description,
         public ?string $author,
         public ?string $publish_date,
-        public string $deleted_at,
+        public ?string $deleted_at,
         public string $image,
     )
     {
