@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Article\Database\Factories\ArticleFactory;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * Modules\Article\Models\Article
@@ -35,6 +36,10 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Article withoutTrashed()
+ * @property string|null $author
+ * @property string|null $publish_date
+ * @method static \Illuminate\Database\Eloquent\Builder|Article whereAuthor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Article wherePublishDate($value)
  * @mixin \Eloquent
  */
 class Article extends Model implements HasMedia
@@ -46,6 +51,8 @@ class Article extends Model implements HasMedia
     protected $fillable = [
         'title',
         'description',
+        'author',
+        'publish_date',
     ];
 
     public static function newFactory(): ArticleFactory
@@ -56,5 +63,13 @@ class Article extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('images')->singleFile();;
+    }
+
+
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(1200);
     }
 }
