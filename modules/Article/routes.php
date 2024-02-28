@@ -11,6 +11,7 @@ Route::prefix('api')->group(function () {
         Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::get('/trashed', [ArticleController::class, 'trashed']);
             Route::post('/store', [ArticleController::class, 'store']);
+            Route::post('/update/{id}', [ArticleController::class, 'update']);
             Route::delete('/remove', [ArticleController::class, 'remove']);
             Route::put('/restore', [ArticleController::class, 'restore']);
         });
