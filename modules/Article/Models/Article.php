@@ -6,7 +6,6 @@ use App\Helpers\StringHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Str;
 use Modules\Article\Database\Factories\ArticleFactory;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -65,13 +64,9 @@ class Article extends Model implements HasMedia
         parent::boot();
         self::creating(function(self $model){
             if ($model->alias) {
-                $model->alias = StringHelper::removeSpecSim(
-                    Str::snake($model->alias, '-')
-                );
+                $model->alias = StringHelper::toSnakeRemoveSpecSim($model->alias);
             } else {
-                $model->alias = StringHelper::removeSpecSim(
-                    Str::snake($model->title, '-')
-                );
+                $model->alias = StringHelper::toSnakeRemoveSpecSim($model->title);
             }
         });
     }

@@ -3,6 +3,7 @@
 namespace Modules\News\Services;
 
 use App\Services\ParseBaseService;
+use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Http;
 use Modules\Article\ArticleDTO;
@@ -10,8 +11,6 @@ use Modules\Article\Models\Article;
 use Modules\ChatGPT\Services\ChatGPTService;
 use Modules\Translate\Service\TranslateService;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 class GettingNewsService extends ParseBaseService
 {
@@ -69,9 +68,7 @@ class GettingNewsService extends ParseBaseService
                 $article->author = $articleDTO->author;
                 $article->publish_date = $articleDTO->publish_date;
                 $article->deleted_at = $articleDTO->deleted_at;
-
-                continue;
-            } catch (\Exception) {
+            } catch (Exception) {
                 //next new
             }
         }
