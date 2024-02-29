@@ -21,6 +21,15 @@ class ArticleController extends Controller
      *     path="/api/articles",
      *     summary="Display articles",
      *     tags={"Article"},
+     *     @OA\Parameter(
+     *         name="page",
+     *         description="for paginate",
+     *         in="query",
+     *         @OA\Schema(
+     *             type="integer",
+     *             example=1,
+     *         ),
+     *     ),
      *     @OA\Response(
      *         description="Display articles",
      *         response=200,

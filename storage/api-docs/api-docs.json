@@ -237,6 +237,17 @@
                 ],
                 "summary": "Display articles",
                 "operationId": "30b5d227a8aced622e73b1e9fb1d271b",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "for paginate",
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Display articles",
@@ -840,6 +851,17 @@
                 ],
                 "summary": "Display products",
                 "operationId": "55752f3015ba0bb55b2a43348978ac14",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "for paginate",
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Display products",

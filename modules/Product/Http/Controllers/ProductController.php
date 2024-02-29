@@ -21,6 +21,15 @@ class ProductController extends Controller
      *     path="/api/products",
      *     summary="Display products",
      *     tags={"Product"},
+     *     @OA\Parameter(
+     *         name="page",
+     *         description="for paginate",
+     *         in="query",
+     *         @OA\Schema(
+     *             type="integer",
+     *             example=1,
+     *         ),
+     *     ),
      *     @OA\Response(
      *         description="Display products",
      *         response=200,
