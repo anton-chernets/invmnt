@@ -551,7 +551,7 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "integer",
+                            "type": "string",
                             "example": 1
                         }
                     }

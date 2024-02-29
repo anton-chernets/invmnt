@@ -303,7 +303,7 @@ class ArticleController extends Controller
      *       in="path",
      *       required=true,
      *       @OA\Schema(
-     *            type="integer",
+     *            type="string",
      *            example=1,
      *       ),
      *      ),
@@ -329,15 +329,20 @@ class ArticleController extends Controller
      *      )
      * )
      *
-     * @param int $id
+     * @param string|int $id
      * @return JsonResponse
      * @throws Exception
      */
-    public function show(int $id): JsonResponse
+    public function show(string|int $id): JsonResponse
     {
+        if ($object = Article::whereAlias($id)->first()) {
+            //
+        } else {
+            $object = Article::findOrFail($id);
+        }
         return response()->json([
             'data' => ArticleResource::make(
-                Article::findOrFail($id)
+                $object
             )
         ]);
     }
