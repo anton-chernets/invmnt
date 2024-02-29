@@ -5,6 +5,7 @@ namespace Modules\Product\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Modules\Product\Http\Recourses\ProductResource;
 use Modules\Product\Http\Requests\ProductCreateRequest;
 use Modules\Product\Http\Requests\ProductRemoveRequest;
@@ -48,13 +49,11 @@ class ProductController extends Controller
      *     )
      * )
      *
-     * @return JsonResponse
+     * @return AnonymousResourceCollection
      */
-    public function index(): JsonResponse
+    public function index(): AnonymousResourceCollection
     {
-        return response()->json([
-            'data' => ProductResource::collection(Product::all()->where('stock', '>', 0))
-        ]);
+        return ProductResource::collection(Product::where('stock', '>', 0)->paginate(10));
     }
 
     /**

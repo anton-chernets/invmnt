@@ -5,6 +5,7 @@ namespace Modules\Article\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Modules\Article\Http\Recourses\ArticleResource;
 use Modules\Article\Http\Requests\ArticleCreateRequest;
 use Modules\Article\Http\Requests\ArticleRemoveRequest;
@@ -47,13 +48,10 @@ class ArticleController extends Controller
      *     )
      * )
      *
-     * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(): AnonymousResourceCollection
     {
-        return response()->json([
-            'data' => ArticleResource::collection(Article::orderBy('created_at', 'desc')->paginate())
-        ]);
+        return ArticleResource::collection(Article::orderBy('created_at', 'desc')->paginate(10));
     }
 
     /**
