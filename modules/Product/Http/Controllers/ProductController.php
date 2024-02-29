@@ -62,7 +62,7 @@ class ProductController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        return ProductResource::collection(Product::where('stock', '>', 0)->paginate(10));
+        return ProductResource::collection(Product::where('stock', '>', 0)->paginate(9));
     }
 
     /**
