@@ -2,24 +2,24 @@
 
 namespace Modules\ChatGPT\Services;
 
+use App\Services\BaseService;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
-use Psr\Log\LoggerInterface;
 
-class ChatGPTService
+class ChatGPTService extends BaseService
 {
     const ACTION = 'chat/completions';
 
     const CHAT_GPT_LOG = 'chat_gpt';
 
     protected Client $client;
-    private ?LoggerInterface $logger = null;
 
     public function __construct() {
         $this->client = $this->clientRequest();
-        $logger = logs(self::CHAT_GPT_LOG);
-        $this->setLogger($logger);
+        $this->setLogger(
+            logs(self::CHAT_GPT_LOG)
+        );
     }
 
     /**
@@ -81,23 +81,5 @@ class ChatGPTService
     {
         $response_data = json_decode($response->getBody()->getContents(), TRUE);
         return $response_data['choices'][0]['message']['content'];
-    }
-
-    /**
-     * @param LoggerInterface $logger
-     * @return void
-     */
-    private function setLogger(LoggerInterface $logger): void
-    {
-        $this->logger = $logger;
-    }
-
-    /**
-     * @param string $message
-     * @return void
-     */
-    private function log(string $message): void
-    {
-        $this->logger?->info($message);
     }
 }
