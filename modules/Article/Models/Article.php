@@ -83,6 +83,6 @@ class Article extends Model implements HasMedia
 
     public function registerMediaConversions(?Media $media = null): void
     {
-        $this->addMediaConversion('thumb')->width(1200);
+        $this->addMediaConversion('thumb')->width(1200)->nonQueued();
     }
 }
