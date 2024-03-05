@@ -126,6 +126,15 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        /* custom logs */
+
+        'chat_gpt' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/ai/chat_gpt.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 14,
+        ],
     ],
 
 ];

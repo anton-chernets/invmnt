@@ -2,48 +2,40 @@
 
 namespace Modules\News\Services;
 
+use App\Helpers\StringHelper;
 use App\Services\ParseBaseService;
-use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Http;
 use Modules\Article\ArticleDTO;
 use Modules\Article\Models\Article;
 use Modules\ChatGPT\Services\ChatGPTService;
 use Modules\Translate\Service\TranslateService;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded;
 
 class GettingNewsService extends ParseBaseService
 {
-    private const FINANCE = 'finance';
-    private const CRYPTO = 'crypto';
-    private const ECONOMIC = 'economic';
-    private const INVESTMENT = 'investment';
-    private const DOLLAR = 'dollar';
-    private const BITCOIN = 'bitcoin';
-
     private const CATEGORIES = [
-        self::FINANCE,
-        self::CRYPTO,
-        self::ECONOMIC,
-        self::INVESTMENT,
-        self::DOLLAR,
-        self::BITCOIN,
+        'finance',
+        'crypto',
+        'economic',
+        'investment',
+        'dollar',
+        'bitcoin',
     ];
 
-    protected string $url;
-    protected TranslateService $translateService;
-    protected ChatGPTService $chatGPTService;
+    private string $url;
+    private TranslateService $translateService;
+    private ChatGPTService $chatGPTService;
 
     public function __construct() {
         $this->url = env('WORLD_NEWS_API_DOMAIN') . '/search-news?api-key='
             . env('WORLD_NEWS_API_API_KEY') . '&text=' . $this->getCategory();
+
         $this->translateService = new TranslateService();
         $this->chatGPTService = new ChatGPTService();
     }
 
     /**
      * @throws GuzzleException
-     * @throws FileCannotBeAdded
      */
     public function getNews(): void
     {
@@ -54,6 +46,11 @@ class GettingNewsService extends ParseBaseService
         /** @var ArticleDTO $articleDTO */
         foreach ($news as $new) {
             try {
+                $alias = StringHelper::toSnakeRemoveSpecSim($new->title);
+                if (Article::whereAlias($alias)->exists()) {
+                    continue;
+                }
+
                 $articleDTO = new ArticleDTO(
                     $new->title,
                     $new->text,
@@ -64,23 +61,23 @@ class GettingNewsService extends ParseBaseService
                 );
 
                 $article = new Article();
-                $article->alias = $articleDTO->title;
+                $article->alias = $alias;
                 $article->author = $articleDTO->author;
                 $article->publish_date = $articleDTO->publish_date;
                 $article->deleted_at = $articleDTO->deleted_at;
-            } catch (Exception) {
-                //next new
+
+                $article->title = $this->chatGPTService->rewrite(
+                    $this->translateService->translate($articleDTO->title)
+                );
+                $article->description = $this->chatGPTService->rewrite(
+                    $this->translateService->translate($articleDTO->description)
+                );
+                $article->addMediaFromUrl($articleDTO->image)->toMediaCollection('images');
+                $article->save();
+            } catch (\Exception $exception) {
+                logs()->error($exception->getMessage());
             }
         }
-
-        $article->title = $this->chatGPTService->rewrite(
-            $this->translateService->translate($articleDTO->title)
-        );
-        $article->description = $this->chatGPTService->rewrite(
-            $this->translateService->translate($articleDTO->description)
-        );
-        $article->addMediaFromUrl($articleDTO->image)->toMediaCollection('images');
-        $article->save();
     }
 
     private function getCategory(): string

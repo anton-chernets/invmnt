@@ -5,15 +5,21 @@ namespace Modules\ChatGPT\Services;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use Psr\Log\LoggerInterface;
 
 class ChatGPTService
 {
     const ACTION = 'chat/completions';
 
+    const CHAT_GPT_LOG = 'chat_gpt';
+
     protected Client $client;
+    private ?LoggerInterface $logger = null;
 
     public function __construct() {
         $this->client = $this->clientRequest();
+        $logger = logs(self::CHAT_GPT_LOG);
+        $this->setLogger($logger);
     }
 
     /**
@@ -25,7 +31,7 @@ class ChatGPTService
             $response = $this->client->post(self::ACTION, $this->bodyRequest('Переведи на украінську:', $item));
             return $this->contentResponse($response);
         } catch (RequestException $e) {
-            logs()->error('translate ' . $e->getMessage());
+            $this->log('translate ' . $e->getMessage());
             throw $e;
         }
     }
@@ -75,5 +81,23 @@ class ChatGPTService
     {
         $response_data = json_decode($response->getBody()->getContents(), TRUE);
         return $response_data['choices'][0]['message']['content'];
+    }
+
+    /**
+     * @param LoggerInterface $logger
+     * @return void
+     */
+    private function setLogger(LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
+    }
+
+    /**
+     * @param string $message
+     * @return void
+     */
+    private function log(string $message): void
+    {
+        $this->logger?->info($message);
     }
 }
