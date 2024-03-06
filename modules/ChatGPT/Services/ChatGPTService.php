@@ -43,7 +43,7 @@ class ChatGPTService extends BaseService
     public function rewrite(string $item): string
     {
         try {
-            $response = $this->client->post(self::ACTION, $this->bodyRequest('Зроби рерайт:', $item));
+            $response = $this->client->post(self::ACTION, $this->bodyRequest('Зроби рерайт не зменшуючи обьем тексту:', $item));
             return $this->contentResponse($response);
         } catch (RequestException $e) {
             logs()->error('rewrite ' . $e->getMessage());
