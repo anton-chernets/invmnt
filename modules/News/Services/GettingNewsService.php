@@ -72,6 +72,9 @@ class GettingNewsService extends ParseBaseService
                 $article->description = $this->chatGPTService->rewrite(
                     $this->translateService->translate($articleDTO->description)
                 );
+                if (stripos($article->description, 'казино')) {
+                    throw new \Exception('стоп слово');
+                }
                 $article->addMediaFromUrl($articleDTO->image)->toMediaCollection('images');
                 $article->save();
             } catch (\Exception $exception) {
