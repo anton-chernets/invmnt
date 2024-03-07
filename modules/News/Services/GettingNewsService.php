@@ -27,8 +27,6 @@ class GettingNewsService extends ParseBaseService
     private ChatGPTService $chatGPTService;
 
     public function __construct() {
-        $this->url = env('WORLD_NEWS_API_DOMAIN') . '/search-news?api-key='
-            . env('WORLD_NEWS_API_API_KEY') . '&text=' . $this->getCategory();
 
         $this->translateService = new TranslateService();
         $this->chatGPTService = new ChatGPTService();
@@ -37,8 +35,10 @@ class GettingNewsService extends ParseBaseService
     /**
      * @throws GuzzleException
      */
-    public function getNews(): void
+    public function getNews(string $category): void
     {
+        $this->url = env('WORLD_NEWS_API_DOMAIN') . '/search-news?api-key='
+            . env('WORLD_NEWS_API_API_KEY') . '&text=' . $category;
         $rawResponse = Http::get($this->url)->body();
         $response = json_decode($rawResponse);
         $news = $response->news;
@@ -83,8 +83,8 @@ class GettingNewsService extends ParseBaseService
         }
     }
 
-    private function getCategory(): string
+    public function categories(): array
     {
-        return self::CATEGORIES[array_rand(self::CATEGORIES)];
+        return self::CATEGORIES;
     }
 }

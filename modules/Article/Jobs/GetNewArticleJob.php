@@ -18,7 +18,7 @@ class GetNewArticleJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct() {
+    public function __construct(public string $category) {
         $this->queue = 'news';
     }
 
@@ -28,6 +28,6 @@ class GetNewArticleJob implements ShouldQueue
      */
     public function handle(GettingNewsService $gettingNewsService): void
     {
-        $gettingNewsService->getNews();
+        $gettingNewsService->getNews($this->category);
     }
 }

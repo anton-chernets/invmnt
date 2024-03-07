@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Modules\Article\Jobs\GetNewArticleJob;
+use Modules\News\Services\GettingNewsService;
 
 class GetNewsCoinDeskCommand extends Command
 {
@@ -26,6 +27,8 @@ class GetNewsCoinDeskCommand extends Command
      */
     public function handle(): void
     {
-        GetNewArticleJob::dispatch();
+        foreach (GettingNewsService::categories() as $category) {
+            GetNewArticleJob::dispatch($category);
+        }
     }
 }
