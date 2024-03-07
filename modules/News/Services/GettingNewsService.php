@@ -83,7 +83,7 @@ class GettingNewsService extends ParseBaseService
         }
     }
 
-    public function categories(): array
+    public static function categories(): array
     {
         return self::CATEGORIES;
     }
