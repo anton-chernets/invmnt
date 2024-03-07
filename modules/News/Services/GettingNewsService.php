@@ -22,6 +22,11 @@ class GettingNewsService extends ParseBaseService
         'bitcoin',
     ];
 
+    private const STOP_WORDS = [
+        'кредит',
+        'казино',
+    ];
+
     private string $url;
     private TranslateService $translateService;
     private ChatGPTService $chatGPTService;
@@ -72,8 +77,10 @@ class GettingNewsService extends ParseBaseService
                 $article->description = $this->chatGPTService->rewrite(
                     $this->translateService->translate($articleDTO->description)
                 );
-                if (stripos($article->description, 'казино')) {
-                    throw new \Exception('стоп слово');
+                foreach (self::STOP_WORDS as $item) {
+                    if (stripos($article->description, $item)) {
+                        throw new \Exception('стоп слово');
+                    }
                 }
                 $article->addMediaFromUrl($articleDTO->image)->toMediaCollection('images');
                 $article->save();
