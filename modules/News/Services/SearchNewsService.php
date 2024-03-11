@@ -10,6 +10,10 @@ use Modules\Article\Models\Article;
 
 class SearchNewsService extends BaseService
 {
+    private const STOP_WORDS = [
+        'gambling',
+        'casino',
+    ];
     private const CATEGORIES = [
         'finance',
         'crypto',
@@ -57,19 +61,18 @@ class SearchNewsService extends BaseService
                 $article->author = $articleDTO->author;
                 $article->publish_date = $articleDTO->publish_date;
                 $article->deleted_at = $articleDTO->deleted_at;
-
+                $article->addMediaFromUrl($articleDTO->image)->toMediaCollection('images');
+                foreach (self::STOP_WORDS as $item) {
+                    if (stripos($articleDTO->description, $item)) {
+                        throw new \Exception('стоп слово');
+                    }
+                }
                 $article->title = $this->chatGPTService->rewrite(
                     $this->translateService->translate($articleDTO->title)
                 );
                 $article->description = $this->chatGPTService->rewrite(
                     $this->translateService->translate($articleDTO->description)
                 );
-                foreach (self::STOP_WORDS as $item) {
-                    if (stripos($article->description, $item)) {
-                        throw new \Exception('стоп слово');
-                    }
-                }
-                $article->addMediaFromUrl($articleDTO->image)->toMediaCollection('images');
                 $article->save();
             } catch (\Exception $exception) {
                 logs()->error($exception->getMessage());

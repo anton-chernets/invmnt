@@ -7,11 +7,6 @@ use Modules\Translate\Service\TranslateService;
 
 class BaseService
 {
-    protected const STOP_WORDS = [
-        'кредит',
-        'казино',
-    ];
-
     protected string $link;
     protected TranslateService $translateService;
     protected ChatGPTService $chatGPTService;
