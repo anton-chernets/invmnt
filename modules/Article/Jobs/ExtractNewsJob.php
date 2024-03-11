@@ -9,16 +9,16 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Modules\News\Services\GettingNewsService;
+use Modules\News\Services\ExtractNewsService;
 
-class GetNewArticleJob implements ShouldQueue
+class ExtractNewsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * Create a new job instance.
      */
-    public function __construct(public string $category) {
+    public function __construct(public string $url) {
         $this->queue = 'news';
     }
 
@@ -26,8 +26,8 @@ class GetNewArticleJob implements ShouldQueue
      * Execute the job.
      * @throws Exception|GuzzleException
      */
-    public function handle(GettingNewsService $gettingNewsService): void
+    public function handle(ExtractNewsService $extractNewsService): void
     {
-        $gettingNewsService->getNews($this->category);
+        $extractNewsService->getNews($this->url);
     }
 }

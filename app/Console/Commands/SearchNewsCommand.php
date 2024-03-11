@@ -3,32 +3,32 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Modules\Article\Jobs\GetNewArticleJob;
-use Modules\News\Services\GettingNewsService;
+use Modules\Article\Jobs\SearchNewsJob;
+use Modules\News\Services\SearchNewsService;
 
-class GetNewsCoinDeskCommand extends Command
+class SearchNewsCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'get:news';
+    protected $signature = 'search:news';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command get news';
+    protected $description = 'Command search news';
 
     /**
      * Execute the console command.
      */
     public function handle(): void
     {
-        foreach (GettingNewsService::categories() as $category) {
-            GetNewArticleJob::dispatch($category);
+        foreach (SearchNewsService::categories() as $category) {
+            SearchNewsJob::dispatch($category);
         }
     }
 }

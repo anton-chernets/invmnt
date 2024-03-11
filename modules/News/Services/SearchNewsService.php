@@ -3,15 +3,12 @@
 namespace Modules\News\Services;
 
 use App\Helpers\StringHelper;
-use App\Services\ParseBaseService;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Http;
 use Modules\Article\ArticleDTO;
 use Modules\Article\Models\Article;
-use Modules\ChatGPT\Services\ChatGPTService;
-use Modules\Translate\Service\TranslateService;
 
-class GettingNewsService extends ParseBaseService
+class SearchNewsService extends BaseService
 {
     private const CATEGORIES = [
         'finance',
@@ -22,19 +19,9 @@ class GettingNewsService extends ParseBaseService
         'bitcoin',
     ];
 
-    private const STOP_WORDS = [
-        'кредит',
-        'казино',
-    ];
-
-    private string $url;
-    private TranslateService $translateService;
-    private ChatGPTService $chatGPTService;
-
-    public function __construct() {
-
-        $this->translateService = new TranslateService();
-        $this->chatGPTService = new ChatGPTService();
+    public static function categories(): array
+    {
+        return self::CATEGORIES;
     }
 
     /**
@@ -42,9 +29,9 @@ class GettingNewsService extends ParseBaseService
      */
     public function getNews(string $category): void
     {
-        $this->url = env('WORLD_NEWS_API_DOMAIN') . '/search-news?api-key='
+        $this->link = env('WORLD_NEWS_API_DOMAIN') . '/search-news?api-key='
             . env('WORLD_NEWS_API_API_KEY') . '&text=' . $category;
-        $rawResponse = Http::get($this->url)->body();
+        $rawResponse = Http::get($this->link)->body();
         $response = json_decode($rawResponse);
         $news = $response->news;
         /** @var Article $article */
@@ -88,10 +75,5 @@ class GettingNewsService extends ParseBaseService
                 logs()->error($exception->getMessage());
             }
         }
-    }
-
-    public static function categories(): array
-    {
-        return self::CATEGORIES;
     }
 }
