@@ -28,6 +28,6 @@ class ExtractNewsJob implements ShouldQueue
      */
     public function handle(ExtractNewsService $extractNewsService): void
     {
-        $extractNewsService->getNews($this->url);
+        $extractNewsService->extractNews($this->url);
     }
 }

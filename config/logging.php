@@ -129,6 +129,13 @@ return [
 
         /* custom logs */
 
+        'news' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/news/worldnewsapi.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 14,
+        ],
+
         'chat_gpt' => [
             'driver' => 'daily',
             'path' => storage_path('logs/ai/chat_gpt.log'),

@@ -8,16 +8,17 @@ use Illuminate\Support\Facades\Http;
 use Modules\Article\ArticleDTO;
 use Modules\Article\Models\Article;
 
-class ExtractNewsService extends BaseService
+class ExtractNewsService extends BaseNewsService
 {
     /**
      * @throws GuzzleException
      */
-    public function getNews(string $url): void
+    public function extractNews(string $url): void
     {
         $this->link = env('WORLD_NEWS_API_DOMAIN') . '/extract-news?api-key='
             . env('WORLD_NEWS_API_API_KEY') . '&analyze=true&url=' . $url;
         $rawResponse = Http::get($this->link)->body();
+        $this->log('translate ' . $rawResponse);
         $response = json_decode($rawResponse);
         /** @var Article $article */
         /** @var ArticleDTO $articleDTO */

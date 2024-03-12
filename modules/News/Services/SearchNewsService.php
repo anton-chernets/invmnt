@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Http;
 use Modules\Article\ArticleDTO;
 use Modules\Article\Models\Article;
 
-class SearchNewsService extends BaseService
+class SearchNewsService extends BaseNewsService
 {
     private const STOP_WORDS = [
         'gambling',
@@ -31,7 +31,7 @@ class SearchNewsService extends BaseService
     /**
      * @throws GuzzleException
      */
-    public function getNews(string $category): void
+    public function searchNews(string $category): void
     {
         $this->link = env('WORLD_NEWS_API_DOMAIN') . '/search-news?api-key='
             . env('WORLD_NEWS_API_API_KEY') . '&text=' . $category;
