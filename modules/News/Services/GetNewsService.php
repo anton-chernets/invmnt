@@ -26,7 +26,6 @@ class GetNewsService extends ExtractNewsService
                 $url = $a->href;
                 if (filter_var($url, FILTER_VALIDATE_URL)) {
                     $this->extractNews($url);
-                    break;
                 }
             }
             $dom->clear();
