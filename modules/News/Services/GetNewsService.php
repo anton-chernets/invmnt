@@ -25,7 +25,7 @@ class GetNewsService extends ExtractNewsService
             foreach ($as as $a) {
                 $url = $a->href;
                 if (filter_var($url, FILTER_VALIDATE_URL)) {
-                    $this->extractNews($url->href);
+                    $this->extractNews($url);
                     break;
                 }
             }
