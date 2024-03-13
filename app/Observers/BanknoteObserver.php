@@ -18,7 +18,7 @@ class BanknoteObserver
     {
         if ($banknote->isDirty('count')) {
             $oldCount = $banknote->getOriginal('count');
-            if ((is_null($oldCount) || $oldCount === 0) && $banknote->count > 10) {
+            if ((is_null($oldCount) || $oldCount === 0) && $banknote->count > 50) {
                 event(new BanknoteUpdated($banknote->name, $banknote->count, $oldCount, $banknote->url));
             }
         }
