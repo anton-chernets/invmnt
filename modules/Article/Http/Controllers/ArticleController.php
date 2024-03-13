@@ -44,6 +44,8 @@ class ArticleController extends Controller
      *                          "id": 1,
      *                          "title": "Article Title",
      *                          "alias": "article-title",
+     *                          "author": "Parikshit Mishra",
+     *                          "publish_date": "2024-03-11 07:24:27",
      *                          "description": "Article description",
      *                          "created_at": "2024-02-03T16:53:20.000000Z",
      *                          "updated_at": "2024-02-03T16:53:20.000000Z",
@@ -60,7 +62,9 @@ class ArticleController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        return ArticleResource::collection(Article::orderBy('created_at', 'desc')->paginate(10));
+        return ArticleResource::collection(
+            Article::orderBy('publish_date', 'desc')->orderBy('created_at', 'desc')->paginate(10)
+        );
     }
 
     /**
@@ -91,6 +95,8 @@ class ArticleController extends Controller
      *                          "id": 1,
      *                          "title": "Article Title",
      *                          "alias": "article-title",
+     *                          "author": "Parikshit Mishra",
+     *                          "publish_date": "2024-03-11 07:24:27",
      *                          "description": "Article description",
      *                          "created_at": "2024-02-03T16:53:20.000000Z",
      *                          "updated_at": "2024-02-03T16:53:20.000000Z",
@@ -138,6 +144,8 @@ class ArticleController extends Controller
      *                          "id": 1,
      *                          "title": "Article Title",
      *                          "alias": "article-title",
+     *                          "author": "Parikshit Mishra",
+     *                          "publish_date": "2024-03-11 07:24:27",
      *                          "description": "Article description",
      *                          "created_at": "2024-02-03T16:53:20.000000Z",
      *                          "updated_at": "2024-02-03T16:53:20.000000Z",
@@ -189,6 +197,8 @@ class ArticleController extends Controller
      *                         "id": 1,
      *                         "title": "Article Title",
      *                         "alias": "article-title",
+     *                         "author": "Parikshit Mishra",
+     *                         "publish_date": "2024-03-11 07:24:27",
      *                         "description": "Article description",
      *                         "updated_at": "2024-02-03T16:53:20.000000Z",
      *                         "created_at": "2024-02-03T16:53:20.000000Z",
@@ -317,6 +327,8 @@ class ArticleController extends Controller
      *                      example={
      *                          "title": "Article Title",
      *                          "alias": "article-title",
+     *                          "author": "Parikshit Mishra",
+     *                          "publish_date": "2024-03-11 07:24:27",
      *                          "description": "Article description",
      *                          "updated_at": "2024-02-03T16:53:20.000000Z",
      *                          "created_at": "2024-02-03T16:53:20.000000Z",
@@ -386,9 +398,9 @@ class ArticleController extends Controller
      *                        "id": 1,
      *                        "title": "Article Title",
      *                        "alias": "article-title",
+     *                        "author": "Parikshit Mishra",
+     *                        "publish_date": "2024-03-11 07:24:27",
      *                        "description": "Article description",
-     *                        "author": "author",
-     *                        "published_date": "2024-02-03T16:53:20.000000Z",
      *                        "updated_at": "2024-02-03T16:53:20.000000Z",
      *                        "created_at": "2024-02-03T16:53:20.000000Z",
      *                        "images": {

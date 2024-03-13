@@ -23,6 +23,7 @@ class ArticleResource extends JsonResource
             'id' => $this->resource->id,
             'alias' => $this->resource->alias,
             'author' => $this->resource->author,
+            'publish_date' => $this->resource->publish_date,
             'title' => $this->resource->title,
             'description' => $this->resource->description,
             'created_at' => $this->resource->created_at,
