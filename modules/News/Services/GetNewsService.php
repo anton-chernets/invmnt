@@ -10,6 +10,7 @@ class GetNewsService extends ExtractNewsService
     const DOMAINS = [
         'https://www.coindesk.com/' => 'a.card-title-link',
         'https://finance.yahoo.com/' => 'a.js-content-viewer',
+        'https://payspacemagazine.com/' => 'h2.post-title a',
     ];
 
     /**
@@ -25,6 +26,7 @@ class GetNewsService extends ExtractNewsService
             foreach ($as as $a) {
                 $url = $a->href;
                 if (filter_var($url, FILTER_VALIDATE_URL)) {
+                    $this->log($domain . ' has valid href ' . $url);
                     $this->extractNews($url);
                 }
             }
