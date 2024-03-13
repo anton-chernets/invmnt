@@ -63,7 +63,7 @@ class ArticleController extends Controller
     public function index(): AnonymousResourceCollection
     {
         return ArticleResource::collection(
-            Article::orderBy('publish_date', 'desc')->orderBy('created_at', 'desc')->paginate(10)
+            Article::orderBy('created_at', 'desc')->paginate(10)
         );
     }
 
