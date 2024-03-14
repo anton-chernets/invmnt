@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Modules\Article\Jobs\ExtractNewsJob;
 use Modules\Article\Jobs\GetNewsJob;
+use Modules\News\Services\GetNewsService;
 
 class GetNewsCommand extends Command
 {
@@ -27,6 +27,8 @@ class GetNewsCommand extends Command
      */
     public function handle(): void
     {
-        GetNewsJob::dispatch();
+        foreach (GetNewsService::DOMAINS as $domain => $classSelector) {
+            GetNewsJob::dispatch($domain, $classSelector);
+        }
     }
 }

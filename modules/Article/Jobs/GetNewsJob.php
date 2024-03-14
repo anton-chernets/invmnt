@@ -18,7 +18,10 @@ class GetNewsJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct() {
+    public function __construct(
+        private readonly string $domain,
+        private readonly string $classSelector
+    ) {
         $this->queue = 'news';
     }
 
@@ -28,8 +31,6 @@ class GetNewsJob implements ShouldQueue
      */
     public function handle(GetNewsService $getNewsService): void
     {
-        foreach (GetNewsService::DOMAINS as $domain => $classSelector) {
-            $getNewsService->getNews($domain, $classSelector);
-        }
+        $getNewsService->getNews($this->domain, $this->classSelector);
     }
 }
