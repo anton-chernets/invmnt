@@ -15,22 +15,20 @@ class GetNewsService extends ExtractNewsService
     /**
      * @throws GuzzleException
      */
-    public function getNews(): void
+    public function getNews(string $domain, string $classSelector): void
     {
         define('MAX_FILE_SIZE', 6000000);
-        foreach (self::DOMAINS as $domain => $classSelector) {
-            $html = file_get_contents($domain);
-            $dom = HtmlDomParser::str_get_html($html);
-            $as = $dom->find($classSelector);
-            foreach ($as as $a) {
-                $url = $a->href;
-                if (filter_var($url, FILTER_VALIDATE_URL)) {
-                    $this->log($domain . ' has valid href ' . $url);
-                    $this->extractNews($url);
-                }
+        $html = file_get_contents($domain);
+        $dom = HtmlDomParser::str_get_html($html);
+        $as = $dom->find($classSelector);
+        foreach ($as as $a) {
+            $url = $a->href;
+            if (filter_var($url, FILTER_VALIDATE_URL)) {
+                $this->log($domain . ' has valid href ' . $url);
+                $this->extractNews($url);
             }
-            $dom->clear();
-            unset($dom);
         }
+        $dom->clear();
+        unset($dom);
     }
 }

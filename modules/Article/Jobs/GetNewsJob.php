@@ -28,6 +28,8 @@ class GetNewsJob implements ShouldQueue
      */
     public function handle(GetNewsService $getNewsService): void
     {
-        $getNewsService->getNews();
+        foreach (GetNewsService::DOMAINS as $domain => $classSelector) {
+            $getNewsService->getNews($domain, $classSelector);
+        }
     }
 }
