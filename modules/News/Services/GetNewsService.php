@@ -9,7 +9,7 @@ class GetNewsService extends ExtractNewsService
 {
     const DOMAINS = [
         'https://www.coindesk.com/' => 'a.card-title-link',
-        'https://payspacemagazine.com/' => 'h2.post-title a',
+        'https://payspacemagazine.com/' => 'h2.psm-sm-post-title a',
     ];
 
     public function __construct()
