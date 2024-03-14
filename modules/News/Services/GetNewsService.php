@@ -12,12 +12,19 @@ class GetNewsService extends ExtractNewsService
         'https://payspacemagazine.com/' => 'h2.post-title a',
     ];
 
+    public function __construct()
+    {
+        parent::__construct();
+        if (!defined('MAX_FILE_SIZE'))
+            define('MAX_FILE_SIZE', 6000000);
+    }
+
     /**
      * @throws GuzzleException
      */
     public function getNews(string $domain, string $classSelector): void
     {
-        define('MAX_FILE_SIZE', 6000000);
+
         $html = file_get_contents($domain);
         $dom = HtmlDomParser::str_get_html($html);
         $as = $dom->find($classSelector);
