@@ -12,9 +12,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
+//         $schedule->command('get:news')->daily();
          $schedule->command('app:get-currency-exchanges')->daily();
-//         $schedule->command('get:news')->everyFourHours();
          $schedule->command('parse:coins_bank_gov_ua')->everyFifteenSeconds();
+         $schedule->command('parse:suvenirna_bank_gov_ua')->everyFifteenSeconds();
          $schedule->command('parse:banknotes_bank_gov_ua')->everyFifteenSeconds();
     }
 
