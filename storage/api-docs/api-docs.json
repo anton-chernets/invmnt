@@ -93,7 +93,7 @@
                         "description": "password",
                         "schema": {
                             "type": "string",
-                            "example": "Tomas1989"
+                            "example": "password"
                         }
                     }
                 ],

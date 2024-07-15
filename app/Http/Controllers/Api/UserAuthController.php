@@ -112,7 +112,7 @@ class UserAuthController extends Controller
      *          in="query",
      *          @OA\Schema(
      *              type="string",
-     *              example="Tomas1989",
+     *              example="password",
      *          ),
      *      ),
      *      @OA\Response(
