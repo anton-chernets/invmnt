@@ -36,7 +36,7 @@ class ParseCoinsBankGovUaService extends ParseBaseService
     {
         $dom = HtmlDomParser::str_get_html($html);
         logs()->debug('coins start parsing');
-        foreach ($dom->find('a.model_product') as $coinLink) {
+        foreach ($dom->find('.model_product') as $coinLink) {
             logs()->debug('model_product detected');
             $coinName = trim(html_entity_decode($coinLink->plaintext, ENT_QUOTES, 'UTF-8'));
             $coinName = str_replace('"', '', $coinName);
