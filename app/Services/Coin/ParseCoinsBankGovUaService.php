@@ -26,6 +26,7 @@ class ParseCoinsBankGovUaService extends ParseBaseService
 
         for ($page = $startPage; $page <= $lastPage; $page++) {
             $pageUrl = "{$this->coinPageUrl}?page={$page}";
+            logs()->debug('page url ' . $pageUrl);
             $html = file_get_contents($pageUrl);
             $this->processCoinData($html);
         }
