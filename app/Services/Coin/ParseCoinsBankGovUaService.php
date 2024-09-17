@@ -46,7 +46,7 @@ class ParseCoinsBankGovUaService extends ParseBaseService
             $baseUrl = env('COINS_BANK_GOV_UA_DOMAIN');
             $coinPageUrl = $baseUrl . $coinLink->href;
             $coinCount = $this->getCountElementFromPage($coinPageUrl);
-
+            logs()->debug($coinName . ' detected count = ' . $coinCount);
             if ($existingCoin) {
                 $this->coinRepository->update($existingCoin, $coinCount);
             } else {
