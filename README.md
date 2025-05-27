@@ -1,44 +1,44 @@
 ## commands for db
-````````
+````````bash
 php artisan migrate
 php artisan db:seed
 ````````
 ## for front-end work
-````````
+````````bash
 npm run dev
 ````````
 ## for schedule work
-````````
+````````bash
 php artisan schedule:work
 ````````
 ## for queue work
-````````
+````````bash
 php artisan horizon
 ````````
 ## or
-````````
+````````bash
 php artisan queue:work
-php artisan queue:listen
+php artisan queue:listen --queue=default,telegram,news
 ````````
 
 ## custom functional commands
-````````
+````````bash
 php artisan app:get-currency-exchanges
 php artisan parse:banknotes_bank_gov_ua
 php artisan parse:coins_bank_gov_ua
 ````````
 
 ## for testing
-````````
+````````bash
 php artisan test
 ````````
 
 ## for parallel testing
-````````
+````````bash
 php artisan test --parallel --processes=2 --env=testing
 ````````
 ## for front
-````````
+````````bash
 npm run build
 ````````
 # urls

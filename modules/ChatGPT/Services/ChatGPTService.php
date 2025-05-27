@@ -31,7 +31,7 @@ class ChatGPTService extends BaseService
             $response = $this->client->post(self::ACTION, $this->bodyRequest('Переведи на украінську:', $item));
             return $this->contentResponse($response);
         } catch (RequestException $e) {
-            $this->log('translate ' . $e->getMessage());
+            $this->log(__FUNCTION__ . ' ' . $e->getMessage());
             throw $e;
         }
     }
@@ -46,7 +46,7 @@ class ChatGPTService extends BaseService
             $response = $this->client->post(self::ACTION, $this->bodyRequest('Зроби рерайт не зменшуючи обьем тексту:', $item));
             return $this->contentResponse($response);
         } catch (RequestException $e) {
-            logs()->error('rewrite ' . $e->getMessage());
+            logs()->error(__FUNCTION__ . ' ' . $e->getMessage());
             throw $e;
         }
     }
@@ -57,10 +57,13 @@ class ChatGPTService extends BaseService
     public function numerology(string $item): string
     {
         try {
-            $response = $this->client->post(self::ACTION, $this->bodyRequest('Розкажи нумерологію по запиту якщо розумієш дату народження якщо не розумієш то попроси уточнити дату народження:', $item));
+            $response = $this->client->post(self::ACTION, $this->bodyRequest(
+                'Розкажи нумерологію по запиту, якщо розумієш дату народження якщо не розумієш то попроси уточнити дату народження лагідно, а відповідай зі смайликами:',
+                $item)
+            );
             return $this->contentResponse($response);
         } catch (RequestException $e) {
-            logs()->error('numerology ' . $e->getMessage());
+            logs()->error(__FUNCTION__ . ' ' . $e->getMessage());
             throw $e;
         }
     }

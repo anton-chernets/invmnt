@@ -2,50 +2,29 @@
 
 namespace App\Jobs\Telegram\Numerology;
 
-use App\Services\ThirdParty\Notification\Telegram\SendInfoService;
-use GuzzleHttp\Exception\GuzzleException;
+use App\Services\Telegram\ProcessDispatchMessageService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Modules\ChatGPT\Services\ChatGPTService;
+use App\DTO\Telegram\TelegramIncomeMessageDTO;
 
 class ResponseTelegramUserJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private mixed $telegramBotToken;
-    private array $incomeData;
+    private TelegramIncomeMessageDTO $dto;
 
-    /**
-     * Create a new job instance.
-     */
     public function __construct(array $incomeData)
     {
         $this->onQueue('telegram');
-        $this->telegramBotToken = config('telegram.numerologsbot_token');
-        $this->incomeData = $incomeData;
+        $this->dto = new TelegramIncomeMessageDTO($incomeData);
     }
 
-    /**
-     * Execute the job.
-     * @throws \Exception|GuzzleException
-     */
-    public function handle(SendInfoService $sendInfoService): void
+    public function handle(): void
     {
-        switch ($this->incomeData['message']['text']) {
-            case '/info':
-                $message = '🔮 Нумерологія — це езотеричне вчення, яке вивчає вплив чисел на життя людини, її характер, долю, події, стосунки тощо; в основі нумерології лежить ідея, що кожне число має своє енергетичне значення і може впливати на наш світ.';
-
-                $sendInfoService->send($this->incomeData['message']['from']['id'], $message, $this->telegramBotToken);
-
-                break;
-            default:
-                $aiAnswer = (new ChatGPTService())->numerology($this->incomeData['message']['text']);
-                logs()->info('numerolog aiAnswer ' . $aiAnswer);
-                $sendInfoService->send($this->incomeData['message']['from']['id'], $aiAnswer, $this->telegramBotToken);
-//            default: logs()->info('Unknown command ' . $requestBody['message']['text']);
-        }
+        (new ProcessDispatchMessageService($this->dto))->processing();
     }
 }

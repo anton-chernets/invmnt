@@ -2,7 +2,7 @@
 
 namespace App\Services\ThirdParty\Notification\Telegram;
 
-use App\DTO\TelegramUserDTO;
+use App\DTO\Telegram\TelegramUserDTO;
 use App\Models\TelegramUser;
 
 class GetInfoService
