@@ -23,6 +23,7 @@ class ResponseTelegramUserJob implements ShouldQueue
      */
     public function __construct(array $incomeData)
     {
+        $this->onQueue('telegram');
         $this->telegramBotToken = config('telegram.numerologsbot_token');
         $this->incomeData = $incomeData;
     }
