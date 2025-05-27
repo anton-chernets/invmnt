@@ -75,3 +75,25 @@ curl -X POST "https://api.telegram.org/<TELEGRAM_BOT_TOKEN>/setWebhook" \
 ```aiignore
 https://platform.openai.com/account/billing/overview
 ```
+# artisan
+```bash
+php artisan extract:news 
+php artisan horizon:clear --queue=default
+php artisan route:clear
+php artisan config:clear
+php artisan optimize
+php artisan tinker
+php artisan route:list
+php artisan migrate:rollback --step=1
+php artisan ide-helper:models --dir='modules'
+composer dump-autoload
+php artisan l5-swagger:generate
+```
+# systemd
+```bash
+sudo nano /etc/systemd/system/laravel-worker.service
+sudo systemctl daemon-reload
+sudo systemctl stop laravel-worker
+sudo systemctl start laravel-worker
+sudo journalctl --unit=laravel-worker.service -n 100 --no-pager
+```
