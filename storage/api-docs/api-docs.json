@@ -5,6 +5,67 @@
         "version": "0.1"
     },
     "paths": {
+        "/api/telegram/webhook": {
+            "post": {
+                "tags": [
+                    "Telegram"
+                ],
+                "summary": "Handle Telegram webhook",
+                "operationId": "b239efc6e906f8b700d7cfb543892dad",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "message": {
+                                        "properties": {
+                                            "from": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 11111111
+                                                    },
+                                                    "first_name": {
+                                                        "type": "string",
+                                                        "example": "Anton"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "text": {
+                                                "type": "string",
+                                                "example": "/start"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Webhook handled successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/register": {
             "post": {
                 "tags": [
@@ -264,6 +325,8 @@
                                                     "id": 1,
                                                     "title": "Article Title",
                                                     "alias": "article-title",
+                                                    "author": "Parikshit Mishra",
+                                                    "publish_date": "2024-03-11 07:24:27",
                                                     "description": "Article description",
                                                     "created_at": "2024-02-03T16:53:20.000000Z",
                                                     "updated_at": "2024-02-03T16:53:20.000000Z",
@@ -316,6 +379,8 @@
                                                     "id": 1,
                                                     "title": "Article Title",
                                                     "alias": "article-title",
+                                                    "author": "Parikshit Mishra",
+                                                    "publish_date": "2024-03-11 07:24:27",
                                                     "description": "Article description",
                                                     "created_at": "2024-02-03T16:53:20.000000Z",
                                                     "updated_at": "2024-02-03T16:53:20.000000Z",
@@ -357,6 +422,8 @@
                                                     "id": 1,
                                                     "title": "Article Title",
                                                     "alias": "article-title",
+                                                    "author": "Parikshit Mishra",
+                                                    "publish_date": "2024-03-11 07:24:27",
                                                     "description": "Article description",
                                                     "created_at": "2024-02-03T16:53:20.000000Z",
                                                     "updated_at": "2024-02-03T16:53:20.000000Z",
@@ -418,6 +485,8 @@
                                                 "id": 1,
                                                 "title": "Article Title",
                                                 "alias": "article-title",
+                                                "author": "Parikshit Mishra",
+                                                "publish_date": "2024-03-11 07:24:27",
                                                 "description": "Article description",
                                                 "updated_at": "2024-02-03T16:53:20.000000Z",
                                                 "created_at": "2024-02-03T16:53:20.000000Z",
@@ -568,6 +637,8 @@
                                             "example": {
                                                 "title": "Article Title",
                                                 "alias": "article-title",
+                                                "author": "Parikshit Mishra",
+                                                "publish_date": "2024-03-11 07:24:27",
                                                 "description": "Article description",
                                                 "updated_at": "2024-02-03T16:53:20.000000Z",
                                                 "created_at": "2024-02-03T16:53:20.000000Z",
@@ -635,9 +706,9 @@
                                                 "id": 1,
                                                 "title": "Article Title",
                                                 "alias": "article-title",
+                                                "author": "Parikshit Mishra",
+                                                "publish_date": "2024-03-11 07:24:27",
                                                 "description": "Article description",
-                                                "author": "author",
-                                                "published_date": "2024-02-03T16:53:20.000000Z",
                                                 "updated_at": "2024-02-03T16:53:20.000000Z",
                                                 "created_at": "2024-02-03T16:53:20.000000Z",
                                                 "images": [

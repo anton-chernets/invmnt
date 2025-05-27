@@ -51,6 +51,20 @@ class ChatGPTService extends BaseService
         }
     }
 
+    /**
+     * @throws GuzzleException
+     */
+    public function numerology(string $item): string
+    {
+        try {
+            $response = $this->client->post(self::ACTION, $this->bodyRequest('Розкажи cтисло нумерологію по запиту якщо розумієш дату народження якщо не розумієш то попроси уточнити дату народження:', $item));
+            return $this->contentResponse($response);
+        } catch (RequestException $e) {
+            logs()->error('numerology ' . $e->getMessage());
+            throw $e;
+        }
+    }
+
     private function clientRequest(): Client
     {
         return new Client([
