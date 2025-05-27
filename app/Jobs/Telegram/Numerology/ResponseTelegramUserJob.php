@@ -41,7 +41,10 @@ class ResponseTelegramUserJob implements ShouldQueue
                 $sendInfoService->send($this->incomeData['message']['from']['id'], $message, $this->telegramBotToken);
 
                 break;
-            default: logs()->info('Yeah ' . (new ChatGPTService())->numerology($this->incomeData['message']['text']));
+            default:
+                $aiAnswer = (new ChatGPTService())->numerology($this->incomeData['message']['text']);
+                logs()->info('numerolog aiAnswer ' . $aiAnswer);
+                $sendInfoService->send($this->incomeData['message']['from']['id'], $aiAnswer, $this->telegramBotToken);
 //            default: logs()->info('Unknown command ' . $requestBody['message']['text']);
         }
     }

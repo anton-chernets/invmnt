@@ -68,12 +68,13 @@ php artisan l5-swagger:generate
 ```
 # telegram bot webhook url address set
 ```bash
-curl -X POST "https://api.telegram.org/<TELEGRAM_BOT_TOKEN>/setWebhook" \
+curl -X POST "https://api.telegram.org/bot<TELEGRAM_BOT_TOKEN>/setWebhook" \
 -d "url=<NGROK_ADDRESS>/api/telegram/webhook"
 ```
 # chat GPT billing
 ```aiignore
 https://platform.openai.com/account/billing/overview
+https://platform.openai.com/settings/organization/usage
 ```
 # artisan
 ```bash
@@ -92,8 +93,13 @@ php artisan l5-swagger:generate
 # systemd
 ```bash
 sudo nano /etc/systemd/system/laravel-worker.service
-sudo systemctl daemon-reload
+````
+```aiignore
+ExecStart=/usr/bin/php8.2 artisan queue:listen --queue=default,news,telegram --timeout=13600 --tries=2)
+````
+```bash
 sudo systemctl stop laravel-worker
 sudo systemctl start laravel-worker
+sudo systemctl daemon-reload
 sudo journalctl --unit=laravel-worker.service -n 100 --no-pager
-```
+````
