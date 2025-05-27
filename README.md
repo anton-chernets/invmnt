@@ -54,6 +54,8 @@ nano default
 nginx -s reload
 nano /etc/php/8.2/cli/php.ini
 nano /etc/nginx/nginx.conf
+cd /var/log/nginx/
+ls
 ```
 # ssl free
 ```bash
