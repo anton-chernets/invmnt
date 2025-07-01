@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\DTO\Telegram\TelegramIncomeMessageDTO;
+use Telegram\Bot\Exceptions\TelegramSDKException;
 
 class ResponseTelegramUserJob implements ShouldQueue
 {
@@ -25,7 +26,7 @@ class ResponseTelegramUserJob implements ShouldQueue
     }
 
     /**
-     * @throws GuzzleException|\Telegram\Bot\Exceptions\TelegramSDKException
+     * @throws GuzzleException|TelegramSDKException
      */
     public function handle(): void
     {
