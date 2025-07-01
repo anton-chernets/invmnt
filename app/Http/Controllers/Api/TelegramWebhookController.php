@@ -45,7 +45,7 @@ class TelegramWebhookController extends Controller
     {
         $requestBody = $request->all();
 
-        logs()->info('Telegram webhook', $requestBody);
+        logs()->info('Telegram webhook request', $requestBody);
 
         ResponseTelegramUserJob::dispatch($requestBody);
 

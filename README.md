@@ -68,6 +68,8 @@ php artisan l5-swagger:generate
 ```
 # telegram bot webhook url address set
 ```bash
+ngrok http 80
+
 curl -X POST "https://api.telegram.org/bot<TELEGRAM_BOT_TOKEN>/setWebhook" \
 -d "url=<NGROK_ADDRESS>/api/telegram/webhook"
 ```

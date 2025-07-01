@@ -10,9 +10,4 @@ class UserRepository
     {
        return User::whereNotNull('telegram_id')->pluck('telegram_id')->toArray();
     }
-
-    public function getUserByTelegramId($telegramId)
-    {
-        return User::where('telegram_id', $telegramId)->first();
-    }
 }
