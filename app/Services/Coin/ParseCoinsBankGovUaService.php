@@ -21,6 +21,7 @@ class ParseCoinsBankGovUaService extends ParseBaseService
         $lastPage = $this->getLastPageNumber($this->coinPageUrl);
 
         if ($lastPage === null) {
+            logs()->debug("last page '{$lastPage}' cannot be determined, stop parsing");
             return; // If the last page cannot be determined, stop parsing.
         }
 
@@ -35,6 +36,7 @@ class ParseCoinsBankGovUaService extends ParseBaseService
     {
         $dom = HtmlDomParser::str_get_html($html);
         logs()->debug('coins start parsing');
+        logs()->debug('coins start parsing' . $dom);
         foreach ($dom->find('.model_product') as $coinLink) {
             logs()->debug('model_product detected');
             $coinName = trim(html_entity_decode($coinLink->plaintext, ENT_QUOTES, 'UTF-8'));
