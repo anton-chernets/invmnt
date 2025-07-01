@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\TelegramBotActionsEnum;
 use App\Http\Controllers\Controller;
 use App\Jobs\Telegram\Numerology\ResponseTelegramUserJob;
 use App\Jobs\UpdateOrCreateTelegramUserJob;
+use App\Services\Telegram\TelegramBotTokenResolverService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Telegram\Bot\Api;
 
 class TelegramWebhookController extends Controller
 {
@@ -46,6 +49,21 @@ class TelegramWebhookController extends Controller
         $requestBody = $request->all();
 
         logs()->info('Telegram webhook request', $requestBody);
+
+        /* TODO refactor */
+        $telegram = new Api(app(TelegramBotTokenResolverService::class)->token());
+        $chatId = data_get($requestBody, 'message.chat.id')
+            ?? data_get($requestBody, 'callback_query.message.chat.id');
+        $telegram->sendChatAction([
+            'chat_id' => $chatId,
+            'action' => TelegramBotActionsEnum::Typing->value,
+        ]);
+        $telegram->sendMessage([
+            'chat_id' => $chatId,
+            'text' => 'думаю над запитом 🤔',
+        ]);
+        sleep(3);
+        /* TODO refactor */
 
         ResponseTelegramUserJob::dispatch($requestBody);
 
