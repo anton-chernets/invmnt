@@ -8,11 +8,9 @@ readonly class TelegramBotTokenResolverService
 {
     public function __construct(public UserRepository $userRepository) {}
 
-    public function resolve(int $telegramUserId): string
+    public function token(): string
     {
-        return $this->userRepository->getUserByTelegramId($telegramUserId)
-            ? config('telegram.numerologsbot_token')
-            : config('telegram.numerology_official_bot_token');
+        return config('telegram.numerology_official_bot_token');
     }
 }
 

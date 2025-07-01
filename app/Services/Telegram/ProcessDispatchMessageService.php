@@ -12,7 +12,7 @@ class ProcessDispatchMessageService extends BaseService
     {
         parent::__construct(
             $dto,
-            app(TelegramBotTokenResolverService::class)->resolve($dto->userId)
+            app(TelegramBotTokenResolverService::class)->token()
         );
     }
 
